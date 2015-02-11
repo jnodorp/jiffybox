@@ -1,0 +1,9 @@
+{
+  "messages": [],
+  "result": {
+    "minDiskSizeMB": 1024,
+    "name": "CentOS5.464-Bit",
+    "rootdiskMode": "ro",
+    "defaultKernel": "xen-current-x86_64"
+  }
+}

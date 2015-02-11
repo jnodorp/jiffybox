@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "result": {
+    "id": 1235,
+    "name": "Kopie von TestGruppe",
+    "contacts": [
+      "m.mustermann@example.com",
+      "f.musterfrau@example.com"
+    ],
+    "status": "STATUS_UPDATING"
+  }
+}

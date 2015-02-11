@@ -1,0 +1,18 @@
+{
+  "messages": [],
+  "result": {
+    "id": 1235,
+    "name": "Kopie von Test",
+    "jiffyBox": 4849,
+    "ip": "188.93.14.212",
+    "checkType": "http",
+    "checkInterval": 300,
+    "reminderInterval": 3600,
+    "retryTolerance": 3,
+    "status": "STATUS_CREATING",
+    "port": 80,
+    "path": "\/index.php",
+    "domainname": "example.com",
+    "contactgroups": []
+  }
+}

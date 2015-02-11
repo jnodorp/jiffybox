@@ -1,0 +1,24 @@
+{
+  "messages": [],
+  "result": {
+    "description": "Dokumentationsmodul",
+    "\/": {
+      "GET": {
+        "description": "Hiermit bekommen Sie eine \u00dcbersicht allerverf\u00fcgbaren Module mit einer Kurzbeschreibung, was diese machen.",
+        "parameters": {
+          "must": {},
+          "may": {}
+        }
+      }
+    },
+    "\/<module>": {
+      "GET": {
+        "description": "Hiermit lesen Sie die Kurzdokumentation eines Moduls aus. Eine Liste aller Module gibt es unter \/.",
+        "parameters": {
+          "must": {},
+          "may": {}
+        }
+      }
+    }
+  }
+}

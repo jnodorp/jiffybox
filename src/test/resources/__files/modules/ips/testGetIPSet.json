@@ -1,0 +1,55 @@
+{
+  "messages": [],
+  "result": {
+    "8376": {
+      "id": 8376,
+      "ip": "188.1.2.3",
+      "ipVersion": 4,
+      "isSubnet": false,
+      "reverseLookup": "blah.blubb.de",
+      "type": "public",
+      "floating": "false"
+    },
+    "8377": {
+      "id": 8377,
+      "ip": "10.1.2.3",
+      "ipVersion": 4,
+      "isSubnet": false,
+      "reverseLookup": "j4192.servers.jiffybox.net",
+      "type": "private",
+      "floating": "false"
+    },
+    "8463": {
+      "id": 8463,
+      "ip": "2a00:1234:1:234::1",
+      "ipVersion": 6,
+      "isSubnet": false,
+      "reverseLookup": "test2.de",
+      "type": "public",
+      "floating": "false"
+    },
+    "8467": {
+      "id": 8467,
+      "ip": "2a00:1234:1:211::/56",
+      "ipVersion": 6,
+      "isSubnet": true,
+      "reverseLookup": {
+        "delegatedTo": [
+          "ns1.de",
+          "ns2.de"
+        ]
+      },
+      "type": "public",
+      "floating": "false"
+    },
+    "8465": {
+      "id": 8465,
+      "ip": "188.1.4.241",
+      "ipVersion": 4,
+      "isSubnet": false,
+      "reverseLookup": "ip-188.1.4.241.servers.jiffybox.net",
+      "type": "public",
+      "floating": "true"
+    }
+  }
+}

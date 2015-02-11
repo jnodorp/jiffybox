@@ -1,0 +1,9 @@
+{
+  "messages": [
+    {
+      "type": "success",
+      "message": "Der Monitoring-Check Test(M1234) wird geloescht"
+    }
+  ],
+  "result": true
+}

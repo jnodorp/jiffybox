@@ -1,0 +1,17 @@
+{
+  "messages": [],
+  "result": {
+    "122": {
+      "id": 122,
+      "name": "Stammdaten-E-Mail-Adresse",
+      "contacts": ["m.mustermann@example.com"],
+      "status": "STATUS_READY"
+    },
+    "123": {
+      "id": 123,
+      "name": "TestGruppe",
+      "contacts": ["m.mustermann@example.com"],
+      "status": "STATUS_READY"
+    }
+  }
+}

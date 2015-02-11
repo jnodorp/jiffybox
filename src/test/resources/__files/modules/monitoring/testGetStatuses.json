@@ -1,0 +1,12 @@
+{"messages": [],
+  "result": {
+    "1234": {
+      "code": 0,
+      "response": "OK - 123.45.67.89: rta 0.313ms, lost 0%"
+    },
+    "5678": {
+      "code": 0,
+      "response": "HTTP OK: Status line output matched &quot;200&quot; -3827 bytes in 0.003 second response time"
+    }
+  }
+}

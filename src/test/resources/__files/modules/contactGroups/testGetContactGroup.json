@@ -1,0 +1,9 @@
+{
+  "messages": [],
+  "result": {
+    "id": 123,
+    "name": "TestGruppe",
+    "contacts": ["m.mustermann@example.com"],
+    "status": "STATUS_READY"
+  }
+}

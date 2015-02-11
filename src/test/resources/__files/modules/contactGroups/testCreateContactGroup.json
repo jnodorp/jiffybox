@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "result": {
+    "id": 123,
+    "name": "TestGruppe",
+    "contacts": [
+      "m.mustermann@df.eu",
+      "f.musterfrau@df.eu"
+    ],
+    "status": "STATUS_READY"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "messages": [],
+  "result": {
+    "doc": "Dokumentationsmodul",
+    "distributions": "Modul zum Auflisten von installierbaren Linux-Distributionen",
+    "jiffyBoxes": "Modul zum Auflisten und Manipulieren von JiffyBoxen",
+    "backups": "Modul zum Auflisten und Beantragen von Backups",
+    "plans": "Modul zum Auflisten von JiffyBox-Tarifen"
+  }
+}

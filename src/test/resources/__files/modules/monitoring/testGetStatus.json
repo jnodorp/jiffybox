@@ -1,0 +1,9 @@
+{
+  "messages": [],
+  "result": {
+    "1234": {
+      "code": 0,
+      "response": "OK - 123.45.67.89: rta 0.313ms, lost 0%"
+    }
+  }
+}

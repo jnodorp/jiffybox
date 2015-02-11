@@ -1,0 +1,12 @@
+{
+  "messages": [],
+  "result": {
+    "id": 21,
+    "name": "CloudLevel 2",
+    "diskSizeInMB": 153600,
+    "ramInMB": 4096,
+    "pricePerHour": 0.04,
+    "pricePerHourFrozen": 0.01,
+    "cpus": 4
+  }
+}

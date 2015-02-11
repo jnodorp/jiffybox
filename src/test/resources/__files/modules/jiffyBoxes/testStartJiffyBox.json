@@ -1,0 +1,36 @@
+{
+  "messages": [],
+  "result": {
+    "id": 12345,
+    "name": "Test",
+    "ips": {
+      "public": ["188.93.14.176"],
+      "private": ["10.93.14.175"]
+    },
+    "status": "UPDATING",
+    "created": 1234567890,
+    "recoverymodeActive": false,
+    "manualBackupRunning": false,
+    "isBeingCopied": false,
+    "running": false,
+    "host": "vmhost-testsys-2-2-9-2",
+    "metadata": {
+      "createdBy": "Tester",
+      "usedBy": [
+        "Me",
+        "You",
+        "Everyone"
+      ],
+      "freeForAll": false
+    },
+    "plan": {
+      "id": 28,
+      "name": "CloudLevel 1 SSD",
+      "diskSizeInMB": 25600,
+      "ramInMB": 2048,
+      "pricePerHour": 0.025,
+      "pricePerHourFrozen": 0.005,
+      "cpus": 3
+    }
+  }
+}
