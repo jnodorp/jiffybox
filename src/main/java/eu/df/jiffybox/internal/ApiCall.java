@@ -210,7 +210,9 @@ final class ApiCall {
      */
     public ApiCall addContacts(final List<String> contacts) {
         ArrayNode list = json.putArray(PARAMETER_CONTACTS);
-        contacts.forEach(list::add);
+        for (String contact : contacts) {
+            list.add(contact);
+        }
         return this;
     }
 
@@ -254,8 +256,8 @@ final class ApiCall {
 
         HttpEntity entity = httpResponse.getEntity();
         JavaType t = TypeFactory.defaultInstance()
-                                .constructParametrizedType(Response.class,
-                                        Response.class, type);
+                .constructParametrizedType(Response.class,
+                        Response.class, type);
         Response<T> result = new ObjectMapper().readValue(entity.getContent()
                 , t);
 
@@ -276,7 +278,7 @@ final class ApiCall {
     public <T> Response<T> asMap(final Class key, final Class value) throws
             IOException {
         this.type = TypeFactory.defaultInstance()
-                               .constructMapType(Map.class, key, value);
+                .constructMapType(Map.class, key, value);
         return ok();
     }
 }
