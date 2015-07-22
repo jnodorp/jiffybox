@@ -83,6 +83,6 @@ class DefaultMonitoringCheckBuilder extends DefaultBuilder implements
 
     @Override
     public Finished<MonitoringCheckBuilder> build() {
-        return new FinishedImpl<MonitoringCheckBuilder>(this);
+        return new FinishedImpl<>(this);
     }
 }

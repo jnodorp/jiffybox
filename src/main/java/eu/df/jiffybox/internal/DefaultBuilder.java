@@ -25,9 +25,6 @@ abstract class DefaultBuilder extends ObjectNode {
      */
     void putContactGroups(final List<String> v) {
         ArrayNode array = putArray("contactGroups");
-
-        for (String s : v) {
-            array.add(s);
-        }
+        v.forEach(array::add);
     }
 }

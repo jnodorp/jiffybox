@@ -174,6 +174,6 @@ public class DefaultJiffyBoxBuilder extends DefaultBuilder implements
 
     @Override
     public Finished<JiffyBoxBuilder> build() {
-        return new FinishedImpl<JiffyBoxBuilder>(this);
+        return new FinishedImpl<>(this);
     }
 }

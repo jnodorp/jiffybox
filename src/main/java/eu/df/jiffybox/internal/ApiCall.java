@@ -210,11 +210,7 @@ final class ApiCall {
      */
     public ApiCall addContacts(final List<String> contacts) {
         ArrayNode list = json.putArray(PARAMETER_CONTACTS);
-
-        for (String string : contacts) {
-            list.add(string);
-        }
-
+        contacts.forEach(list::add);
         return this;
     }
 
