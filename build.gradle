@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.0.1'
+    id 'com.github.kt3k.coveralls' version '2.4.0'
 }
 
 group = 'eu.df'

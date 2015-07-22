@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/jschlichtholz/jiffybox.svg?branch=master)](https://travis-ci.org/jschlichtholz/jiffybox)
-[![Coverage Status](https://coveralls.io/repos/jschlichtholz/jiffybox/badge.png)](https://coveralls.io/r/jschlichtholz/jiffybox)
+[![Coverage Status](https://coveralls.io/repos/jschlichtholz/jiffybox/badge.svg?branch=master&service=github)](https://coveralls.io/github/jschlichtholz/jiffybox?branch=master)
 
 # JiffyBox API
 Beware! Until the release of version 1.0.0 this API is under development and it is likely, that there will be changes even to public methods.
