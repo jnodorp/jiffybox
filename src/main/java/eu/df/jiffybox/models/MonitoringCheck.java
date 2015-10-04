@@ -349,7 +349,7 @@ public class MonitoringCheck extends Model {
      *
      * @param contactgroups The contact groups.
      */
-    @JsonSetter("withContactgroups")
+    @JsonSetter("contactgroups")
     public void setContactgroups(final List<ContactGroup> contactgroups) {
         this.contactgroups = contactgroups;
     }
