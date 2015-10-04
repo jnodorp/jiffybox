@@ -14,7 +14,7 @@ public class PrintableModelTest {
      */
     @Test
     public void testToStringValidObject() {
-        Validate.json(new PrintableModel() {
+        ModelTestHelper.validateJson(new PrintableModel() {
             @JsonProperty("property")
             private String property = "value";
         }.toString());
@@ -26,7 +26,7 @@ public class PrintableModelTest {
      */
     @Test(expected = UnsupportedOperationException.class)
     public void testToStringInvalidObject() {
-        Validate.json(new PrintableModel() {
+        ModelTestHelper.validateJson(new PrintableModel() {
         }.toString());
     }
 }
