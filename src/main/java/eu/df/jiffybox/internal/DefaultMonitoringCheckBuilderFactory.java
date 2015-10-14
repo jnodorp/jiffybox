@@ -113,7 +113,7 @@ public class DefaultMonitoringCheckBuilderFactory implements
     public MonitoringCheckBuilder portUdp(String sendMsg, String expectMsg) {
         DefaultMonitoringCheckBuilder result = new
                 DefaultMonitoringCheckBuilder(this.name, this.ip,
-                MonitoringCheckType.PORT_TCP, this.port);
+                MonitoringCheckType.PORT_UDP, this.port);
         result.put(PARAMETER_SEND_MSG, sendMsg);
         result.put(PARAMETER_EXPECT_MSG, expectMsg);
         return result;
