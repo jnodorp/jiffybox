@@ -12,7 +12,7 @@ import static org.junit.Assert.fail;
 /**
  * This utility can be used in tests to validate results.
  */
-public class ModelTestHelper {
+class ModelTestHelper {
 
     /**
      * Validate a JSON object.

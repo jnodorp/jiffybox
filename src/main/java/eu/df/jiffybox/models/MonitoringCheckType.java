@@ -80,7 +80,7 @@ public enum MonitoringCheckType {
      *
      * @param json The JSON string.
      */
-    private MonitoringCheckType(String json) {
+    MonitoringCheckType(String json) {
         this.json = json;
     }
 

@@ -14,5 +14,5 @@ public interface Builder<T extends Builder> {
      *
      * @return The finished builder of a specified type.
      */
-    public Finished<T> build();
+    Finished<T> build();
 }
