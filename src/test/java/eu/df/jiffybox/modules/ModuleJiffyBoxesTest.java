@@ -583,4 +583,45 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
         assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(2048, plan.getRamInMB());
     }
+
+    /**
+     * Test for {@link ModuleJiffyBoxes#changePlanJiffyBox(int, String)}.
+     */
+    @Test
+    public void testChangePlanJiffyBox1() throws IOException {
+        Response<JiffyBox> response = jiffyBoxes.changePlanJiffyBox(12345, "CloudLevel 1 SSD");
+        List<Message> messages = response.getMessages();
+        JiffyBox result = response.getResult();
+
+        JiffyBoxIps ips = result.getIps();
+        List<String> publicIps = ips.getPublic();
+        List<String> privateIps = ips.getPrivate();
+
+        Plan plan = result.getPlan();
+
+        assertTrue(messages.isEmpty());
+
+        assertEquals(1234567890L, result.getCreated());
+        assertEquals("vmhost-testsys-2-2-9-2", result.getHost());
+        assertEquals(12345, result.getId());
+        assertEquals("Test", result.getName());
+        assertEquals(0L, result.getRunningSince());
+        assertEquals(Status.CHANGING_PLAN, result.getStatus());
+        assertFalse(result.isBeingCopied());
+        assertFalse(result.isManualBackupRunning());
+        assertFalse(result.isRecoverymodeActive());
+        assertFalse(result.isRunning());
+
+        assertEquals("188.93.14.176", publicIps.get(0));
+
+        assertEquals("10.93.14.175", privateIps.get(0));
+
+        assertEquals(3, plan.getCpus());
+        assertEquals(25600, plan.getDiskSizeInMB());
+        assertEquals(28, plan.getId());
+        assertEquals("CloudLevel 1 SSD", plan.getName());
+        assertEquals(0.025, plan.getPricePerHour(), 0.001);
+        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(2048, plan.getRamInMB());
+    }
 }
