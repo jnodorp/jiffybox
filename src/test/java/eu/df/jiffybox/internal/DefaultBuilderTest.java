@@ -2,10 +2,7 @@ package eu.df.jiffybox.internal;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for {@link eu.df.jiffybox.internal.DefaultBuilder}.
@@ -13,21 +10,14 @@ import static org.junit.Assert.assertTrue;
 public class DefaultBuilderTest {
 
     /**
-     * Test for {@link eu.df.jiffybox.internal
-     * .DefaultBuilder#putContactGroups(java.util.List)}.
+     * Test for {@link eu.df.jiffybox.internal.DefaultBuilder#put(String, String)}}.
      */
     @Test
     public void testPutContactGroups() throws Exception {
-        DefaultBuilder defaultBuilder = new DefaultBuilder() {
+        final DefaultBuilder defaultBuilder = new DefaultBuilder() {
         };
 
-        List<String> contactGroups = new ArrayList<>();
-        contactGroups.add("Contact group 1");
-        contactGroups.add("Contact group 2");
-
-        defaultBuilder.putContactGroups(contactGroups);
-
-        assertTrue(defaultBuilder.toString().contains("Contact group 1"));
-        assertTrue(defaultBuilder.toString().contains("Contact group 2"));
+        defaultBuilder.put("testKey", "testValue");
+        assertEquals("{\"testKey\":\"testValue\"}", defaultBuilder.toString());
     }
 }

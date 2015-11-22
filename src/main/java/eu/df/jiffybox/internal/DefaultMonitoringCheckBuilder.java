@@ -1,5 +1,6 @@
 package eu.df.jiffybox.internal;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.MonitoringCheckType;
@@ -45,9 +46,9 @@ class DefaultMonitoringCheckBuilder extends DefaultBuilder implements
     }
 
     @Override
-    public MonitoringCheckBuilder withContactgroups(List<String>
-                                                                contactgroups) {
-        putContactGroups(contactgroups);
+    public MonitoringCheckBuilder withContactgroups(List<Integer> contactgroups) {
+        ArrayNode array = putArray("contactGroups");
+        contactgroups.forEach(array::add);
         return this;
     }
 

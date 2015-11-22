@@ -18,7 +18,7 @@ public interface MonitoringCheckBuilder extends
      *                      control panel.
      * @return The same builder for method chaining.
      */
-    MonitoringCheckBuilder withContactgroups(final List<String> contactgroups);
+    MonitoringCheckBuilder withContactgroups(final List<Integer> contactgroups);
 
     /**
      * Set the check interval.

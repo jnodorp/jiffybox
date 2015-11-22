@@ -12,19 +12,9 @@ import java.util.List;
 abstract class DefaultBuilder extends ObjectNode {
 
     /**
-     * Create a new object node and hide its methods.
+     * Create a new object node.
      */
     DefaultBuilder() {
         super(JsonNodeFactory.instance);
-    }
-
-    /**
-     * Add a list of contact groups to the built object.
-     *
-     * @param v The value.
-     */
-    void putContactGroups(final List<String> v) {
-        ArrayNode array = putArray("contactGroups");
-        v.forEach(array::add);
     }
 }

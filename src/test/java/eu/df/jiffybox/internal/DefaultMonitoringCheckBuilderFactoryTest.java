@@ -14,7 +14,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     private final static MonitoringCheckBuilderFactory FACTORY = new DefaultMonitoringCheckBuilderFactory("", "", 0);
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#preserveType()}.
      */
     @Test
     public void testPreserveType() {
@@ -22,7 +22,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#ping()}.
      */
     @Test
     public void testPing() {
@@ -30,7 +30,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#portTcp()}.
      */
     @Test
     public void testPortTcp() {
@@ -38,7 +38,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#portUdp(String, String)}.
      */
     @Test
     public void testPortUdp() {
@@ -48,7 +48,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#http(String, String)}.
      */
     @Test
     public void testHttp() {
@@ -58,7 +58,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#http(String, String, String, String)}.
      */
     @Test
     public void testHttp1() {
@@ -70,7 +70,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#https(String, String)}.
      */
     @Test
     public void testHttps() {
@@ -80,7 +80,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#https(String, String, String, String)}.
      */
     @Test
     public void testHttps1() {
@@ -92,7 +92,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#smtp(String, String)}.
      */
     @Test
     public void testSmtp() {
@@ -102,7 +102,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#pop3(String, String)}.
      */
     @Test
     public void testPop3() {
@@ -112,7 +112,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#pop3(String, String, boolean)}.
      */
     @Test
     public void testPop31() {
@@ -123,7 +123,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#imap(String, String)}.
      */
     @Test
     public void testImap() {
@@ -133,7 +133,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#imap(String, String, boolean)}.
      */
     @Test
     public void testImap1() {
@@ -144,7 +144,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#ftp()}.
      */
     @Test
     public void testFtp() {
@@ -152,7 +152,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#ftp(String, String)}.
      */
     @Test
     public void testFtp1() {
@@ -162,7 +162,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#ssh()}.
      */
     @Test
     public void testSsh() {
@@ -170,7 +170,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#mysql(String, String)}.
      */
     @Test
     public void testMysql() {
@@ -180,7 +180,7 @@ public class DefaultMonitoringCheckBuilderFactoryTest {
     }
 
     /**
-     * Test method for {@link DefaultMonitoringCheckBuilderFactory#}.
+     * Test method for {@link DefaultMonitoringCheckBuilderFactory#dns(String, String, String)}.
      */
     @Test
     public void testDns() {
