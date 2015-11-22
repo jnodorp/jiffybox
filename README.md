@@ -19,23 +19,41 @@ This project is a Java implementation of the JiffyBox API. It is licensed under 
 ## Usage
 Basic usage is
 ```java
-// Get an API instance using the <Your API token> token.
-ModuleFactory api = ModuleFactory.getInstance("<Your API token>");
+import eu.df.jiffybox.ModuleFactory;
+import eu.df.jiffybox.models.Backup;
+import eu.df.jiffybox.models.Message;
+import eu.df.jiffybox.models.Response;
+import eu.df.jiffybox.modules.ModuleBackups;
 
-// Get a module (e. g. backups).
-ModuleBackups backups = api.backups();
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-// Make a call to the module (e. g. requesting a list of all backups).
-Response<Map<String, Backup>> response = backups.getBackups();
+public class Main {
 
-// Get the messages sent by the api.
-List<String> messages = response.getMessages();
+    /**
+     * Demonstrate the basic usage of the JiffyBox API.
+     */
+    public static void main(String args[]) throws IOException {
+        // Get an API instance using the <Your API token> token.
+        ModuleFactory api = ModuleFactory.getInstance("<Your API token>");
 
-// Get the result sent by the API.
-Map<String, Backup> result = response.getResult();
+        // Get a module (e. g. backups).
+        ModuleBackups backups = api.backups();
+
+        // Make a call to the module (e. g. requesting a list of all backups).
+        Response<Map<String, Backup>> response = backups.getBackups();
+
+        // Get the messages sent by the API.
+        List<Message> messages = response.getMessages();
+
+        // Get the result sent by the API.
+        Map<String, Backup> result = response.getResult();
+    }
+}
 ```
 
-Make sure to handle `IOExceptions`which occur when either an API limit is exceeded or the API server is unreachable for whatever reason.
+Make sure to handle `IOExceptions` which occur when either an API limit is exceeded or the API server is unreachable for whatever reason.
 
 For further examples see the test cases.
 
