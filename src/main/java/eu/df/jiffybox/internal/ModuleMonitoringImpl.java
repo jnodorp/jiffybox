@@ -1,5 +1,6 @@
 package eu.df.jiffybox.internal;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.MonitoringCheck;
 import eu.df.jiffybox.models.MonitoringStatus;
@@ -52,7 +53,7 @@ public class ModuleMonitoringImpl implements ModuleMonitoring {
     public Response<MonitoringCheck> createMonitoringCheck
             (MonitoringCheckBuilder data) throws IOException {
         return ApiCall.post(baseUri)
-                      .setParameters(data)
+                      .setParameters((ObjectNode) data)
                       .as(MonitoringCheck.class);
     }
 
@@ -61,7 +62,7 @@ public class ModuleMonitoringImpl implements ModuleMonitoring {
                                                               MonitoringCheckBuilder data) throws IOException {
         return ApiCall.post(baseUri)
                       .appendPath(id)
-                      .setParameters(data)
+                      .setParameters((ObjectNode) data)
                       .as(MonitoringCheck.class);
     }
 

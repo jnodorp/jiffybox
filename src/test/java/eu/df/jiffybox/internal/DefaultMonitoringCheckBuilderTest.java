@@ -28,7 +28,6 @@ public class DefaultMonitoringCheckBuilderTest {
         contactGroupIds.add(2);
         contactGroupIds.add(3);
 
-        System.out.println(BUILDER.withContactgroups(contactGroupIds).toString());
         assertTrue(BUILDER.withContactgroups(contactGroupIds).toString().contains("\"contactGroups\":[1,2,3]"));
     }
 
@@ -70,13 +69,5 @@ public class DefaultMonitoringCheckBuilderTest {
     @Test
     public void testWithActive() throws Exception {
         assertTrue(BUILDER.withActive(true).toString().contains("\"checkInterval\":1"));
-    }
-
-    /**
-     * Test method for {@link DefaultMonitoringCheckBuilder#build()}.
-     */
-    @Test
-    public void testBuild() throws Exception {
-        assertNotNull(BUILDER.build());
     }
 }

@@ -1,7 +1,6 @@
 package eu.df.jiffybox.internal;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.MonitoringCheckType;
 
@@ -80,10 +79,5 @@ class DefaultMonitoringCheckBuilder extends DefaultBuilder implements
     public MonitoringCheckBuilder withActive(boolean active) {
         put("active", active);
         return this;
-    }
-
-    @Override
-    public Finished<MonitoringCheckBuilder> build() {
-        return new FinishedImpl<>(this);
     }
 }

@@ -1,7 +1,6 @@
 package eu.df.jiffybox.modules;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.JiffyBox;
 import eu.df.jiffybox.models.Response;
@@ -67,7 +66,7 @@ public interface ModuleJiffyBoxes {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<JiffyBox> createJiffyBox(final Finished<JiffyBoxBuilder> data)
+    Response<JiffyBox> createJiffyBox(final JiffyBoxBuilder data)
             throws IOException;
 
     /**

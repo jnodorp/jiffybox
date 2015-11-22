@@ -6,8 +6,7 @@ import java.util.List;
  * This class is used to build monitoring checks. Use any of the methods you
  * need and get the built object using the 'build' method.
  */
-public interface MonitoringCheckBuilder extends
-        Builder<MonitoringCheckBuilder> {
+public interface MonitoringCheckBuilder {
 
     /**
      * Set the contact groups.

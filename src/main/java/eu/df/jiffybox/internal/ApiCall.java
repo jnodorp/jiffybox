@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import eu.df.jiffybox.builders.Finished;
+import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.Response;
 import org.apache.http.HttpEntity;
@@ -186,19 +186,8 @@ final class ApiCall {
      * @param data The new parameters.
      * @return The updated API call.
      */
-    public ApiCall setParameters(final MonitoringCheckBuilder data) {
-        json = (ObjectNode) data;
-        return this;
-    }
-
-    /**
-     * Set the request data.
-     *
-     * @param data The new parameters.
-     * @return The updated API call.
-     */
-    public ApiCall setParameters(final Finished data) {
-        json = (ObjectNode) data.getBuilder();
+    public ApiCall setParameters(final ObjectNode data) {
+        json = data;
         return this;
     }
 

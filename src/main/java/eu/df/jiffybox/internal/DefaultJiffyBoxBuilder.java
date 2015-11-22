@@ -1,7 +1,6 @@
 package eu.df.jiffybox.internal;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 
 /**
@@ -170,10 +169,5 @@ public class DefaultJiffyBoxBuilder extends DefaultBuilder implements
     public JiffyBoxBuilder withMetadata(final ObjectNode metadata) {
         putObject(PARAMETER_METADATA).setAll(metadata);
         return this;
-    }
-
-    @Override
-    public Finished<JiffyBoxBuilder> build() {
-        return new FinishedImpl<>(this);
     }
 }

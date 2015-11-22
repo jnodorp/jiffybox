@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * This class is used to build JiffyBoxes. Use any of the methods you need and
  * get the built object using the 'build' method.
  */
-public interface JiffyBoxBuilder extends Builder<JiffyBoxBuilder> {
+public interface JiffyBoxBuilder {
 
     /**
      * Set the password.

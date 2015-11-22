@@ -1,7 +1,6 @@
 package eu.df.jiffybox.internal;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.JiffyBox;
 import eu.df.jiffybox.models.Response;
@@ -93,9 +92,9 @@ public class ModuleJiffyBoxesImpl implements ModuleJiffyBoxes {
     }
 
     @Override
-    public Response<JiffyBox> createJiffyBox(Finished<JiffyBoxBuilder> data)
+    public Response<JiffyBox> createJiffyBox(JiffyBoxBuilder data)
             throws IOException {
-        return ApiCall.post(baseUri).setParameters(data).as(JiffyBox.class);
+        return ApiCall.post(baseUri).setParameters((ObjectNode) data).as(JiffyBox.class);
     }
 
     @Override

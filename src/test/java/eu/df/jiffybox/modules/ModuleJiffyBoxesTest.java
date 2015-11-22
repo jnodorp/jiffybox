@@ -2,7 +2,6 @@ package eu.df.jiffybox.modules;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.df.jiffybox.Build;
-import eu.df.jiffybox.builders.Finished;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.*;
 import org.junit.Test;
@@ -176,14 +175,11 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleJiffyBoxes#createJiffyBox(Finished)}.
+     * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
     @Test
     public void testCreateJiffyBoxFromDistribution() throws IOException {
-        Finished<JiffyBoxBuilder> data = Build.jiffyBox("Test", 10)
-                                              .fromDistribution
-                                                      ("centos_5_4_64bit")
-                                              .build();
+        JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit");
 
         Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
         List<Message> messages = response.getMessages();
@@ -222,14 +218,11 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleJiffyBoxes#createJiffyBox(Finished)}.
+     * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
     @Test
     public void testCreateJiffyBoxFromBackup() throws IOException {
-        Finished<JiffyBoxBuilder> data = Build.jiffyBox("Test", 10)
-                                              .fromBackup
-                                                      ("1234567890abcdef1234567890abcdef")
-                                              .build();
+        JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromBackup("1234567890abcdef1234567890abcdef");
 
         Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
         List<Message> messages = response.getMessages();
@@ -268,21 +261,16 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleJiffyBoxes#createJiffyBox(Finished)}.
+     * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
     @Test
-    public void testCreateJiffyBoxFromDistributionWithMetadata() throws
-            IOException {
+    public void testCreateJiffyBoxFromDistributionWithMetadata() throws IOException {
         ObjectNode metadata = Build.metadata();
         metadata.put("createdBy", "The JiffyBoxTeam");
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
-        Finished<JiffyBoxBuilder> data = Build.jiffyBox("Test", 10)
-                                              .fromDistribution
-                                                      ("centos_5_4_64bit")
-                                              .withMetadata(metadata)
-                                              .build();
+        JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit").withMetadata(metadata);
 
         Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
         List<Message> messages = response.getMessages();
@@ -321,17 +309,12 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleJiffyBoxes#createJiffyBox(Finished)}.
+     * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
     @Test
-    public void testCreateJiffyBoxFromDistributionWithPasswordUseSshKey()
-            throws IOException {
-        Finished<JiffyBoxBuilder> data = Build.jiffyBox("Test", 10)
-                                              .fromDistribution
-                                                      ("centos_5_4_64bit")
-                                              .withPassword("Passwort123!")
-                                              .useSshKey(true)
-                                              .build();
+    public void testCreateJiffyBoxFromDistributionWithPasswordUseSshKey() throws IOException {
+        JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit").withPassword
+                ("Passwort123!").useSshKey(true);
 
         Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
         List<Message> messages = response.getMessages();
@@ -374,8 +357,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testDuplicateJiffyBox() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345,
-                "Test", 10);
+        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345, "Test", 10);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -412,18 +394,15 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int,
-     * ObjectNode)}.
+     * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int, ObjectNode)}.
      */
     @Test
     public void testDuplicateJiffyBoxWithMetadata() throws IOException {
-        ObjectNode metadata = Build.metadata()
-                                   .put("createdBy", "The JiffyBoxTeam");
+        ObjectNode metadata = Build.metadata().put("createdBy", "The JiffyBoxTeam");
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
-        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345,
-                "Test", 10, metadata);
+        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345, "Test", 10, metadata);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
