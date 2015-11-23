@@ -19,7 +19,7 @@ This project is a Java implementation of the JiffyBox API. It is licensed under 
 ## Usage
 Basic usage is
 ```java
-import eu.df.jiffybox.ModuleFactory;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.models.Backup;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
@@ -36,10 +36,10 @@ public class Main {
      */
     public static void main(String args[]) throws IOException {
         // Get an API instance using the <Your API token> token.
-        ModuleFactory api = ModuleFactory.getInstance("<Your API token>");
+        JiffyBoxApi api = new JiffyBoxApi("<Your API token>");
 
         // Get a module (e. g. backups).
-        ModuleBackups backups = api.backups();
+        ModuleBackups backups = api.getModuleBackups();
 
         // Make a call to the module (e. g. requesting a list of all backups).
         Response<Map<String, Backup>> response = backups.getBackups();

@@ -1,7 +1,7 @@
 package eu.df.jiffybox.modules;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import eu.df.jiffybox.ModuleFactory;
+import eu.df.jiffybox.JiffyBoxApi;
 import org.junit.Rule;
 
 /**
@@ -22,48 +22,47 @@ public abstract class ModuleTest {
     /**
      * An API instance using the test configuration.
      */
-    private static final ModuleFactory api = ModuleFactory.getInstance(TEST_HOST,
-            TEST_TOKEN);
+    private static final JiffyBoxApi api = new JiffyBoxApi(TEST_TOKEN, TEST_HOST);
 
     /**
      * The backups module.
      */
-    static final ModuleBackups backups = api.backups();
+    static final ModuleBackups backups = api.getModuleBackups();
 
     /**
      * The contact groups module.
      */
-    static final ModuleContactGroups contactGroups = api.contactGroups();
+    static final ModuleContactGroups contactGroups = api.getModuleContactGroups();
 
     /**
      * The distributions module.
      */
-    static final ModuleDistributions distributions = api.distributions();
+    static final ModuleDistributions distributions = api.getModuleDistributions();
 
     /**
      * The distributions module.
      */
-    static final ModuleDoc doc = api.doc();
+    static final ModuleDoc doc = api.getModuleDoc();
 
     /**
      * The ips module.
      */
-    static final ModuleIps ips = api.ips();
+    static final ModuleIps ips = api.getModuleIps();
 
     /**
      * The jiffyBoxes module.
      */
-    static final ModuleJiffyBoxes jiffyBoxes = api.jiffyBoxes();
+    static final ModuleJiffyBoxes jiffyBoxes = api.getModuleJiffyBoxes();
 
     /**
      * The monitoring module.
      */
-    static final ModuleMonitoring monitoring = api.monitoring();
+    static final ModuleMonitoring monitoring = api.getModuleMonitoring();
 
     /**
      * The plans module.
      */
-    static final ModulePlans plans = api.plans();
+    static final ModulePlans plans = api.getModulePlans();
 
     /**
      * Set up wiremock rule.
