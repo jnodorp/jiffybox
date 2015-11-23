@@ -6,11 +6,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import eu.df.jiffybox.builders.JiffyBoxBuilder;
-import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.Response;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -122,8 +121,7 @@ final class ApiCall {
     }
 
     /**
-     * Add another part of the URI. This will be prefixed by a slash
-     * automatically.
+     * Add another part of the URI. This will be prefixed by a slash automatically.
      *
      * @param part The URI part to append.
      * @return The updated APICall.
@@ -134,8 +132,7 @@ final class ApiCall {
     }
 
     /**
-     * Add another part of the URI. This will be prefixed by a slash
-     * automatically.
+     * Add another part of the URI. This will be prefixed by a slash automatically.
      *
      * @param part The URI part to append.
      * @return The updated APICall.
@@ -207,8 +204,7 @@ final class ApiCall {
      * Define the responses result as plain type.
      *
      * @return The response.
-     * @throws java.io.IOException Either the API limit is reached or the host
-     *                             is unavailable.
+     * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
     public <T> Response<T> as(final Class type) throws IOException {
         this.type = TypeFactory.defaultInstance().constructType(type);
@@ -216,37 +212,31 @@ final class ApiCall {
     }
 
     /**
-     * Execute the API call. Note, that the response type needs to be set
-     * manually. <p/> {@see Response#as(Class)} {@see Response#asMap(Class,
-     *Class)} {@see Response#asList(Class)}
+     * Execute the API call. Note, that the response type needs to be set manually. {@see Response#as(Class)} {@see
+     * Response#asMap(Class, Class)} {@see Response#asList(Class)}
      *
      * @param <T> The response type.
      * @return The response.
-     * @throws java.io.IOException Either the API limit is reached or the host
-     *                             is unavailable.
+     * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
     private <T> Response<T> ok() throws IOException {
         requestBuilder.setHeader("Connection", "Close");
         requestBuilder.setHeader("Accept", APPLICATION_JSON);
-        requestBuilder.setHeader("Content-Type", APPLICATION_JSON);
         requestBuilder.setUri(URI.create(uri + path));
 
-        StringEntity input = new StringEntity(new ObjectMapper()
-                .writeValueAsString(json));
-        input.setContentType(APPLICATION_JSON);
-
-        requestBuilder.setEntity(input);
+        if (!HttpGet.METHOD_NAME.equals(requestBuilder.getMethod())) {
+            StringEntity input = new StringEntity(new ObjectMapper().writeValueAsString(json));
+            input.setContentType(APPLICATION_JSON);
+            requestBuilder.setEntity(input);
+        }
 
         HttpUriRequest request = requestBuilder.build();
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse httpResponse = httpClient.execute(request);
 
         HttpEntity entity = httpResponse.getEntity();
-        JavaType t = TypeFactory.defaultInstance()
-                                .constructParametrizedType(Response.class,
-                                        Response.class, type);
-        Response<T> result = new ObjectMapper().readValue(entity.getContent()
-                , t);
+        JavaType t = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
+        Response<T> result = new ObjectMapper().readValue(entity.getContent(), t);
 
         EntityUtils.consume(entity);
         httpResponse.close();
@@ -259,13 +249,10 @@ final class ApiCall {
      * Define the responses result as map.
      *
      * @return The response.
-     * @throws java.io.IOException Either the API limit is reached or the host
-     *                             is unavailable.
+     * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
-    public <T> Response<T> asMap(final Class key, final Class value) throws
-            IOException {
-        this.type = TypeFactory.defaultInstance()
-                               .constructMapType(Map.class, key, value);
+    public <T> Response<T> asMap(final Class key, final Class value) throws IOException {
+        this.type = TypeFactory.defaultInstance().constructMapType(Map.class, key, value);
         return ok();
     }
 }
