@@ -1,6 +1,7 @@
 package eu.df.jiffybox.internal;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -17,10 +18,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Make an API call. This class is a builder at the same time.
@@ -41,6 +45,11 @@ final class ApiCall {
      * Parameter 'contacts'.
      */
     private static final String PARAMETER_CONTACTS = "contacts";
+
+    /**
+     * The {@link ObjectMapper} used to convert classes to JSON and vice versa.
+     */
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * The RequestBuilder used to build the request.
@@ -236,7 +245,18 @@ final class ApiCall {
 
         HttpEntity entity = httpResponse.getEntity();
         JavaType t = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
-        Response<T> result = new ObjectMapper().readValue(entity.getContent(), t);
+        JavaType e = TypeFactory.defaultInstance().constructParametrizedType(ErrorResponse.class, ErrorResponse
+                .class, type);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()));
+        String text = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+        Response<T> result;
+        try {
+            result = MAPPER.readValue(text, t);
+        } catch (JsonMappingException ex) {
+            result = MAPPER.readValue(text, e);
+        }
 
         EntityUtils.consume(entity);
         httpResponse.close();

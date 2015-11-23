@@ -12,12 +12,12 @@ public abstract class ModuleTest {
     /**
      * The test host.
      */
-    private static final String TEST_HOST = "http://localhost:9090";
+    protected static final String TEST_HOST = "http://localhost:9090";
 
     /**
      * The test token.
      */
-    private static final String TEST_TOKEN = "00000000000000000000000000000000";
+    protected static final String TEST_TOKEN = "00000000000000000000000000000000";
 
     /**
      * An API instance using the test configuration.
