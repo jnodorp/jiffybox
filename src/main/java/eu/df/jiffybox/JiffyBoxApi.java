@@ -71,6 +71,11 @@ public class JiffyBoxApi {
     private final ModulePlans modulePlans;
 
     /**
+     * The {@link URI}.
+     */
+    private final URI uri;
+
+    /**
      * Create a new instance using a specified token and the default host.
      *
      * @param token The API token.
@@ -97,7 +102,7 @@ public class JiffyBoxApi {
      * @param version The version.
      */
     protected JiffyBoxApi(final String token, final String host, final String version) {
-        final URI uri = URI.create(host + "/" + token + "/" + version);
+        this.uri = URI.create(host + "/" + token + "/" + version);
 
         this.moduleBackups = new ModuleBackupsImpl(uri);
         this.moduleContactGroups = new ModuleContactGroupsImpl(uri);
@@ -179,5 +184,14 @@ public class JiffyBoxApi {
      */
     public ModulePlans getModulePlans() {
         return modulePlans;
+    }
+
+    /**
+     * Get the {@link URI}.
+     *
+     * @return The {@link URI}.
+     */
+    public URI getUri() {
+        return uri;
     }
 }

@@ -1,17 +1,83 @@
 {
   "messages": [],
   "result": {
-    "centos_5_4_32bit": {
-      "minDiskSizeMB": 1024,
-      "name": "CentOS5.4",
+    "centos_6_0_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "CentOS 6",
       "rootdiskMode": "ro",
-      "defaultKernel": "xen-current"
+      "defaultKernel": "xen-pvops"
     },
-    "centos_5_4_64bit": {
-      "minDiskSizeMB": 1024,
-      "name": "CentOS5.464-Bit",
+    "centos_6_0_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "CentOS 6 64-Bit",
       "rootdiskMode": "ro",
-      "defaultKernel": "xen-current-x86_64"
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "centos_7_1_64bit": {
+      "minDiskSizeMB": 2500,
+      "name": "CentOS 7 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "debian_jessie_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Debian Jessie (8)",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops"
+    },
+    "debian_jessie_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Debian Jessie (8) 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "fedora_22_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Fedora 22",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops"
+    },
+    "fedora_22_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Fedora 22 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "opensuse_13_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "openSUSE 13.2",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops"
+    },
+    "opensuse_13_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "openSUSE 13.2 64-bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "ubuntu_12_4_lts_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Ubuntu 12.04 LTS",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops"
+    },
+    "ubuntu_12_4_lts_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Ubuntu 12.04 LTS 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "ubuntu_14_4_lts_32bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Ubuntu 14.04 LTS",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops"
+    },
+    "ubuntu_14_4_lts_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Ubuntu 14.04 LTS 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
     }
   }
 }

@@ -1,6 +1,7 @@
 package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.Build;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.*;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'monitoring' module.
@@ -17,12 +19,28 @@ import static org.junit.Assert.*;
 public class ModuleMonitoringTest extends ModuleTest {
 
     /**
+     * The {@link JiffyBoxApi}.
+     */
+    private final JiffyBoxApi jiffyBoxApi;
+
+    /**
+     * Create a new instance using the given {@link JiffyBoxApi}.
+     *
+     * @param jiffyBoxApi The {@link JiffyBoxApi}.
+     */
+    public ModuleMonitoringTest(final JiffyBoxApi jiffyBoxApi) {
+        this.jiffyBoxApi = jiffyBoxApi;
+
+        // Only run in development.
+        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
+    }
+
+    /**
      * Test for {@link ModuleMonitoring#getMonitoringChecks()}.
      */
     @Test
     public void testGetMonitoringChecks() throws IOException {
-        Response<Map<String, MonitoringCheck>> response = monitoring
-                .getMonitoringChecks();
+        Response<Map<String, MonitoringCheck>> response = jiffyBoxApi.getModuleMonitoring().getMonitoringChecks();
         List<Message> messages = response.getMessages();
         Map<String, MonitoringCheck> result = response.getResult();
         MonitoringCheck monitoringCheck = result.get("911");
@@ -44,8 +62,7 @@ public class ModuleMonitoringTest extends ModuleTest {
         assertEquals(80, monitoringCheck.getPort());
         assertEquals(3600, monitoringCheck.getReminderInterval());
         assertEquals(3, monitoringCheck.getRetryTolerance());
-        assertEquals(MonitoringCheckStatus.STATUS_READY, monitoringCheck
-                .getStatus());
+        assertEquals(MonitoringCheckStatus.STATUS_READY, monitoringCheck.getStatus());
         assertEquals("", monitoringCheck.getUsername());
 
         assertTrue(contactGroup.getContacts().isEmpty());
@@ -59,8 +76,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetMonitoringCheck() throws IOException {
-        Response<MonitoringCheck> response = monitoring.getMonitoringCheck
-                (1234);
+        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().getMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -95,31 +111,27 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testDeleteMonitoringCheck() throws IOException {
-        Response<Boolean> response = monitoring.deleteMonitoringCheck(1234);
+        Response<Boolean> response = jiffyBoxApi.getModuleMonitoring().deleteMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         Message message = messages.get(0);
 
         boolean result = response.getResult();
 
-        assertEquals("Der Monitoring-Check Test(M1234) wird geloescht",
-                message.getMessageText());
+        assertEquals("Der Monitoring-Check Test(M1234) wird geloescht", message.getMessageText());
         assertEquals(MessageType.SUCCESS, message.getType());
 
         assertTrue(result);
     }
 
     /**
-     * Test for {@link ModuleMonitoring#createMonitoringCheck(
-     *MonitoringCheckBuilder)}.
+     * Test for {@link ModuleMonitoring#createMonitoringCheck(MonitoringCheckBuilder)}.
      */
     @Test
     public void testCreateMonitoringCheck() throws IOException {
-        MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93"
-                + ".14.211", 80)
-                                           .http("example.com", "/index.php");
+        MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93" + ".14.211", 80).http("example.com",
+                "/index.php");
 
-        Response<MonitoringCheck> response = monitoring.createMonitoringCheck
-                (data);
+        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().createMonitoringCheck(data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -143,17 +155,13 @@ public class ModuleMonitoringTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleMonitoring#duplicateMonitoringCheck(int,
-     * MonitoringCheckBuilder)}.
+     * Test for {@link ModuleMonitoring#duplicateMonitoringCheck(int, MonitoringCheckBuilder)}.
      */
     @Test
     public void testDuplicateMonitoringCheck() throws IOException {
-        MonitoringCheckBuilder data = Build.monitoringCheck("Kopie von Test",
-                "188.93.14.212", null)
-                                           .preserveType();
+        MonitoringCheckBuilder data = Build.monitoringCheck("Kopie von Test", "188.93.14.212", null).preserveType();
 
-        Response<MonitoringCheck> response = monitoring
-                .duplicateMonitoringCheck(1234, data);
+        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().duplicateMonitoringCheck(1234, data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -181,7 +189,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetStatus() throws IOException {
-        Response<MonitoringStatus> response = monitoring.getStatus(1234);
+        Response<MonitoringStatus> response = jiffyBoxApi.getModuleMonitoring().getStatus(1234);
         List<Message> messages = response.getMessages();
         MonitoringStatus result = response.getResult();
 
@@ -189,8 +197,7 @@ public class ModuleMonitoringTest extends ModuleTest {
 
         assertEquals(1234, result.getId().intValue());
         assertEquals(0, result.getCode());
-        assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", result
-                .getResponse());
+        assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", result.getResponse());
     }
 
     /**
@@ -198,8 +205,8 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetStatuses() throws IOException {
-        Response<Map<String, MonitoringStatus>> response = monitoring
-                .getStatuses("123.45.67.89");
+        Response<Map<String, MonitoringStatus>> response = jiffyBoxApi.getModuleMonitoring().getStatuses("123.45.67"
+                + ".89");
         List<Message> messages = response.getMessages();
         Map<String, MonitoringStatus> result = response.getResult();
 
@@ -210,14 +217,11 @@ public class ModuleMonitoringTest extends ModuleTest {
 
         assertNull(monitoringStatus1.getId());
         assertEquals(0, monitoringStatus1.getCode());
-        assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%",
-                monitoringStatus1
-                        .getResponse());
+        assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", monitoringStatus1.getResponse());
 
         assertNull(monitoringStatus2.getId());
         assertEquals(0, monitoringStatus2.getCode());
-        assertEquals("HTTP OK: Status line output matched &quot;200&quot; " +
-                "-3827 bytes in 0.003 second response time", monitoringStatus2
-                .getResponse());
+        assertEquals("HTTP OK: Status line output matched &quot;200&quot; " + "-3827 bytes in 0.003 second response " +
+                "time", monitoringStatus2.getResponse());
     }
 }

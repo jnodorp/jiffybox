@@ -10,12 +10,30 @@
       "pricePerHourFrozen": 0.005,
       "cpus": 3
     },
+    "28": {
+      "id": 28,
+      "name": "CloudLevel 1 SSD",
+      "diskSizeInMB": 25600,
+      "ramInMB": 2048,
+      "pricePerHour": 0.025,
+      "pricePerHourFrozen": 0.005,
+      "cpus": 3
+    },
     "21": {
       "id": 21,
       "name": "CloudLevel 2",
       "diskSizeInMB": 153600,
       "ramInMB": 4096,
       "pricePerHour": 0.04,
+      "pricePerHourFrozen": 0.01,
+      "cpus": 4
+    },
+    "29": {
+      "id": 29,
+      "name": "CloudLevel 2 SSD",
+      "diskSizeInMB": 51200,
+      "ramInMB": 4096,
+      "pricePerHour": 0.05,
       "pricePerHourFrozen": 0.01,
       "cpus": 4
     },
@@ -28,6 +46,15 @@
       "pricePerHourFrozen": 0.02,
       "cpus": 6
     },
+    "30": {
+      "id": 30,
+      "name": "CloudLevel 3 SSD",
+      "diskSizeInMB": 102400,
+      "ramInMB": 8192,
+      "pricePerHour": 0.09,
+      "pricePerHourFrozen": 0.02,
+      "cpus": 6
+    },
     "23": {
       "id": 23,
       "name": "CloudLevel 4",
@@ -35,7 +62,34 @@
       "ramInMB": 16384,
       "pricePerHour": 0.13,
       "pricePerHourFrozen": 0.03,
-      "cpus": 6
+      "cpus": 8
+    },
+    "31": {
+      "id": 31,
+      "name": "CloudLevel 4 SSD",
+      "diskSizeInMB": 204800,
+      "ramInMB": 16384,
+      "pricePerHour": 0.15,
+      "pricePerHourFrozen": 0.03,
+      "cpus": 8
+    },
+    "24": {
+      "id": 24,
+      "name": "CloudLevel 5",
+      "diskSizeInMB": 716800,
+      "ramInMB": 32768,
+      "pricePerHour": 0.25,
+      "pricePerHourFrozen": 0.04,
+      "cpus": 8
+    },
+    "32": {
+      "id": 32,
+      "name": "CloudLevel 5 SSD",
+      "diskSizeInMB": 409600,
+      "ramInMB": 32768,
+      "pricePerHour": 0.3,
+      "pricePerHourFrozen": 0.04,
+      "cpus": 8
     }
   }
 }

@@ -2,6 +2,7 @@ package eu.df.jiffybox.modules;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.df.jiffybox.Build;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.*;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'jiffyBoxes' module.
@@ -18,11 +20,28 @@ import static org.junit.Assert.*;
 public class ModuleJiffyBoxesTest extends ModuleTest {
 
     /**
+     * The {@link JiffyBoxApi}.
+     */
+    private final JiffyBoxApi jiffyBoxApi;
+
+    /**
+     * Create a new instance using the given {@link JiffyBoxApi}.
+     *
+     * @param jiffyBoxApi The {@link JiffyBoxApi}.
+     */
+    public ModuleJiffyBoxesTest(final JiffyBoxApi jiffyBoxApi) {
+        this.jiffyBoxApi = jiffyBoxApi;
+
+        // Only run in development.
+        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
+    }
+
+    /**
      * Test for {@link ModuleJiffyBoxes#getJiffyBoxes()}.
      */
     @Test
     public void testGetJiffyBoxes() throws IOException {
-        Response<Map<String, JiffyBox>> response = jiffyBoxes.getJiffyBoxes();
+        Response<Map<String, JiffyBox>> response = jiffyBoxApi.getModuleJiffyBoxes().getJiffyBoxes();
         List<Message> messages = response.getMessages();
         Map<String, JiffyBox> result = response.getResult();
 
@@ -95,7 +114,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testGetJiffyBox() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.getJiffyBox(12345);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().getJiffyBox(12345);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
         Profile profile = result.getActiveProfile();
@@ -166,7 +185,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testDeleteJiffyBox() throws IOException {
-        Response<Boolean> response = jiffyBoxes.deleteJiffyBox(12345);
+        Response<Boolean> response = jiffyBoxApi.getModuleJiffyBoxes().deleteJiffyBox(12345);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());
@@ -181,7 +200,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     public void testCreateJiffyBoxFromDistribution() throws IOException {
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit");
 
-        Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -224,7 +243,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     public void testCreateJiffyBoxFromBackup() throws IOException {
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromBackup("1234567890abcdef1234567890abcdef");
 
-        Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -272,7 +291,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
 
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit").withMetadata(metadata);
 
-        Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -316,7 +335,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit").withPassword
                 ("Passwort123!").useSshKey(true);
 
-        Response<JiffyBox> response = jiffyBoxes.createJiffyBox(data);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -357,7 +376,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testDuplicateJiffyBox() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345, "Test", 10);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", 10);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -402,7 +421,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
-        Response<JiffyBox> response = jiffyBoxes.duplicateJiffyBox(12345, "Test", 10, metadata);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", 10, metadata);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -443,7 +462,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testStartJiffyBox() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.startJiffyBox(12345);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().startJiffyBox(12345);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -486,7 +505,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     public void testStartJiffyBoxWithMetadata() throws IOException {
         ObjectNode metadata = Build.metadata().put("createdBy", "Tester");
 
-        Response<JiffyBox> response = jiffyBoxes.startJiffyBox(12345, metadata);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().startJiffyBox(12345, metadata);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -527,7 +546,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testChangePlanJiffyBox() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.changePlanJiffyBox(12345, 20);
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().changePlanJiffyBox(12345, 20);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -568,7 +587,7 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testChangePlanJiffyBox1() throws IOException {
-        Response<JiffyBox> response = jiffyBoxes.changePlanJiffyBox(12345, "CloudLevel 1 SSD");
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().changePlanJiffyBox(12345, "CloudLevel 1 SSD");
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 

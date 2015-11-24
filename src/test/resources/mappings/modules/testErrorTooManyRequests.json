@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/testErrorTooManyRequests"
+    "url": "/00000000000000000000000000000000/v1.0/testErrorTooManyRequests"
   },
   "response": {
     "status": 200,

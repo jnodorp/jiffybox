@@ -1,5 +1,6 @@
 package eu.df.jiffybox.modules;
 
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.models.IP;
 import eu.df.jiffybox.models.IPSet;
 import eu.df.jiffybox.models.Message;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'ips' module.
@@ -18,11 +20,28 @@ import static org.junit.Assert.*;
 public class ModuleIpsTest extends ModuleTest {
 
     /**
+     * The {@link JiffyBoxApi}.
+     */
+    private final JiffyBoxApi jiffyBoxApi;
+
+    /**
+     * Create a new instance using the given {@link JiffyBoxApi}.
+     *
+     * @param jiffyBoxApi The {@link JiffyBoxApi}.
+     */
+    public ModuleIpsTest(final JiffyBoxApi jiffyBoxApi) {
+        this.jiffyBoxApi = jiffyBoxApi;
+
+        // Only run in development.
+        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
+    }
+
+    /**
      * Test for {@link ModuleIps#getIPSets()}.
      */
     @Test
     public void testGetIPSets() throws IOException {
-        Response<Map<String, IPSet>> response = ips.getIPSets();
+        Response<Map<String, IPSet>> response = jiffyBoxApi.getModuleIps().getIPSets();
         List<Message> messages = response.getMessages();
         Map<String, IPSet> result = response.getResult();
         IPSet ipSet = result.get("12345");
@@ -63,8 +82,7 @@ public class ModuleIpsTest extends ModuleTest {
         assertEquals("j4192.servers.jiffybox.net", ip2.getReverseLookup());
         assertEquals("test2.de", ip3.getReverseLookup());
         assertNotNull(ip4.getReverseLookup());
-        assertEquals("ip-188.1.4.241.servers.jiffybox.net", ip5
-                .getReverseLookup());
+        assertEquals("ip-188.1.4.241.servers.jiffybox.net", ip5.getReverseLookup());
 
         assertEquals("public", ip1.getType());
         assertEquals("private", ip2.getType());
@@ -84,7 +102,7 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testGetIPSet() throws IOException {
-        Response<IPSet> response = ips.getIPSet(12345);
+        Response<IPSet> response = jiffyBoxApi.getModuleIps().getIPSet(12345);
         List<Message> messages = response.getMessages();
         IPSet result = response.getResult();
 
@@ -125,8 +143,7 @@ public class ModuleIpsTest extends ModuleTest {
         assertEquals("j4192.servers.jiffybox.net", ip2.getReverseLookup());
         assertEquals("test2.de", ip3.getReverseLookup());
         assertNotNull(ip4.getReverseLookup());
-        assertEquals("ip-188.1.4.241.servers.jiffybox.net", ip5
-                .getReverseLookup());
+        assertEquals("ip-188.1.4.241.servers.jiffybox.net", ip5.getReverseLookup());
 
         assertEquals("public", ip1.getType());
         assertEquals("private", ip2.getType());
@@ -146,7 +163,7 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testMoveIPAddress() throws IOException {
-        Response<Boolean> response = ips.moveIPAddress(12345, 8465, 4321);
+        Response<Boolean> response = jiffyBoxApi.getModuleIps().moveIPAddress(12345, 8465, 4321);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());
