@@ -40,21 +40,22 @@ public class ModuleDistributionsTest extends ModuleTest {
         Response<Map<String, Distribution>> response = jiffyBoxApi.getModuleDistributions().getDistributions();
         List<Message> messages = response.getMessages();
         Map<String, Distribution> distributions = response.getResult();
-        assertEquals(13, distributions.size());
+        assertEquals(14, distributions.size());
 
         Distribution distribution1 = distributions.get("centos_6_0_32bit");
         Distribution distribution2 = distributions.get("centos_6_0_64bit");
         Distribution distribution3 = distributions.get("centos_7_1_64bit");
         Distribution distribution4 = distributions.get("debian_jessie_32bit");
         Distribution distribution5 = distributions.get("debian_jessie_64bit");
-        Distribution distribution6 = distributions.get("fedora_22_32bit");
-        Distribution distribution7 = distributions.get("fedora_22_64bit");
+        Distribution distribution6 = distributions.get("fedora_23_32bit");
+        Distribution distribution7 = distributions.get("fedora_23_64bit");
         Distribution distribution8 = distributions.get("opensuse_13_32bit");
         Distribution distribution9 = distributions.get("opensuse_13_64bit");
         Distribution distribution10 = distributions.get("ubuntu_12_4_lts_32bit");
         Distribution distribution11 = distributions.get("ubuntu_12_4_lts_64bit");
         Distribution distribution12 = distributions.get("ubuntu_14_4_lts_32bit");
         Distribution distribution13 = distributions.get("ubuntu_14_4_lts_64bit");
+        Distribution distribution14 = distributions.get("opensuse_42_64bit");
 
         assertTrue(messages.isEmpty());
 
@@ -85,12 +86,12 @@ public class ModuleDistributionsTest extends ModuleTest {
 
         assertEquals(2048, distribution6.getMinDiskSizeMB());
         assertEquals("xen-pvops", distribution6.getDefaultKernel());
-        assertEquals("Fedora 22", distribution6.getName());
+        assertEquals("Fedora 23", distribution6.getName());
         assertEquals("ro", distribution6.getRootdiskMode());
 
         assertEquals(2048, distribution7.getMinDiskSizeMB());
         assertEquals("xen-pvops-x86_64", distribution7.getDefaultKernel());
-        assertEquals("Fedora 22 64-Bit", distribution7.getName());
+        assertEquals("Fedora 23 64-Bit", distribution7.getName());
         assertEquals("ro", distribution7.getRootdiskMode());
 
         assertEquals(2048, distribution8.getMinDiskSizeMB());
@@ -122,6 +123,11 @@ public class ModuleDistributionsTest extends ModuleTest {
         assertEquals("xen-pvops-x86_64", distribution13.getDefaultKernel());
         assertEquals("Ubuntu 14.04 LTS 64-Bit", distribution13.getName());
         assertEquals("ro", distribution13.getRootdiskMode());
+
+        assertEquals(2048, distribution14.getMinDiskSizeMB());
+        assertEquals("xen-pvops-x86_64", distribution14.getDefaultKernel());
+        assertEquals("openSUSE 42.1 64-Bit", distribution14.getName());
+        assertEquals("ro", distribution14.getRootdiskMode());
     }
 
     /**

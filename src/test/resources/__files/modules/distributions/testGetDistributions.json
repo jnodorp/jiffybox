@@ -31,15 +31,15 @@
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
-    "fedora_22_32bit": {
+    "fedora_23_32bit": {
       "minDiskSizeMB": 2048,
-      "name": "Fedora 22",
+      "name": "Fedora 23",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops"
     },
-    "fedora_22_64bit": {
+    "fedora_23_64bit": {
       "minDiskSizeMB": 2048,
-      "name": "Fedora 22 64-Bit",
+      "name": "Fedora 23 64-Bit",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
@@ -52,6 +52,12 @@
     "opensuse_13_64bit": {
       "minDiskSizeMB": 2048,
       "name": "openSUSE 13.2 64-bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
+    "opensuse_42_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "openSUSE 42.1 64-Bit",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
