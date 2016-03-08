@@ -1,0 +1,9 @@
+{
+  "messages": [
+    {
+      "type": "error",
+      "message": "Der Tarif \"nonexistent\" existiert nicht."
+    }
+  ],
+  "result": false
+}

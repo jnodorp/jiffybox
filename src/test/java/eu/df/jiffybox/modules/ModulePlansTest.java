@@ -40,100 +40,128 @@ public class ModulePlansTest extends ModuleTest {
         Response<Map<String, Plan>> response = jiffyBoxApi.getModulePlans().getPlans();
         List<Message> messages = response.getMessages();
         Map<String, Plan> result = response.getResult();
-        assertEquals(10, result.size());
-
-        Plan plan1 = result.get("20");
-        Plan plan2 = result.get("21");
-        Plan plan3 = result.get("22");
-        Plan plan4 = result.get("23");
-        Plan plan5 = result.get("24");
-        Plan plan6 = result.get("28");
-        Plan plan7 = result.get("29");
-        Plan plan8 = result.get("30");
-        Plan plan9 = result.get("31");
-        Plan plan10 = result.get("32");
-
+        assertEquals(12, result.size());
         assertTrue(messages.isEmpty());
 
-        assertEquals(3, plan1.getCpus());
-        assertEquals(76800, plan1.getDiskSizeInMB());
-        assertEquals(20, plan1.getId());
-        assertEquals("CloudLevel 1", plan1.getName());
-        assertEquals(0.02, plan1.getPricePerHour(), 0.001);
-        assertEquals(0.005, plan1.getPricePerHourFrozen(), 0.0001);
-        assertEquals(2048, plan1.getRamInMB());
+        Plan plan = result.get("44");
+        assertEquals(1, plan.getCpus());
+        assertEquals(102400, plan.getDiskSizeInMB());
+        assertEquals(44, plan.getId());
+        assertEquals("CloudLevel 1", plan.getName());
+        assertEquals(12.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.02, plan.getPricePerHour(), 0.001);
+        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.0001);
+        assertEquals(2048, plan.getRamInMB());
 
-        assertEquals(4, plan2.getCpus());
-        assertEquals(153600, plan2.getDiskSizeInMB());
-        assertEquals(21, plan2.getId());
-        assertEquals("CloudLevel 2", plan2.getName());
-        assertEquals(0.04, plan2.getPricePerHour(), 0.001);
-        assertEquals(0.01, plan2.getPricePerHourFrozen(), 0.001);
-        assertEquals(4096, plan2.getRamInMB());
+        plan = result.get("45");
+        assertEquals(2, plan.getCpus());
+        assertEquals(204800, plan.getDiskSizeInMB());
+        assertEquals(45, plan.getId());
+        assertEquals("CloudLevel 2", plan.getName());
+        assertEquals(19.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.03, plan.getPricePerHour(), 0.001);
+        assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(4096, plan.getRamInMB());
 
-        assertEquals(6, plan3.getCpus());
-        assertEquals(307200, plan3.getDiskSizeInMB());
-        assertEquals(22, plan3.getId());
-        assertEquals("CloudLevel 3", plan3.getName());
-        assertEquals(0.07, plan3.getPricePerHour(), 0.001);
-        assertEquals(0.02, plan3.getPricePerHourFrozen(), 0.001);
-        assertEquals(8192, plan3.getRamInMB());
+        plan = result.get("46");
+        assertEquals(4, plan.getCpus());
+        assertEquals(307200, plan.getDiskSizeInMB());
+        assertEquals(46, plan.getId());
+        assertEquals("CloudLevel 3", plan.getName());
+        assertEquals(29.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.05, plan.getPricePerHour(), 0.001);
+        assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(8192, plan.getRamInMB());
 
-        assertEquals(8, plan4.getCpus());
-        assertEquals(409600, plan4.getDiskSizeInMB());
-        assertEquals(23, plan4.getId());
-        assertEquals("CloudLevel 4", plan4.getName());
-        assertEquals(0.13, plan4.getPricePerHour(), 0.001);
-        assertEquals(0.03, plan4.getPricePerHourFrozen(), 0.001);
-        assertEquals(16384, plan4.getRamInMB());
+        plan = result.get("47");
+        assertEquals(6, plan.getCpus());
+        assertEquals(512000, plan.getDiskSizeInMB());
+        assertEquals(47, plan.getId());
+        assertEquals("CloudLevel 4", plan.getName());
+        assertEquals(49.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.08, plan.getPricePerHour(), 0.001);
+        assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(12288, plan.getRamInMB());
 
-        assertEquals(8, plan5.getCpus());
-        assertEquals(716800, plan5.getDiskSizeInMB());
-        assertEquals(24, plan5.getId());
-        assertEquals("CloudLevel 5", plan5.getName());
-        assertEquals(0.25, plan5.getPricePerHour(), 0.001);
-        assertEquals(0.04, plan5.getPricePerHourFrozen(), 0.001);
-        assertEquals(32768, plan5.getRamInMB());
+        plan = result.get("48");
+        assertEquals(8, plan.getCpus());
+        assertEquals(768000, plan.getDiskSizeInMB());
+        assertEquals(48, plan.getId());
+        assertEquals("CloudLevel 5", plan.getName());
+        assertEquals(69.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.11, plan.getPricePerHour(), 0.001);
+        assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(16384, plan.getRamInMB());
 
-        assertEquals(3, plan6.getCpus());
-        assertEquals(25600, plan6.getDiskSizeInMB());
-        assertEquals(28, plan6.getId());
-        assertEquals("CloudLevel 1 SSD", plan6.getName());
-        assertEquals(0.025, plan6.getPricePerHour(), 0.001);
-        assertEquals(0.004, plan6.getPricePerHourFrozen(), 0.001);
-        assertEquals(2048, plan6.getRamInMB());
+        plan = result.get("49");
+        assertEquals(12, plan.getCpus());
+        assertEquals(1024000, plan.getDiskSizeInMB());
+        assertEquals(49, plan.getId());
+        assertEquals("CloudLevel 6", plan.getName());
+        assertEquals(99.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.15, plan.getPricePerHour(), 0.001);
+        assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(32768, plan.getRamInMB());
 
-        assertEquals(4, plan7.getCpus());
-        assertEquals(51200, plan7.getDiskSizeInMB());
-        assertEquals(29, plan7.getId());
-        assertEquals("CloudLevel 2 SSD", plan7.getName());
-        assertEquals(0.05, plan7.getPricePerHour(), 0.001);
-        assertEquals(0.01, plan7.getPricePerHourFrozen(), 0.001);
-        assertEquals(4096, plan7.getRamInMB());
+        plan = result.get("50");
+        assertEquals(1, plan.getCpus());
+        assertEquals(51200, plan.getDiskSizeInMB());
+        assertEquals(50, plan.getId());
+        assertEquals("CloudLevel 1 SSD", plan.getName());
+        assertEquals(14.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.03, plan.getPricePerHour(), 0.001);
+        assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(2048, plan.getRamInMB());
 
-        assertEquals(6, plan8.getCpus());
-        assertEquals(102400, plan8.getDiskSizeInMB());
-        assertEquals(30, plan8.getId());
-        assertEquals("CloudLevel 3 SSD", plan8.getName());
-        assertEquals(0.09, plan8.getPricePerHour(), 0.001);
-        assertEquals(0.02, plan8.getPricePerHourFrozen(), 0.001);
-        assertEquals(8192, plan8.getRamInMB());
+        plan = result.get("51");
+        assertEquals(2, plan.getCpus());
+        assertEquals(102400, plan.getDiskSizeInMB());
+        assertEquals(51, plan.getId());
+        assertEquals("CloudLevel 2 SSD", plan.getName());
+        assertEquals(24.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.05, plan.getPricePerHour(), 0.001);
+        assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(4096, plan.getRamInMB());
 
-        assertEquals(8, plan9.getCpus());
-        assertEquals(204800, plan9.getDiskSizeInMB());
-        assertEquals(31, plan9.getId());
-        assertEquals("CloudLevel 4 SSD", plan9.getName());
-        assertEquals(0.15, plan9.getPricePerHour(), 0.001);
-        assertEquals(0.03, plan9.getPricePerHourFrozen(), 0.001);
-        assertEquals(16384, plan9.getRamInMB());
+        plan = result.get("52");
+        assertEquals(4, plan.getCpus());
+        assertEquals(153600, plan.getDiskSizeInMB());
+        assertEquals(52, plan.getId());
+        assertEquals("CloudLevel 3 SSD", plan.getName());
+        assertEquals(39.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.08, plan.getPricePerHour(), 0.001);
+        assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(8192, plan.getRamInMB());
 
-        assertEquals(8, plan10.getCpus());
-        assertEquals(409600, plan10.getDiskSizeInMB());
-        assertEquals(32, plan10.getId());
-        assertEquals("CloudLevel 5 SSD", plan10.getName());
-        assertEquals(0.30, plan10.getPricePerHour(), 0.001);
-        assertEquals(0.04, plan10.getPricePerHourFrozen(), 0.001);
-        assertEquals(32768, plan10.getRamInMB());
+        plan = result.get("53");
+        assertEquals(6, plan.getCpus());
+        assertEquals(256000, plan.getDiskSizeInMB());
+        assertEquals(53, plan.getId());
+        assertEquals("CloudLevel 4 SSD", plan.getName());
+        assertEquals(69.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.11, plan.getPricePerHour(), 0.001);
+        assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(12288, plan.getRamInMB());
+
+        plan = result.get("54");
+        assertEquals(8, plan.getCpus());
+        assertEquals(358400, plan.getDiskSizeInMB());
+        assertEquals(54, plan.getId());
+        assertEquals("CloudLevel 5 SSD", plan.getName());
+        assertEquals(99.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.15, plan.getPricePerHour(), 0.001);
+        assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(16384, plan.getRamInMB());
+
+        plan = result.get("55");
+        assertEquals(12, plan.getCpus());
+        assertEquals(512000, plan.getDiskSizeInMB());
+        assertEquals(55, plan.getId());
+        assertEquals("CloudLevel 6 SSD", plan.getName());
+        assertEquals(149.99, plan.getPriceCap(), 0.001);
+        assertEquals(0.23, plan.getPricePerHour(), 0.001);
+        assertEquals(0.06, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(32768, plan.getRamInMB());
     }
 
     /**
@@ -141,17 +169,18 @@ public class ModulePlansTest extends ModuleTest {
      */
     @Test
     public void testGetPlan() throws IOException {
-        Response<Plan> response = jiffyBoxApi.getModulePlans().getPlan(21);
+        Response<Plan> response = jiffyBoxApi.getModulePlans().getPlan(45);
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 
         assertTrue(messages.isEmpty());
 
-        assertEquals(4, result.getCpus());
-        assertEquals(153600, result.getDiskSizeInMB());
-        assertEquals(21, result.getId());
+        assertEquals(2, result.getCpus());
+        assertEquals(204800, result.getDiskSizeInMB());
+        assertEquals(45, result.getId());
         assertEquals("CloudLevel 2", result.getName());
-        assertEquals(0.04, result.getPricePerHour(), 0.001);
+        assertEquals(19.99, result.getPriceCap(), 0.001);
+        assertEquals(0.03, result.getPricePerHour(), 0.001);
         assertEquals(0.01, result.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, result.getRamInMB());
     }
@@ -167,11 +196,12 @@ public class ModulePlansTest extends ModuleTest {
 
         assertTrue(messages.isEmpty());
 
-        assertEquals(4, result.getCpus());
-        assertEquals(153600, result.getDiskSizeInMB());
-        assertEquals(21, result.getId());
+        assertEquals(2, result.getCpus());
+        assertEquals(204800, result.getDiskSizeInMB());
+        assertEquals(45, result.getId());
         assertEquals("CloudLevel 2", result.getName());
-        assertEquals(0.04, result.getPricePerHour(), 0.001);
+        assertEquals(19.99, result.getPriceCap(), 0.001);
+        assertEquals(0.03, result.getPricePerHour(), 0.001);
         assertEquals(0.01, result.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, result.getRamInMB());
     }

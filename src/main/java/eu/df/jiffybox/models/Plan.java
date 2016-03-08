@@ -48,6 +48,9 @@ public class Plan extends PrintableModel {
     @JsonProperty("pricePerHourFrozen")
     private float pricePerHourFrozen;
 
+    @JsonProperty("priceCap")
+    private float priceCap;
+
     /**
      * The number of CPUs.
      */
@@ -191,5 +194,25 @@ public class Plan extends PrintableModel {
     @JsonSetter("cpus")
     public void setCpus(final int cpus) {
         this.cpus = cpus;
+    }
+
+    /**
+     * Get the maximum price per month.
+     *
+     * @return The maximum price per month.
+     */
+    @JsonGetter("priceCap")
+    public float getPriceCap() {
+        return priceCap;
+    }
+
+    /**
+     * Set the maximum price per month.
+     *
+     * @param priceCap The maximum price per month.
+     */
+    @JsonSetter("priceCap")
+    public void setPriceCap(float priceCap) {
+        this.priceCap = priceCap;
     }
 }
