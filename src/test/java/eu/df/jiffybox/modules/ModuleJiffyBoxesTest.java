@@ -136,15 +136,15 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
         assertEquals("vmhost-testsys-2-2-9-1", result.getHost());
         assertEquals(12345, result.getId());
         assertEquals("Test", result.getName());
-        assertEquals(0L, result.getRunningSince());
+        assertEquals(1234567890L, result.getRunningSince());
         assertEquals(Status.READY, result.getStatus());
         assertFalse(result.isBeingCopied());
         assertFalse(result.isManualBackupRunning());
         assertFalse(result.isRecoverymodeActive());
-        assertFalse(result.isRunning());
+        assertTrue(result.isRunning());
 
         assertEquals(1234567890L, profile.getCreated());
-        assertEquals("xen-current", profile.getKernel());
+        assertEquals("xen-pvops-x86_64", profile.getKernel());
         assertEquals("Standard", profile.getName());
         assertEquals("/dev/xvda", profile.getRootdisk());
         assertEquals("ro", profile.getRootdiskMode());
@@ -157,19 +157,19 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
 
         assertEquals("JiffyBoxTeam", metadata.get("createdby"));
 
-        assertEquals(6, plan.getCpus());
-        assertEquals(307200, plan.getDiskSizeInMB());
-        assertEquals(22, plan.getId());
-        assertEquals("CloudLevel 3", plan.getName());
-        assertEquals(0.07, plan.getPricePerHour(), 0.001);
-        assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
-        assertEquals(8192, plan.getRamInMB());
+        assertEquals(3, plan.getCpus());
+        assertEquals(76800, plan.getDiskSizeInMB());
+        assertEquals(20, plan.getId());
+        assertEquals("CloudLevel 1 (Generation 3)", plan.getName());
+        assertEquals(0.02, plan.getPricePerHour(), 0.001);
+        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.0001);
+        assertEquals(2048, plan.getRamInMB());
 
         assertEquals(1234567890L, disk1.getCreated());
-        assertEquals("centos_5_4_32bit", disk1.getDistribution());
-        assertEquals("ext3", disk1.getFilesystem());
-        assertEquals("CentOS 5.4", disk1.getName());
-        assertEquals(81408, disk1.getSizeInMB());
+        assertEquals("debian_jessie_64bit", disk1.getDistribution());
+        assertEquals("ext4", disk1.getFilesystem());
+        assertEquals("Debian Jessie (8) 64-Bit", disk1.getName());
+        assertEquals(76288, disk1.getSizeInMB());
         assertEquals("READY", disk1.getStatus());
 
         assertEquals(1234567890L, disk2.getCreated());
