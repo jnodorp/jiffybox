@@ -11,7 +11,7 @@
   },
   "response": {
     "status": 200,
-    "bodyFileName": "modules/jiffyBoxes/testDuplicateJiffyBoxWithMetadata.json",
+    "bodyFileName": "modules/jiffyBoxes/testDuplicateJiffyBoxWithMetadata1.json",
     "headers": {
       "Cache-Control": "no-cache, must-revalidate",
       "Content-Type": "application/json; charset=utf-8",

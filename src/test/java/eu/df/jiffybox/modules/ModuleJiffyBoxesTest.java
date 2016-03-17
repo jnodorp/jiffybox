@@ -394,45 +394,26 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int, ObjectNode)}.
      */
     @Test
-    public void testDuplicateJiffyBoxWithMetadata() throws IOException {
+    public void testDuplicateJiffyBoxWithMetadata1() throws IOException {
         ObjectNode metadata = Build.metadata().put("createdBy", "The JiffyBoxTeam");
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
         Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", 10, metadata);
-        List<Message> messages = response.getMessages();
-        JiffyBox result = response.getResult();
+        testDuplicateJiffyBoxResponse(response);
+    }
 
-        JiffyBoxIps ips = result.getIps();
-        List<String> publicIps = ips.getPublic();
-        List<String> privateIps = ips.getPrivate();
+    /**
+     * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, String, ObjectNode)}.
+     */
+    @Test
+    public void testDuplicateJiffyBoxWithMetadata2() throws IOException {
+        ObjectNode metadata = Build.metadata().put("createdBy", "The JiffyBoxTeam");
+        metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
+        metadata.put("freeForAll", false);
 
-        Plan plan = result.getPlan();
-
-        assertTrue(messages.isEmpty());
-
-        assertEquals(1359635993L, result.getCreated());
-        assertEquals("vmhost-2-2-8-11", result.getHost());
-        assertEquals(40978, result.getId());
-        assertEquals("Test", result.getName());
-        assertEquals(0L, result.getRunningSince());
-        assertEquals(Status.CREATING, result.getStatus());
-        assertFalse(result.isBeingCopied());
-        assertFalse(result.isManualBackupRunning());
-        assertFalse(result.isRecoverymodeActive());
-        assertFalse(result.isRunning());
-
-        assertEquals("93.180.154.7", publicIps.get(0));
-
-        assertEquals("10.1.16.179", privateIps.get(0));
-
-        assertEquals(3, plan.getCpus());
-        assertEquals(76800, plan.getDiskSizeInMB());
-        assertEquals(20, plan.getId());
-        assertEquals("CloudLevel 1", plan.getName());
-        assertEquals(0.02, plan.getPricePerHour(), 0.001);
-        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
-        assertEquals(2048, plan.getRamInMB());
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", "CloudLevel 1", metadata);
+        testDuplicateJiffyBoxResponse(response);
     }
 
     /**
@@ -602,7 +583,8 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
     }
 
     /**
-     * Check the response for {@link #testDuplicateJiffyBox1()} and {@link #testDuplicateJiffyBox2()}.
+     * Check the response for {@link #testDuplicateJiffyBox1()}, {@link #testDuplicateJiffyBox2()},
+     * {@link #testDuplicateJiffyBoxWithMetadata1()} and {@link #testDuplicateJiffyBoxWithMetadata2()}.
      *
      * @param response The response.
      */
