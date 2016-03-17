@@ -1,0 +1,28 @@
+{
+  "messages": [],
+  "result": {
+    "id": 40978,
+    "name": "Test",
+    "ips": {
+      "public": ["93.180.154.7"],
+      "private": ["10.1.16.179"]
+    },
+    "status": "CREATING",
+    "created": 1359635993,
+    "recoverymodeActive": false,
+    "manualBackupRunning": false,
+    "isBeingCopied": false,
+    "running": false,
+    "host": "vmhost-2-2-8-11",
+    "plan": {
+      "id": 20,
+      "name": "CloudLevel 1",
+      "diskSizeInMB": 76800,
+      "ramInMB": 2048,
+      "pricePerHour": 0.02,
+      "pricePerHourFrozen": 0.005,
+      "cpus": 3
+    },
+    "metadata": {}
+  }
+}

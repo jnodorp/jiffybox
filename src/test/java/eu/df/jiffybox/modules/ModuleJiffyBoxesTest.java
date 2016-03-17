@@ -5,6 +5,7 @@ import eu.df.jiffybox.Build;
 import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -375,41 +376,18 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int)}.
      */
     @Test
-    public void testDuplicateJiffyBox() throws IOException {
+    public void testDuplicateJiffyBox1() throws IOException {
         Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", 10);
-        List<Message> messages = response.getMessages();
-        JiffyBox result = response.getResult();
+        testDuplicateJiffyBoxResponse(response);
+    }
 
-        JiffyBoxIps ips = result.getIps();
-        List<String> publicIps = ips.getPublic();
-        List<String> privateIps = ips.getPrivate();
-
-        Plan plan = result.getPlan();
-
-        assertTrue(messages.isEmpty());
-
-        assertEquals(1359635993L, result.getCreated());
-        assertEquals("vmhost-2-2-8-11", result.getHost());
-        assertEquals(40978, result.getId());
-        assertEquals("Test", result.getName());
-        assertEquals(0L, result.getRunningSince());
-        assertEquals(Status.CREATING, result.getStatus());
-        assertFalse(result.isBeingCopied());
-        assertFalse(result.isManualBackupRunning());
-        assertFalse(result.isRecoverymodeActive());
-        assertFalse(result.isRunning());
-
-        assertEquals("93.180.154.7", publicIps.get(0));
-
-        assertEquals("10.1.16.179", privateIps.get(0));
-
-        assertEquals(3, plan.getCpus());
-        assertEquals(76800, plan.getDiskSizeInMB());
-        assertEquals(20, plan.getId());
-        assertEquals("CloudLevel 1", plan.getName());
-        assertEquals(0.02, plan.getPricePerHour(), 0.001);
-        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
-        assertEquals(2048, plan.getRamInMB());
+    /**
+     * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, String)}.
+     */
+    @Test
+    public void testDuplicateJiffyBox2() throws IOException {
+        Response<JiffyBox> response = jiffyBoxApi.getModuleJiffyBoxes().duplicateJiffyBox(12345, "Test", "CloudLevel 1");
+        testDuplicateJiffyBoxResponse(response);
     }
 
     /**
@@ -619,6 +597,48 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
         assertEquals(28, plan.getId());
         assertEquals("CloudLevel 1 SSD", plan.getName());
         assertEquals(0.025, plan.getPricePerHour(), 0.001);
+        assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
+        assertEquals(2048, plan.getRamInMB());
+    }
+
+    /**
+     * Check the response for {@link #testDuplicateJiffyBox1()} and {@link #testDuplicateJiffyBox2()}.
+     *
+     * @param response The response.
+     */
+    @Ignore
+    private void testDuplicateJiffyBoxResponse(Response<JiffyBox> response) {
+        List<Message> messages = response.getMessages();
+        JiffyBox result = response.getResult();
+
+        JiffyBoxIps ips = result.getIps();
+        List<String> publicIps = ips.getPublic();
+        List<String> privateIps = ips.getPrivate();
+
+        Plan plan = result.getPlan();
+
+        assertTrue(messages.isEmpty());
+
+        assertEquals(1359635993L, result.getCreated());
+        assertEquals("vmhost-2-2-8-11", result.getHost());
+        assertEquals(40978, result.getId());
+        assertEquals("Test", result.getName());
+        assertEquals(0L, result.getRunningSince());
+        assertEquals(Status.CREATING, result.getStatus());
+        assertFalse(result.isBeingCopied());
+        assertFalse(result.isManualBackupRunning());
+        assertFalse(result.isRecoverymodeActive());
+        assertFalse(result.isRunning());
+
+        assertEquals("93.180.154.7", publicIps.get(0));
+
+        assertEquals("10.1.16.179", privateIps.get(0));
+
+        assertEquals(3, plan.getCpus());
+        assertEquals(76800, plan.getDiskSizeInMB());
+        assertEquals(20, plan.getId());
+        assertEquals("CloudLevel 1", plan.getName());
+        assertEquals(0.02, plan.getPricePerHour(), 0.001);
         assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(2048, plan.getRamInMB());
     }
