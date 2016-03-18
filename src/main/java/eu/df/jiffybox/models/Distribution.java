@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * and a default kernel.
  */
 @JsonAutoDetect
-public class Distribution extends MappableModel {
+public class Distribution extends MappableModel implements Comparable<Distribution> {
 
     /**
      * The minimal disk size in MB.
@@ -114,5 +114,10 @@ public class Distribution extends MappableModel {
     @JsonSetter("defaultKernel")
     public void setDefaultKernel(final String defaultKernel) {
         this.defaultKernel = defaultKernel;
+    }
+
+    @Override
+    public int compareTo(Distribution d) {
+        return Integer.compare(getMinDiskSizeMB(), d.getMinDiskSizeMB());
     }
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * hour, a price per hour frozen and the number of CPUs.
  */
 @JsonAutoDetect
-public class Plan extends MappableModel {
+public class Plan extends MappableModel implements Comparable<Plan> {
 
     /**
      * The id.
@@ -214,5 +214,10 @@ public class Plan extends MappableModel {
     @JsonSetter("priceCap")
     public void setPriceCap(float priceCap) {
         this.priceCap = priceCap;
+    }
+
+    @Override
+    public int compareTo(Plan p) {
+        return Float.compare(getPriceCap(), p.getPriceCap());
     }
 }
