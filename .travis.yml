@@ -2,20 +2,8 @@ language: java
 
 sudo: false
 
-cache:
-  directories:
-  - $HOME/.gradle/wrapper
-  - $HOME/.gradle/native
-  - $HOME/.gradle/daemon
-  - $HOME/.gradle/caches/jars-1
-  - $HOME/.gradle/caches/2.12
-
 jdk:
-# - openjdk8
 - oraclejdk8
-
-env:
-- TERM=dumb
 
 after_success:
 - ./gradlew jacocoTestReport coveralls
