@@ -5,7 +5,6 @@ import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This interface describes the contactGroups module.
@@ -19,7 +18,7 @@ public interface ModuleContactGroups {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, ContactGroup>> getContactGroups() throws IOException;
+    Response<List<ContactGroup>> getContactGroups() throws IOException;
 
     /**
      * Provides details regarding a specific contact group. The result is

@@ -7,7 +7,7 @@ import eu.df.jiffybox.modules.ModuleBackups;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation of the backups module.
@@ -46,8 +46,8 @@ public class ModuleBackupsImpl implements ModuleBackups {
     }
 
     @Override
-    public Response<Map<String, Backup>> getBackups() throws IOException {
-        return ApiCall.get(baseUri).asMap(String.class, Backup.class);
+    public Response<List<Backup>> getBackups() throws IOException {
+        return ApiCall.get(baseUri).asList(Backup.class);
     }
 
     @Override

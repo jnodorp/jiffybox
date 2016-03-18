@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.*;
  * A monitoring status consists of a code and a response.
  */
 @JsonAutoDetect
-public class MonitoringStatus extends PrintableModel {
+public class MonitoringStatus extends MappableModel {
 
     /**
      * The id.

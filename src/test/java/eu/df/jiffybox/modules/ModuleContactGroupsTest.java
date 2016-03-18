@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -43,16 +42,18 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testGetContactGroups() throws IOException {
-        Response<Map<String, ContactGroup>> response = jiffyBoxApi.getModuleContactGroups().getContactGroups();
+        Response<List<ContactGroup>> response = jiffyBoxApi.getModuleContactGroups().getContactGroups();
         List<Message> messages = response.getMessages();
-        Map<String, ContactGroup> contactGroups = response.getResult();
-        ContactGroup contactGroup1 = contactGroups.get("122");
-        ContactGroup contactGroup2 = contactGroups.get("123");
+        List<ContactGroup> contactGroups = response.getResult();
+        ContactGroup contactGroup1 = contactGroups.get(0);
+        ContactGroup contactGroup2 = contactGroups.get(1);
         List<String> contacts1 = contactGroup1.getContacts();
         List<String> contacts2 = contactGroup2.getContacts();
 
         assertTrue(messages.isEmpty());
 
+        assertEquals("122", contactGroup1.getKey());
+        assertEquals("123", contactGroup2.getKey());
         assertEquals(122, contactGroup1.getId());
         assertEquals(123, contactGroup2.getId());
 

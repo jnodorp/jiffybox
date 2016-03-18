@@ -9,7 +9,7 @@ import eu.df.jiffybox.modules.ModuleMonitoring;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation of the monitoring module.
@@ -33,9 +33,8 @@ public class ModuleMonitoringImpl implements ModuleMonitoring {
     }
 
     @Override
-    public Response<Map<String, MonitoringCheck>> getMonitoringChecks()
-            throws IOException {
-        return ApiCall.get(baseUri).asMap(String.class, MonitoringCheck.class);
+    public Response<List<MonitoringCheck>> getMonitoringChecks() throws IOException {
+        return ApiCall.get(baseUri).asList(MonitoringCheck.class);
     }
 
     @Override
@@ -53,32 +52,32 @@ public class ModuleMonitoringImpl implements ModuleMonitoring {
     public Response<MonitoringCheck> createMonitoringCheck
             (MonitoringCheckBuilder data) throws IOException {
         return ApiCall.post(baseUri)
-                      .setParameters((ObjectNode) data)
-                      .as(MonitoringCheck.class);
+                .setParameters((ObjectNode) data)
+                .as(MonitoringCheck.class);
     }
 
     @Override
     public Response<MonitoringCheck> duplicateMonitoringCheck(int id,
                                                               MonitoringCheckBuilder data) throws IOException {
         return ApiCall.post(baseUri)
-                      .appendPath(id)
-                      .setParameters((ObjectNode) data)
-                      .as(MonitoringCheck.class);
+                .appendPath(id)
+                .setParameters((ObjectNode) data)
+                .as(MonitoringCheck.class);
     }
 
     @Override
     public Response<MonitoringStatus> getStatus(int id) throws IOException {
         return ApiCall.get(baseUri)
-                      .appendPath(id)
-                      .appendPath("status")
-                      .as(MonitoringStatus.class);
+                .appendPath(id)
+                .appendPath("status")
+                .as(MonitoringStatus.class);
     }
 
     @Override
-    public Response<Map<String, MonitoringStatus>> getStatuses(String address) throws IOException {
+    public Response<List<MonitoringStatus>> getStatuses(String address) throws IOException {
         return ApiCall.get(baseUri)
-                      .appendPath(address)
-                      .appendPath("status")
-                      .asMap(String.class, MonitoringStatus.class);
+                .appendPath(address)
+                .appendPath("status")
+                .asList(MonitoringStatus.class);
     }
 }

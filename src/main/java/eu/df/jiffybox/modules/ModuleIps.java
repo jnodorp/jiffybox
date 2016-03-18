@@ -4,7 +4,7 @@ import eu.df.jiffybox.models.IPSet;
 import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This interface describes the ips module.
@@ -27,7 +27,7 @@ public interface ModuleIps {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, IPSet>> getIPSets() throws IOException;
+    Response<List<IPSet>> getIPSets() throws IOException;
 
     /**
      * Lists all IP addresses of a single JiffyBox.

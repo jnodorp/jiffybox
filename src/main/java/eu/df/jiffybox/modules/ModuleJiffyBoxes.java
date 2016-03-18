@@ -6,7 +6,7 @@ import eu.df.jiffybox.models.JiffyBox;
 import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This interface describes the jiffyBoxes module.
@@ -22,7 +22,7 @@ public interface ModuleJiffyBoxes {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, JiffyBox>> getJiffyBoxes() throws IOException;
+    Response<List<JiffyBox>> getJiffyBoxes() throws IOException;
 
     /**
      * This method provides details of a single JiffyBox. The result is
@@ -147,7 +147,7 @@ public interface ModuleJiffyBoxes {
      */
     Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
                                          final int planId, final ObjectNode
-            metadata) throws IOException;
+                                                 metadata) throws IOException;
 
     /**
      * This method duplicates an existing JiffyBox. The JiffyBox is created in
@@ -178,7 +178,7 @@ public interface ModuleJiffyBoxes {
      */
     Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
                                          final String planId, final
-    ObjectNode metadata) throws IOException;
+                                         ObjectNode metadata) throws IOException;
 
     /**
      * This method starts a JiffyBox. This command acts in an entirely

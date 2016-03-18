@@ -36,9 +36,9 @@ public class ModuleContactGroupsImpl implements ModuleContactGroups {
     }
 
     @Override
-    public Response<Map<String, ContactGroup>> getContactGroups() throws
+    public Response<List<ContactGroup>> getContactGroups() throws
             IOException {
-        return ApiCall.get(baseUri).asMap(String.class, ContactGroup.class);
+        return ApiCall.get(baseUri).asList(ContactGroup.class);
     }
 
     @Override

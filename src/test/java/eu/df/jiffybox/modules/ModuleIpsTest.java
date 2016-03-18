@@ -41,10 +41,11 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testGetIPSets() throws IOException {
-        Response<Map<String, IPSet>> response = jiffyBoxApi.getModuleIps().getIPSets();
+        Response<List<IPSet>> response = jiffyBoxApi.getModuleIps().getIPSets();
         List<Message> messages = response.getMessages();
-        Map<String, IPSet> result = response.getResult();
-        IPSet ipSet = result.get("12345");
+        List<IPSet> result = response.getResult();
+        IPSet ipSet = result.get(0);
+        assertEquals("12345", ipSet.getKey());
         Map<String, IP> ips = ipSet.getIps();
         IP ip1 = ips.get("8376");
         IP ip2 = ips.get("8377");

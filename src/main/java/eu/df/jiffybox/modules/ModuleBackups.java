@@ -5,6 +5,7 @@ import eu.df.jiffybox.models.BackupConfig;
 import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +24,7 @@ public interface ModuleBackups {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, Backup>> getBackups() throws IOException;
+    Response<List<Backup>> getBackups() throws IOException;
 
     /**
      * This method provides details about every backup of a given JiffyBox.

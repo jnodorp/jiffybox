@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -37,13 +36,14 @@ public class ModulePlansTest extends ModuleTest {
      */
     @Test
     public void testGetPlans() throws IOException {
-        Response<Map<String, Plan>> response = jiffyBoxApi.getModulePlans().getPlans();
+        Response<List<Plan>> response = jiffyBoxApi.getModulePlans().getPlans();
         List<Message> messages = response.getMessages();
-        Map<String, Plan> result = response.getResult();
+        List<Plan> result = response.getResult();
         assertEquals(12, result.size());
         assertTrue(messages.isEmpty());
 
-        Plan plan = result.get("44");
+        Plan plan = result.get(0);
+        assertEquals("44", plan.getKey());
         assertEquals(1, plan.getCpus());
         assertEquals(102400, plan.getDiskSizeInMB());
         assertEquals(44, plan.getId());
@@ -53,7 +53,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.005, plan.getPricePerHourFrozen(), 0.0001);
         assertEquals(2048, plan.getRamInMB());
 
-        plan = result.get("45");
+        plan = result.get(1);
+        assertEquals("45", plan.getKey());
         assertEquals(2, plan.getCpus());
         assertEquals(204800, plan.getDiskSizeInMB());
         assertEquals(45, plan.getId());
@@ -63,7 +64,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, plan.getRamInMB());
 
-        plan = result.get("46");
+        plan = result.get(2);
+        assertEquals("46", plan.getKey());
         assertEquals(4, plan.getCpus());
         assertEquals(307200, plan.getDiskSizeInMB());
         assertEquals(46, plan.getId());
@@ -73,7 +75,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(8192, plan.getRamInMB());
 
-        plan = result.get("47");
+        plan = result.get(3);
+        assertEquals("47", plan.getKey());
         assertEquals(6, plan.getCpus());
         assertEquals(512000, plan.getDiskSizeInMB());
         assertEquals(47, plan.getId());
@@ -83,7 +86,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(12288, plan.getRamInMB());
 
-        plan = result.get("48");
+        plan = result.get(4);
+        assertEquals("48", plan.getKey());
         assertEquals(8, plan.getCpus());
         assertEquals(768000, plan.getDiskSizeInMB());
         assertEquals(48, plan.getId());
@@ -93,7 +97,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(16384, plan.getRamInMB());
 
-        plan = result.get("49");
+        plan = result.get(5);
+        assertEquals("49", plan.getKey());
         assertEquals(12, plan.getCpus());
         assertEquals(1024000, plan.getDiskSizeInMB());
         assertEquals(49, plan.getId());
@@ -103,7 +108,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(32768, plan.getRamInMB());
 
-        plan = result.get("50");
+        plan = result.get(6);
+        assertEquals("50", plan.getKey());
         assertEquals(1, plan.getCpus());
         assertEquals(51200, plan.getDiskSizeInMB());
         assertEquals(50, plan.getId());
@@ -113,7 +119,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(2048, plan.getRamInMB());
 
-        plan = result.get("51");
+        plan = result.get(7);
+        assertEquals("51", plan.getKey());
         assertEquals(2, plan.getCpus());
         assertEquals(102400, plan.getDiskSizeInMB());
         assertEquals(51, plan.getId());
@@ -123,7 +130,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, plan.getRamInMB());
 
-        plan = result.get("52");
+        plan = result.get(8);
+        assertEquals("52", plan.getKey());
         assertEquals(4, plan.getCpus());
         assertEquals(153600, plan.getDiskSizeInMB());
         assertEquals(52, plan.getId());
@@ -133,7 +141,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(8192, plan.getRamInMB());
 
-        plan = result.get("53");
+        plan = result.get(9);
+        assertEquals("53", plan.getKey());
         assertEquals(6, plan.getCpus());
         assertEquals(256000, plan.getDiskSizeInMB());
         assertEquals(53, plan.getId());
@@ -143,7 +152,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(12288, plan.getRamInMB());
 
-        plan = result.get("54");
+        plan = result.get(10);
+        assertEquals("54", plan.getKey());
         assertEquals(8, plan.getCpus());
         assertEquals(358400, plan.getDiskSizeInMB());
         assertEquals(54, plan.getId());
@@ -153,7 +163,8 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(16384, plan.getRamInMB());
 
-        plan = result.get("55");
+        plan = result.get(11);
+        assertEquals("55", plan.getKey());
         assertEquals(12, plan.getCpus());
         assertEquals(512000, plan.getDiskSizeInMB());
         assertEquals(55, plan.getId());

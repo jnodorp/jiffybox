@@ -6,7 +6,7 @@ import eu.df.jiffybox.modules.ModulePlans;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation of the plans module.
@@ -30,8 +30,8 @@ public class ModulePlansImpl implements ModulePlans {
     }
 
     @Override
-    public Response<Map<String, Plan>> getPlans() throws IOException {
-        return ApiCall.get(baseUri).asMap(String.class, Plan.class);
+    public Response<List<Plan>> getPlans() throws IOException {
+        return ApiCall.get(baseUri).asList(Plan.class);
     }
 
     @Override

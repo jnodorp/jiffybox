@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 /**
  * This class is used only to reduce code duplication.
  */
-abstract class Model extends PrintableModel {
+abstract class Model extends MappableModel {
 
     /**
      * The id.

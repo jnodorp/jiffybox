@@ -6,7 +6,7 @@ import eu.df.jiffybox.modules.ModuleIps;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation of the ips module.
@@ -30,8 +30,8 @@ public class ModuleIpsImpl implements ModuleIps {
     }
 
     @Override
-    public Response<Map<String, IPSet>> getIPSets() throws IOException {
-        return ApiCall.get(baseUri).asMap(String.class, IPSet.class);
+    public Response<List<IPSet>> getIPSets() throws IOException {
+        return ApiCall.get(baseUri).asList(IPSet.class);
     }
 
     @Override

@@ -4,7 +4,7 @@ import eu.df.jiffybox.models.Distribution;
 import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This interface describes the distributions module.
@@ -21,7 +21,7 @@ public interface ModuleDistributions {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, Distribution>> getDistributions() throws IOException;
+    Response<List<Distribution>> getDistributions() throws IOException;
 
     /**
      * With this call you get details to a specified Linux distribution. id

@@ -42,11 +42,12 @@ public class ModuleJiffyBoxesTest extends ModuleTest {
      */
     @Test
     public void testGetJiffyBoxes() throws IOException {
-        Response<Map<String, JiffyBox>> response = jiffyBoxApi.getModuleJiffyBoxes().getJiffyBoxes();
+        Response<List<JiffyBox>> response = jiffyBoxApi.getModuleJiffyBoxes().getJiffyBoxes();
         List<Message> messages = response.getMessages();
-        Map<String, JiffyBox> result = response.getResult();
+        List<JiffyBox> result = response.getResult();
 
-        JiffyBox jiffyBox = result.get("12345");
+        JiffyBox jiffyBox = result.get(0);
+        assertEquals("12345", jiffyBox.getKey());
         Profile profile = jiffyBox.getActiveProfile();
 
         JiffyBoxIps ips = jiffyBox.getIps();

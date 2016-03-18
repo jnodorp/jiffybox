@@ -8,7 +8,7 @@ import eu.df.jiffybox.modules.ModuleJiffyBoxes;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Implementation of the jiffy boxes module.
@@ -77,8 +77,8 @@ public class ModuleJiffyBoxesImpl implements ModuleJiffyBoxes {
     }
 
     @Override
-    public Response<Map<String, JiffyBox>> getJiffyBoxes() throws IOException {
-        return ApiCall.get(baseUri).asMap(String.class, JiffyBox.class);
+    public Response<List<JiffyBox>> getJiffyBoxes() throws IOException {
+        return ApiCall.get(baseUri).asList(JiffyBox.class);
     }
 
     @Override
@@ -101,175 +101,175 @@ public class ModuleJiffyBoxesImpl implements ModuleJiffyBoxes {
     public Response<JiffyBox> duplicateJiffyBox(int id, String name, int
             planId) throws IOException {
         return ApiCall.post(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_NAME, name)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_NAME, name)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> duplicateJiffyBox(int id, String name, String
             planId) throws IOException {
         return ApiCall.post(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_NAME, name)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_NAME, name)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> duplicateJiffyBox(int id, String name, int
             planId, ObjectNode metadata) throws IOException {
         return ApiCall.post(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_NAME, name)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_NAME, name)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> duplicateJiffyBox(int id, String name, String
             planId, ObjectNode metadata) throws IOException {
         return ApiCall.post(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_NAME, name)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_NAME, name)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> startJiffyBox(int id) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_START)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_START)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> startJiffyBox(int id, ObjectNode metadata)
             throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_START)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_START)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> shutdownJiffyBox(int id) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_SHUTDOWN)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_SHUTDOWN)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> shutdownJiffyBox(int id, ObjectNode metadata)
             throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_SHUTDOWN)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_SHUTDOWN)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> pullplugJiffyBox(int id) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_PULL_PLUG)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_PULL_PLUG)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> pullplugJiffyBox(int id, ObjectNode metadata)
             throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_PULL_PLUG)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_PULL_PLUG)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> freezeJiffyBox(int id) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_FREEZE)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_FREEZE)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> freezeJiffyBox(int id, ObjectNode metadata)
             throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_FREEZE)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_FREEZE)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> thawJiffyBox(int id, int planId) throws
             IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_THAW)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_THAW)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> thawJiffyBox(int id, String planId) throws
             IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_THAW)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_THAW)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> thawJiffyBox(int id, int planId, ObjectNode
             metadata) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_THAW)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_THAW)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> thawJiffyBox(int id, String planId, ObjectNode
             metadata) throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_THAW)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .addMetadata(metadata)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_THAW)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .addMetadata(metadata)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> changePlanJiffyBox(int id, int planId) throws
             IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_PLAN)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_PLAN)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 
     @Override
     public Response<JiffyBox> changePlanJiffyBox(int id, String planId)
             throws IOException {
         return ApiCall.put(baseUri)
-                      .appendPath(id)
-                      .addParameter(PARAMETER_STATUS, STATUS_PLAN)
-                      .addParameter(PARAMETER_PLAN_ID, planId)
-                      .as(JiffyBox.class);
+                .appendPath(id)
+                .addParameter(PARAMETER_STATUS, STATUS_PLAN)
+                .addParameter(PARAMETER_PLAN_ID, planId)
+                .as(JiffyBox.class);
     }
 }

@@ -2,15 +2,12 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.models.*;
-import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -40,16 +37,17 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testGetBackups() throws IOException {
-        Response<Map<String, Backup>> response = jiffyBoxApi.getModuleBackups().getBackups();
+        Response<List<Backup>> response = jiffyBoxApi.getModuleBackups().getBackups();
         List<Message> messages = response.getMessages();
-        Map<String, Backup> backups = response.getResult();
-        Backup backup = backups.get("12345");
+        List<Backup> backups = response.getResult();
+        Backup backup = backups.get(0);
         BackupEntry daily = backup.getDaily();
         BackupEntry weekly = backup.getWeekly();
         BackupEntry biweekly = backup.getBiweekly();
 
         assertTrue(messages.isEmpty());
 
+        assertEquals("12345", backup.getKey());
         assertEquals(0, backup.getDay());
         assertEquals(0, backup.getTime());
 

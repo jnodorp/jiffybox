@@ -6,7 +6,7 @@ import eu.df.jiffybox.models.MonitoringStatus;
 import eu.df.jiffybox.models.Response;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 /**
  * This interface describes the monitoring module.
@@ -20,8 +20,7 @@ public interface ModuleMonitoring {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, MonitoringCheck>> getMonitoringChecks() throws
-            IOException;
+    Response<List<MonitoringCheck>> getMonitoringChecks() throws IOException;
 
     /**
      * Provides details of a specific monitoring check. The result is equivalent
@@ -111,6 +110,6 @@ public interface ModuleMonitoring {
      * @throws java.io.IOException When either the API limits are exceeded or
      *                             the server is unreachable.
      */
-    Response<Map<String, MonitoringStatus>> getStatuses(final String address)
+    Response<List<MonitoringStatus>> getStatuses(final String address)
             throws IOException;
 }

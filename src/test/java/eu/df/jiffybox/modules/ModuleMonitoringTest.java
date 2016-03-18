@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
@@ -40,10 +39,11 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetMonitoringChecks() throws IOException {
-        Response<Map<String, MonitoringCheck>> response = jiffyBoxApi.getModuleMonitoring().getMonitoringChecks();
+        Response<List<MonitoringCheck>> response = jiffyBoxApi.getModuleMonitoring().getMonitoringChecks();
         List<Message> messages = response.getMessages();
-        Map<String, MonitoringCheck> result = response.getResult();
-        MonitoringCheck monitoringCheck = result.get("911");
+        List<MonitoringCheck> result = response.getResult();
+        MonitoringCheck monitoringCheck = result.get(0);
+        assertEquals("911", monitoringCheck.getKey());
 
         List<ContactGroup> contactGroups = monitoringCheck.getContactgroups();
         ContactGroup contactGroup = contactGroups.get(0);
@@ -205,20 +205,22 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetStatuses() throws IOException {
-        Response<Map<String, MonitoringStatus>> response = jiffyBoxApi.getModuleMonitoring().getStatuses("123.45.67"
+        Response<List<MonitoringStatus>> response = jiffyBoxApi.getModuleMonitoring().getStatuses("123.45.67"
                 + ".89");
         List<Message> messages = response.getMessages();
-        Map<String, MonitoringStatus> result = response.getResult();
+        List<MonitoringStatus> result = response.getResult();
 
-        MonitoringStatus monitoringStatus1 = result.get("1234");
-        MonitoringStatus monitoringStatus2 = result.get("5678");
+        MonitoringStatus monitoringStatus1 = result.get(0);
+        MonitoringStatus monitoringStatus2 = result.get(1);
 
         assertTrue(messages.isEmpty());
 
+        assertEquals("1234", monitoringStatus1.getKey());
         assertNull(monitoringStatus1.getId());
         assertEquals(0, monitoringStatus1.getCode());
         assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", monitoringStatus1.getResponse());
 
+        assertEquals("5678", monitoringStatus2.getKey());
         assertNull(monitoringStatus2.getId());
         assertEquals(0, monitoringStatus2.getCode());
         assertEquals("HTTP OK: Status line output matched &quot;200&quot; " + "-3827 bytes in 0.003 second response " +

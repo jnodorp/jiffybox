@@ -6,6 +6,7 @@ import eu.df.jiffybox.modules.ModuleDistributions;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,9 +31,9 @@ public class ModuleDistributionsImpl implements ModuleDistributions {
     }
 
     @Override
-    public Response<Map<String, Distribution>> getDistributions() throws
+    public Response<List<Distribution>> getDistributions() throws
             IOException {
-        return ApiCall.get(baseUri).asMap(String.class, Distribution.class);
+        return ApiCall.get(baseUri).asList(Distribution.class);
     }
 
     @Override

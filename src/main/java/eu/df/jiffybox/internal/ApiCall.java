@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import eu.df.jiffybox.models.Response;
+import eu.df.jiffybox.models.MappableModel;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,9 +22,12 @@ import org.apache.http.util.EntityUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -203,7 +207,7 @@ final class ApiCall {
      * @param contacts The contacts to add.
      * @return The updated API call.
      */
-    public ApiCall addContacts(final List<String> contacts) {
+    ApiCall addContacts(final List<String> contacts) {
         ArrayNode list = json.putArray(PARAMETER_CONTACTS);
         contacts.forEach(list::add);
         return this;
@@ -216,19 +220,21 @@ final class ApiCall {
      * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
     public <T> Response<T> as(final Class type) throws IOException {
-        this.type = TypeFactory.defaultInstance().constructType(type);
-        return ok();
+        return ok(text -> {
+            JavaType rt = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
+            JavaType et = TypeFactory.defaultInstance().constructParametrizedType(ErrorResponse.class, ErrorResponse
+                    .class, type);
+            return safeRead(text, rt, et);
+        });
     }
 
     /**
      * Execute the API call. Note, that the response type needs to be set manually. {@see Response#as(Class)} {@see
      * Response#asMap(Class, Class)} {@see Response#asList(Class)}
      *
-     * @param <T> The response type.
-     * @return The response.
      * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
-    private <T> Response<T> ok() throws IOException {
+    private <R> R ok(Function<String, R> function) throws IOException {
         requestBuilder.setHeader("Connection", "Close");
         requestBuilder.setHeader("Accept", APPLICATION_JSON);
         requestBuilder.setUri(URI.create(uri + path));
@@ -244,19 +250,10 @@ final class ApiCall {
         CloseableHttpResponse httpResponse = httpClient.execute(request);
 
         HttpEntity entity = httpResponse.getEntity();
-        JavaType t = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
-        JavaType e = TypeFactory.defaultInstance().constructParametrizedType(ErrorResponse.class, ErrorResponse
-                .class, type);
-
         BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()));
         String text = reader.lines().collect(Collectors.joining(System.lineSeparator()));
 
-        Response<T> result;
-        try {
-            result = MAPPER.readValue(text, t);
-        } catch (JsonMappingException ex) {
-            result = MAPPER.readValue(text, e);
-        }
+        R result = function.apply(text);
 
         EntityUtils.consume(entity);
         httpResponse.close();
@@ -266,13 +263,65 @@ final class ApiCall {
     }
 
     /**
+     * Define the responses result as list.
+     *
+     * @return The response.
+     * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
+     */
+    public <T extends MappableModel> Response<List<T>> asList(final Class elements) throws IOException {
+        this.type = TypeFactory.defaultInstance().constructMapType(Map.class, String.class, elements);
+        return ok(text -> {
+            JavaType rt = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
+            JavaType et = TypeFactory.defaultInstance().constructParametrizedType(ErrorResponse.class, ErrorResponse
+                    .class, type);
+            Response<Map<String, T>> mapResponse = safeRead(text, rt, et);
+
+            Response<List<T>> listResponse = new Response<>();
+            final List<T> result = new ArrayList<T>();
+            if (mapResponse.getResult() != null) {
+                mapResponse.getResult().entrySet().forEach(stringTEntry -> {
+                    T element = stringTEntry.getValue();
+                    element.setKey(stringTEntry.getKey());
+                    result.add(element);
+                });
+            }
+
+            listResponse.setResult(result);
+            listResponse.setMessages(mapResponse.getMessages());
+            return listResponse;
+        });
+    }
+
+    /**
      * Define the responses result as map.
      *
      * @return The response.
      * @throws java.io.IOException Either the API limit is reached or the host is unavailable.
      */
-    public <T> Response<T> asMap(final Class key, final Class value) throws IOException {
+    public <T> Response<Map<String, T>> asMap(final Class key, final Class value) throws IOException {
         this.type = TypeFactory.defaultInstance().constructMapType(Map.class, key, value);
-        return ok();
+        return ok(text -> {
+            JavaType rt = TypeFactory.defaultInstance().constructParametrizedType(Response.class, Response.class, type);
+            JavaType et = TypeFactory.defaultInstance().constructParametrizedType(ErrorResponse.class, ErrorResponse
+                    .class, type);
+            return safeRead(text, rt, et);
+        });
+    }
+
+    private <X> X safeRead(String text, JavaType resultType, JavaType errorType) {
+        X result;
+        try {
+            result = MAPPER.readValue(text, resultType);
+        } catch (JsonMappingException ex) {
+            try {
+                result = MAPPER.readValue(text, errorType);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        return result;
     }
 }
