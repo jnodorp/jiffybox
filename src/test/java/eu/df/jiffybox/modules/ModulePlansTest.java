@@ -36,7 +36,7 @@ public class ModulePlansTest extends ModuleTest {
      */
     @Test
     public void testGetPlans() throws IOException {
-        Response<List<Plan>> response = jiffyBoxApi.getModulePlans().getPlans();
+        Response<List<Plan>> response = jiffyBoxApi.plans().getPlans();
         List<Message> messages = response.getMessages();
         List<Plan> result = response.getResult();
         assertEquals(12, result.size());
@@ -180,7 +180,7 @@ public class ModulePlansTest extends ModuleTest {
      */
     @Test
     public void testGetPlan() throws IOException {
-        Response<Plan> response = jiffyBoxApi.getModulePlans().getPlan(45);
+        Response<Plan> response = jiffyBoxApi.plans().getPlan(45);
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 
@@ -201,7 +201,7 @@ public class ModulePlansTest extends ModuleTest {
      */
     @Test
     public void testGetPlan1() throws IOException {
-        Response<Plan> response = jiffyBoxApi.getModulePlans().getPlan("CloudLevel 2");
+        Response<Plan> response = jiffyBoxApi.plans().getPlan("CloudLevel 2");
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 

@@ -119,7 +119,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the backups module.
      */
-    public ModuleBackups getModuleBackups() {
+    public ModuleBackups backups() {
         return moduleBackups;
     }
 
@@ -128,7 +128,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the contact groups module.
      */
-    public ModuleContactGroups getModuleContactGroups() {
+    public ModuleContactGroups contactGroups() {
         return moduleContactGroups;
     }
 
@@ -137,7 +137,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the distributions module.
      */
-    public ModuleDistributions getModuleDistributions() {
+    public ModuleDistributions distributions() {
         return moduleDistributions;
     }
 
@@ -146,7 +146,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the doc module.
      */
-    public ModuleDoc getModuleDoc() {
+    public ModuleDoc doc() {
         return moduleDoc;
     }
 
@@ -155,7 +155,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the ips module.
      */
-    public ModuleIps getModuleIps() {
+    public ModuleIps ips() {
         return moduleIps;
     }
 
@@ -164,7 +164,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the jiffy boxes module.
      */
-    public ModuleJiffyBoxes getModuleJiffyBoxes() {
+    public ModuleJiffyBoxes jiffyBoxes() {
         return moduleJiffyBoxes;
     }
 
@@ -173,7 +173,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the monitoring module.
      */
-    public ModuleMonitoring getModuleMonitoring() {
+    public ModuleMonitoring monitoring() {
         return moduleMonitoring;
     }
 
@@ -182,7 +182,7 @@ public class JiffyBoxApi {
      *
      * @return An instance of the plans module.
      */
-    public ModulePlans getModulePlans() {
+    public ModulePlans plans() {
         return modulePlans;
     }
 

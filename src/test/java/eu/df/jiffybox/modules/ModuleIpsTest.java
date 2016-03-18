@@ -41,7 +41,7 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testGetIPSets() throws IOException {
-        Response<List<IPSet>> response = jiffyBoxApi.getModuleIps().getIPSets();
+        Response<List<IPSet>> response = jiffyBoxApi.ips().getIPSets();
         List<Message> messages = response.getMessages();
         List<IPSet> result = response.getResult();
         IPSet ipSet = result.get(0);
@@ -103,7 +103,7 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testGetIPSet() throws IOException {
-        Response<IPSet> response = jiffyBoxApi.getModuleIps().getIPSet(12345);
+        Response<IPSet> response = jiffyBoxApi.ips().getIPSet(12345);
         List<Message> messages = response.getMessages();
         IPSet result = response.getResult();
 
@@ -164,7 +164,7 @@ public class ModuleIpsTest extends ModuleTest {
      */
     @Test
     public void testMoveIPAddress() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleIps().moveIPAddress(12345, 8465, 4321);
+        Response<Boolean> response = jiffyBoxApi.ips().moveIPAddress(12345, 8465, 4321);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());

@@ -38,7 +38,7 @@ public class ModuleDocTest extends ModuleTest {
      */
     @Test
     public void testGetDocs() throws IOException {
-        Response<Map<String, String>> response = jiffyBoxApi.getModuleDoc().getDocs();
+        Response<Map<String, String>> response = jiffyBoxApi.doc().getDocs();
         List<Message> messages = response.getMessages();
         assertTrue(messages.isEmpty());
 
@@ -55,7 +55,7 @@ public class ModuleDocTest extends ModuleTest {
      */
     @Test
     public void testGetDoc() throws IOException {
-        Response<Doc> response = jiffyBoxApi.getModuleDoc().getDoc("doc");
+        Response<Doc> response = jiffyBoxApi.doc().getDoc("doc");
         List<Message> messages = response.getMessages();
         Doc doc = response.getResult();
         List<DocEntry> docEntries = doc.getDocEntries();

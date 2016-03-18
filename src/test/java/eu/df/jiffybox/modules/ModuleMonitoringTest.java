@@ -39,7 +39,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetMonitoringChecks() throws IOException {
-        Response<List<MonitoringCheck>> response = jiffyBoxApi.getModuleMonitoring().getMonitoringChecks();
+        Response<List<MonitoringCheck>> response = jiffyBoxApi.monitoring().getMonitoringChecks();
         List<Message> messages = response.getMessages();
         List<MonitoringCheck> result = response.getResult();
         MonitoringCheck monitoringCheck = result.get(0);
@@ -76,7 +76,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetMonitoringCheck() throws IOException {
-        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().getMonitoringCheck(1234);
+        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().getMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -111,7 +111,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testDeleteMonitoringCheck() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleMonitoring().deleteMonitoringCheck(1234);
+        Response<Boolean> response = jiffyBoxApi.monitoring().deleteMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         Message message = messages.get(0);
 
@@ -131,7 +131,7 @@ public class ModuleMonitoringTest extends ModuleTest {
         MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93" + ".14.211", 80).http("example.com",
                 "/index.php");
 
-        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().createMonitoringCheck(data);
+        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().createMonitoringCheck(data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -161,7 +161,7 @@ public class ModuleMonitoringTest extends ModuleTest {
     public void testDuplicateMonitoringCheck() throws IOException {
         MonitoringCheckBuilder data = Build.monitoringCheck("Kopie von Test", "188.93.14.212", null).preserveType();
 
-        Response<MonitoringCheck> response = jiffyBoxApi.getModuleMonitoring().duplicateMonitoringCheck(1234, data);
+        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().duplicateMonitoringCheck(1234, data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -189,7 +189,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetStatus() throws IOException {
-        Response<MonitoringStatus> response = jiffyBoxApi.getModuleMonitoring().getStatus(1234);
+        Response<MonitoringStatus> response = jiffyBoxApi.monitoring().getStatus(1234);
         List<Message> messages = response.getMessages();
         MonitoringStatus result = response.getResult();
 
@@ -205,7 +205,7 @@ public class ModuleMonitoringTest extends ModuleTest {
      */
     @Test
     public void testGetStatuses() throws IOException {
-        Response<List<MonitoringStatus>> response = jiffyBoxApi.getModuleMonitoring().getStatuses("123.45.67"
+        Response<List<MonitoringStatus>> response = jiffyBoxApi.monitoring().getStatuses("123.45.67"
                 + ".89");
         List<Message> messages = response.getMessages();
         List<MonitoringStatus> result = response.getResult();

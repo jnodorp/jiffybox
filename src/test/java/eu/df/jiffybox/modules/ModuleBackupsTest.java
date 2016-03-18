@@ -37,7 +37,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testGetBackups() throws IOException {
-        Response<List<Backup>> response = jiffyBoxApi.getModuleBackups().getBackups();
+        Response<List<Backup>> response = jiffyBoxApi.backups().getBackups();
         List<Message> messages = response.getMessages();
         List<Backup> backups = response.getResult();
         Backup backup = backups.get(0);
@@ -66,7 +66,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testGetBackup() throws IOException {
-        Response<Backup> response = jiffyBoxApi.getModuleBackups().getBackup(12345);
+        Response<Backup> response = jiffyBoxApi.backups().getBackup(12345);
         List<Message> messages = response.getMessages();
         Backup backup = response.getResult();
         BackupEntry daily = backup.getDaily();
@@ -93,7 +93,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testCreatePeriodicalBackups() throws IOException {
-        Response<BackupConfig> response = jiffyBoxApi.getModuleBackups().createPeriodicalBackups(12345, 0, 1);
+        Response<BackupConfig> response = jiffyBoxApi.backups().createPeriodicalBackups(12345, 0, 1);
         List<Message> messages = response.getMessages();
         BackupConfig backup = response.getResult();
 
@@ -108,7 +108,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testUpdatePeriodicalBackups() throws IOException {
-        Response<BackupConfig> response = jiffyBoxApi.getModuleBackups().updatePeriodicalBackups(12345, 0, 1);
+        Response<BackupConfig> response = jiffyBoxApi.backups().updatePeriodicalBackups(12345, 0, 1);
         List<Message> messages = response.getMessages();
         BackupConfig backup = response.getResult();
 
@@ -123,7 +123,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testDeletePeriodicalBackups() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleBackups().deletePeriodicalBackups(12345);
+        Response<Boolean> response = jiffyBoxApi.backups().deletePeriodicalBackups(12345);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -137,7 +137,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testCreateManualBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleBackups().createManualBackup(12345);
+        Response<Boolean> response = jiffyBoxApi.backups().createManualBackup(12345);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -151,7 +151,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testDeleteBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleBackups().deleteBackup(12345, "daily", "12345ACDEF");
+        Response<Boolean> response = jiffyBoxApi.backups().deleteBackup(12345, "daily", "12345ACDEF");
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -165,7 +165,7 @@ public class ModuleBackupsTest extends ModuleTest {
      */
     @Test
     public void testRestoreBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleBackups().restoreBackup(12345, "daily", "12345ACDEF");
+        Response<Boolean> response = jiffyBoxApi.backups().restoreBackup(12345, "daily", "12345ACDEF");
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 

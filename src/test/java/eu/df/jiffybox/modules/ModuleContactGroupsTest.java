@@ -42,7 +42,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testGetContactGroups() throws IOException {
-        Response<List<ContactGroup>> response = jiffyBoxApi.getModuleContactGroups().getContactGroups();
+        Response<List<ContactGroup>> response = jiffyBoxApi.contactGroups().getContactGroups();
         List<Message> messages = response.getMessages();
         List<ContactGroup> contactGroups = response.getResult();
         ContactGroup contactGroup1 = contactGroups.get(0);
@@ -72,7 +72,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testGetContactGroup() throws IOException {
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().getContactGroup(123);
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().getContactGroup(123);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts = contactGroup.getContacts();
@@ -91,7 +91,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testDeleteContactGroup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.getModuleContactGroups().deleteContactGroup(123);
+        Response<Boolean> response = jiffyBoxApi.contactGroups().deleteContactGroup(123);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -109,7 +109,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
         contacts1.add("m.mustermann@df.eu");
         contacts1.add("f.musterfrau@df.eu");
 
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().createContactGroup("TestGruppe",
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().createContactGroup("TestGruppe",
                 contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
@@ -130,7 +130,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testUpdateContactGroup() throws IOException {
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().updateContactGroup(1234, "Neuer Name " +
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().updateContactGroup(1234, "Neuer Name " +
                 "der " +
                 "" + "TestGruppe");
         List<Message> messages = response.getMessages();
@@ -155,7 +155,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().updateContactGroup(1234, contacts1);
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().updateContactGroup(1234, contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts2 = contactGroup.getContacts();
@@ -177,7 +177,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().updateContactGroup(1234, "Neuer Name "
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().updateContactGroup(1234, "Neuer Name "
                 + "der TestGruppe", contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
@@ -197,7 +197,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
      */
     @Test
     public void testDuplicateContactGroup() throws IOException {
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().duplicateContactGroup(1234, "Kopie " +
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().duplicateContactGroup(1234, "Kopie " +
                 "von TestGruppe");
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
@@ -221,7 +221,7 @@ public class ModuleContactGroupsTest extends ModuleTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = jiffyBoxApi.getModuleContactGroups().duplicateContactGroup(1234, "Kopie " +
+        Response<ContactGroup> response = jiffyBoxApi.contactGroups().duplicateContactGroup(1234, "Kopie " +
                 "von TestGruppe", contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();

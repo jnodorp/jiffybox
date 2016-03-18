@@ -26,82 +26,82 @@ public class JiffyBoxApiTest {
             "v1.0");
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleBackups()}.
+     * Test for {@link JiffyBoxApi#backups()}.
      */
     @Test
     public void testGetModuleBackups() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleContactGroups()}.
+     * Test for {@link JiffyBoxApi#contactGroups()}.
      */
     @Test
     public void testGetModuleContactGroups() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleDistributions()}.
+     * Test for {@link JiffyBoxApi#distributions()}.
      */
     @Test
     public void testGetModuleDistributions() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleDoc()}.
+     * Test for {@link JiffyBoxApi#doc()}.
      */
     @Test
     public void testGetModuleDoc() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleIps()}.
+     * Test for {@link JiffyBoxApi#ips()}.
      */
     @Test
     public void testGetModuleIps() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleJiffyBoxes()}.
+     * Test for {@link JiffyBoxApi#jiffyBoxes()}.
      */
     @Test
     public void testGetModuleJiffyBoxes() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModuleMonitoring()};
+     * Test for {@link JiffyBoxApi#monitoring()};
      */
     @Test
     public void testGetModuleMonitoring() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 
     /**
-     * Test for {@link JiffyBoxApi#getModulePlans()}.
+     * Test for {@link JiffyBoxApi#plans()}.
      */
     @Test
     public void testGetModulePlans() {
-        assertNotNull(API1.getModuleBackups());
-        assertNotNull(API2.getModuleBackups());
-        assertNotNull(API3.getModuleBackups());
+        assertNotNull(API1.backups());
+        assertNotNull(API2.backups());
+        assertNotNull(API3.backups());
     }
 }

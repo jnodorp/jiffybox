@@ -36,7 +36,7 @@ public class ModuleDistributionsTest extends ModuleTest {
      */
     @Test
     public void testGetDistributions() throws IOException {
-        Response<List<Distribution>> response = jiffyBoxApi.getModuleDistributions().getDistributions();
+        Response<List<Distribution>> response = jiffyBoxApi.distributions().getDistributions();
         List<Message> messages = response.getMessages();
         List<Distribution> distributions = response.getResult();
         assertEquals(14, distributions.size());
@@ -148,7 +148,7 @@ public class ModuleDistributionsTest extends ModuleTest {
      */
     @Test
     public void testGetDistribution() throws IOException {
-        Response<Distribution> response = jiffyBoxApi.getModuleDistributions().getDistribution("centos_5_4_64bit");
+        Response<Distribution> response = jiffyBoxApi.distributions().getDistribution("centos_5_4_64bit");
         List<Message> messages = response.getMessages();
         Distribution distribution = response.getResult();
 
