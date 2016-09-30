@@ -1,9 +1,6 @@
 package eu.df.jiffybox.models;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -15,17 +12,21 @@ import static org.junit.Assert.fail;
 class ModelTestHelper {
 
     /**
-     * Validate a JSON object.
+     * The {@link ObjectMapper}.
      */
-    public static void validateJson(String json) {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    /**
+     * Validate a JSON string.
+	 *
+	 * @param json the JSON string
+	 * @throws AssertionError if JSON is invalid
+     */
+    public static void validateJson(String json) throws AssertionError {
         try {
-            new JSONObject(json);
-        } catch (JSONException ex) {
-            try {
-                new JSONArray(json);
-            } catch (JSONException ex1) {
-                fail("\"" + json + "\" is not a valid JSON object.");
-            }
+            OBJECT_MAPPER.readTree(json);
+        } catch (IOException e) {
+            fail("'" + json + "' is not a valid JSON object.");
         }
     }
 
@@ -39,7 +40,7 @@ class ModelTestHelper {
      */
     public static <T> T jsonTo(Class<T> type, String json) {
         try {
-            return new ObjectMapper().readValue(json, type);
+            return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
             throw new AssertionError("\"" + json + "\" is not a valid JSON object.");
         }
