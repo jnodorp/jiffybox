@@ -14,7 +14,19 @@ import java.util.List;
  * @see eu.df.jiffybox.models.ContactGroupStatus
  */
 @JsonAutoDetect
-public class ContactGroup extends Model {
+public class ContactGroup {
+
+    /**
+     * The id.
+     */
+    @JsonProperty("id")
+    private int id;
+
+    /**
+     * The name.
+     */
+    @JsonProperty("name")
+    private String name;
 
     /**
      * The contacts.
@@ -27,6 +39,46 @@ public class ContactGroup extends Model {
      */
     @JsonProperty("status")
     private ContactGroupStatus status;
+
+    /**
+     * Get the id.
+     *
+     * @return The id.
+     */
+    @JsonGetter("id")
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @param id The id.
+     */
+    @JsonSetter("id")
+    public void setId(final int id) {
+        this.id = id;
+    }
+
+    /**
+     * Get the name.
+     *
+     * @return The name.
+     */
+    @JsonGetter("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name.
+     */
+    @JsonSetter("name")
+    public void setName(final String name) {
+        this.name = name;
+    }
 
     /**
      * Get the contacts.

@@ -19,7 +19,7 @@ public class Response<T> extends PrintableModel {
      * The result.
      */
     @JsonProperty("result")
-    protected T result = null;
+    private T result = null;
 
     /**
      * A list of messages.

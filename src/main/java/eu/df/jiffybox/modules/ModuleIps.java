@@ -2,9 +2,10 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.models.IPSet;
 import eu.df.jiffybox.models.Response;
+import feign.Param;
+import feign.RequestLine;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the ips module.
@@ -24,20 +25,18 @@ public interface ModuleIps {
      * via the control panel.
      *
      * @return All IP sets by JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<IPSet>> getIPSets() throws IOException;
+    @RequestLine("GET /ips")
+    Response<Map<String, IPSet>> getIPSets();
 
     /**
      * Lists all IP addresses of a single JiffyBox.
      *
      * @param id Box-ID
      * @return The IP set of a specific JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<IPSet> getIPSet(final int id) throws IOException;
+    @RequestLine("GET /ips/{id}")
+    Response<IPSet> getIPSet(@Param("id") int id);
 
     /**
      * Using this command you can move IPv4 addresses between JiffyBoxes. This
@@ -51,9 +50,8 @@ public interface ModuleIps {
      * @param targetid The targeted JiffyBox to which the IP address should be
      *                 allocated.
      * @return If the moving of the IP address was successful.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> moveIPAddress(final int boxid, final int ipid, final
-    int targetid) throws IOException;
+    @RequestLine("PUT /ips/{boxid}/{ipid}/move")
+    Response<Boolean> moveIPAddress(@Param("boxid") int boxid, @Param("ipid") int ipid, @Param("targetid") int
+            targetid);
 }

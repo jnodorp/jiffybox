@@ -1,12 +1,17 @@
 package eu.df.jiffybox.modules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.MonitoringCheck;
 import eu.df.jiffybox.models.MonitoringStatus;
 import eu.df.jiffybox.models.Response;
+import feign.Feign;
+import feign.Param;
+import feign.RequestLine;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the monitoring module.
@@ -14,13 +19,27 @@ import java.util.List;
 public interface ModuleMonitoring {
 
     /**
+     * Build the module.
+     *
+     * @param baseUrl the base URL
+     * @return the module
+     */
+    static ModuleMonitoring build(String baseUrl) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new MonitoringCheckBuilderSerializerModule());
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder(objectMapper))
+                .target(ModuleMonitoring.class, baseUrl);
+    }
+
+    /**
      * With this call you will get an overview of all monitoring checks.
      *
      * @return The retrieved monitoring checks.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<MonitoringCheck>> getMonitoringChecks() throws IOException;
+    @RequestLine("GET /monitoring")
+    Response<Map<String, MonitoringCheck>> getMonitoringChecks();
 
     /**
      * Provides details of a specific monitoring check. The result is equivalent
@@ -28,10 +47,9 @@ public interface ModuleMonitoring {
      *
      * @param id Check-ID
      * @return The retrieved monitoring check.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<MonitoringCheck> getMonitoringCheck(int id) throws IOException;
+    @RequestLine("GET /monitoring/{id}")
+    Response<MonitoringCheck> getMonitoringCheck(@Param("id") int id);
 
     /**
      * With this command you can delete monitoring checks. The command is
@@ -45,10 +63,9 @@ public interface ModuleMonitoring {
      *
      * @param id Check-ID
      * @return If the monitoring check was successfully deleted.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> deleteMonitoringCheck(int id) throws IOException;
+    @RequestLine("DELETE /monitoring/{id}")
+    Response<Boolean> deleteMonitoringCheck(@Param("id") int id);
 
     /**
      * There are two ways to create a new monitoring check: 1. Create a new
@@ -67,13 +84,9 @@ public interface ModuleMonitoring {
      *
      * @param data The MonitoringCheck to create.
      * @return The created monitoring check.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<MonitoringCheck> createMonitoringCheck(final
-                                                    MonitoringCheckBuilder
-                                                            data) throws
-            IOException;
+    @RequestLine("POST /monitoring")
+    Response<MonitoringCheck> createMonitoringCheck(MonitoringCheckBuilder data);
 
     /**
      * Duplicating monitoring checks requires the id of the monitoring check as
@@ -85,21 +98,18 @@ public interface ModuleMonitoring {
      * @param id   Check-ID
      * @param data A monitoring check to use for configuration.
      * @return The created monitoring check.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<MonitoringCheck> duplicateMonitoringCheck(final int id, final
-    MonitoringCheckBuilder data) throws IOException;
+    @RequestLine("POST /monitoring/{id}")
+    Response<MonitoringCheck> duplicateMonitoringCheck(@Param("id") int id, MonitoringCheckBuilder data);
 
     /**
      * Provides the current status of a single monitoring check.
      *
      * @param id Check-ID
      * @return The monitoring checks status.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<MonitoringStatus> getStatus(final int id) throws IOException;
+    @RequestLine("GET /monitoring/{id}/status")
+    Response<Map<String, MonitoringStatus>> getStatus(@Param("id") int id);
 
     /**
      * With this call you get the current status of every active monitoring
@@ -107,9 +117,7 @@ public interface ModuleMonitoring {
      *
      * @param address IPv4-address
      * @return The monitoring checks statuses of the given IP address.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<MonitoringStatus>> getStatuses(final String address)
-            throws IOException;
+    @RequestLine("GET /monitoring/{address}/status")
+    Response<Map<String, MonitoringStatus>> getStatuses(@Param("address") String address);
 }

@@ -12,7 +12,19 @@ import java.util.Map;
  * This class contains all information associated with a JiffyBox.
  */
 @JsonAutoDetect
-public class JiffyBox extends Model {
+public class JiffyBox {
+
+    /**
+     * The id.
+     */
+    @JsonProperty("id")
+    private int id;
+
+    /**
+     * The name.
+     */
+    @JsonProperty("name")
+    private String name;
 
     /**
      * The metadata.
@@ -85,6 +97,46 @@ public class JiffyBox extends Model {
      */
     @JsonProperty("activeProfile")
     private Profile activeProfile;
+
+    /**
+     * Get the id.
+     *
+     * @return The id.
+     */
+    @JsonGetter("id")
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @param id The id.
+     */
+    @JsonSetter("id")
+    public void setId(final int id) {
+        this.id = id;
+    }
+
+    /**
+     * Get the name.
+     *
+     * @return The name.
+     */
+    @JsonGetter("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name.
+     */
+    @JsonSetter("name")
+    public void setName(final String name) {
+        this.name = name;
+    }
 
     /**
      * Get the ips.

@@ -1,53 +1,53 @@
 package eu.df.jiffybox.modules;
 
-import eu.df.jiffybox.JiffyBoxApi;
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.matching.StringValuePattern;
+import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.*;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'backups' module.
  */
-public class ModuleBackupsTest extends ModuleTest {
+public class ModuleBackupsTest {
 
-    /**
-     * The {@link JiffyBoxApi}.
-     */
-    private final JiffyBoxApi jiffyBoxApi;
+    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
 
-    /**
-     * Create a new instance using the given {@link JiffyBoxApi}.
-     *
-     * @param jiffyBoxApi The {@link JiffyBoxApi}.
-     */
-    public ModuleBackupsTest(final JiffyBoxApi jiffyBoxApi) {
-        this.jiffyBoxApi = jiffyBoxApi;
+    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
 
-        // Only run in development.
-        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
-    }
+    @Rule
+    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
 
     /**
      * Test for {@link ModuleBackups#getBackups()}.
      */
     @Test
-    public void testGetBackups() throws IOException {
-        Response<List<Backup>> response = jiffyBoxApi.backups().getBackups();
+    public void testGetBackups() {
+        MappingBuilder builder = get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups"));
+        wireMock.stubFor(builder.willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/backups/testGetBackups.json")));
+
+        Response<Map<String, Backup>> response = module.get().backups().getBackups();
         List<Message> messages = response.getMessages();
-        List<Backup> backups = response.getResult();
-        Backup backup = backups.get(0);
+        Map<String, Backup> backups = response.getResult();
+        Backup backup = backups.get("12345");
         BackupEntry daily = backup.getDaily();
         BackupEntry weekly = backup.getWeekly();
         BackupEntry biweekly = backup.getBiweekly();
 
         assertTrue(messages.isEmpty());
 
-        assertEquals("12345", backup.getKey());
         assertEquals(0, backup.getDay());
         assertEquals(0, backup.getTime());
 
@@ -65,8 +65,13 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#getBackup(int)}.
      */
     @Test
-    public void testGetBackup() throws IOException {
-        Response<Backup> response = jiffyBoxApi.backups().getBackup(12345);
+    public void testGetBackup() {
+        MappingBuilder builder = get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345"));
+        wireMock.stubFor(builder.willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/backups/testGetBackup.json")));
+
+        Response<Backup> response = module.get().backups().getBackup(12345);
         List<Message> messages = response.getMessages();
         Backup backup = response.getResult();
         BackupEntry daily = backup.getDaily();
@@ -92,8 +97,15 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#createPeriodicalBackups(int, int, int)}.
      */
     @Test
-    public void testCreatePeriodicalBackups() throws IOException {
-        Response<BackupConfig> response = jiffyBoxApi.backups().createPeriodicalBackups(12345, 0, 1);
+    public void testCreatePeriodicalBackups() {
+        MappingBuilder builder = post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345"));
+        StringValuePattern body = equalToJson("{\"dayid\": 0, \"timeid\": 1}", false, false);
+        wireMock.stubFor(builder.withRequestBody(body)
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/backups/testCreatePeriodicalBackups.json")));
+
+        Response<BackupConfig> response = module.get().backups().createPeriodicalBackups(12345, 0, 1);
         List<Message> messages = response.getMessages();
         BackupConfig backup = response.getResult();
 
@@ -104,11 +116,18 @@ public class ModuleBackupsTest extends ModuleTest {
     }
 
     /**
-     * Test for {@link ModuleBackups#updatePeriodicalBackups(int, Integer, Integer)}.
+     * Test for {@link ModuleBackups#updatePeriodicalBackups(int, int, int)}.
      */
     @Test
-    public void testUpdatePeriodicalBackups() throws IOException {
-        Response<BackupConfig> response = jiffyBoxApi.backups().updatePeriodicalBackups(12345, 0, 1);
+    public void testUpdatePeriodicalBackups() {
+        MappingBuilder builder = put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345"));
+        StringValuePattern body = equalToJson("{\"dayid\": 0, \"timeid\": 1}", false, false);
+        wireMock.stubFor(builder.withRequestBody(body)
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/backups/testUpdatePeriodicalBackups.json")));
+
+        Response<BackupConfig> response = module.get().backups().updatePeriodicalBackups(12345, 0, 1);
         List<Message> messages = response.getMessages();
         BackupConfig backup = response.getResult();
 
@@ -122,8 +141,13 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#deletePeriodicalBackups(int)}.
      */
     @Test
-    public void testDeletePeriodicalBackups() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.backups().deletePeriodicalBackups(12345);
+    public void testDeletePeriodicalBackups() {
+        MappingBuilder builder = delete(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345"));
+        wireMock.stubFor(builder.willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/backups/testDeletePeriodicalBackups.json")));
+
+        Response<Boolean> response = module.get().backups().deletePeriodicalBackups(12345);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -136,8 +160,15 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#createManualBackup(int)}.
      */
     @Test
-    public void testCreateManualBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.backups().createManualBackup(12345);
+    public void testCreateManualBackup() {
+        MappingBuilder builder = post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345/manual"));
+        StringValuePattern body = equalToJson("{}", false, false);
+        wireMock.stubFor(builder.withRequestBody(body)
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/backups/testCreateManualBackups.json")));
+
+        Response<Boolean> response = module.get().backups().createManualBackup(12345);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -150,8 +181,14 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#deleteBackup(int, String, String)}.
      */
     @Test
-    public void testDeleteBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.backups().deleteBackup(12345, "daily", "12345ACDEF");
+    public void testDeleteBackup() {
+        MappingBuilder builder = delete(urlPathEqualTo
+                ("/00000000000000000000000000000000/v1.0/backups/12345/daily/12345ACDEF"));
+        wireMock.stubFor(builder.willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/backups/testDeleteBackup.json")));
+
+        Response<Boolean> response = module.get().backups().deleteBackup(12345, "daily", "12345ACDEF");
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -164,8 +201,16 @@ public class ModuleBackupsTest extends ModuleTest {
      * Test for {@link ModuleBackups#restoreBackup(int, String, String)}.
      */
     @Test
-    public void testRestoreBackup() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.backups().restoreBackup(12345, "daily", "12345ACDEF");
+    public void testRestoreBackup() {
+        MappingBuilder builder = post(urlPathEqualTo
+                ("/00000000000000000000000000000000/v1.0/backups/12345/daily/12345ACDEF"));
+        StringValuePattern body = equalToJson("{}", false, false);
+        wireMock.stubFor(builder.withRequestBody(body)
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/backups/testRestoreBackup.json")));
+
+        Response<Boolean> response = module.get().backups().restoreBackup(12345, "daily", "12345ACDEF");
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 

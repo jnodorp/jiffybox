@@ -1,49 +1,50 @@
 package eu.df.jiffybox.modules;
 
-import eu.df.jiffybox.JiffyBoxApi;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Plan;
 import eu.df.jiffybox.models.Response;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the 'plans' module.
  */
-public class ModulePlansTest extends ModuleTest {
+public class ModulePlansTest {
 
-    /**
-     * The {@link JiffyBoxApi}.
-     */
-    private final JiffyBoxApi jiffyBoxApi;
+    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
 
-    /**
-     * Create a new instance using the given {@link JiffyBoxApi}.
-     *
-     * @param jiffyBoxApi The {@link JiffyBoxApi}.
-     */
-    public ModulePlansTest(final JiffyBoxApi jiffyBoxApi) {
-        this.jiffyBoxApi = jiffyBoxApi;
-    }
+    private final ModuleTestRule module = new ModuleTestRule(wireMock, true);
+
+    @Rule
+    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
 
     /**
      * Test for {@link ModulePlans#getPlans()}.
      */
     @Test
-    public void testGetPlans() throws IOException {
-        Response<List<Plan>> response = jiffyBoxApi.plans().getPlans();
+    public void testGetPlans() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans")).willReturn(aResponse()
+                .withHeaders(WireMockHelper
+                .headers()).withStatus(200).withBodyFile("modules/plans/testGetPlans.json")));
+
+        Response<Map<String, Plan>> response = module.get().plans().getPlans();
         List<Message> messages = response.getMessages();
-        List<Plan> result = response.getResult();
+        Map<String, Plan> result = response.getResult();
         assertEquals(12, result.size());
         assertTrue(messages.isEmpty());
 
-        Plan plan = result.get(0);
-        assertEquals("44", plan.getKey());
+        Plan plan = result.get("44");
         assertEquals(1, plan.getCpus());
         assertEquals(102400, plan.getDiskSizeInMB());
         assertEquals(44, plan.getId());
@@ -53,8 +54,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.005, plan.getPricePerHourFrozen(), 0.0001);
         assertEquals(2048, plan.getRamInMB());
 
-        plan = result.get(1);
-        assertEquals("45", plan.getKey());
+        plan = result.get("45");
         assertEquals(2, plan.getCpus());
         assertEquals(204800, plan.getDiskSizeInMB());
         assertEquals(45, plan.getId());
@@ -64,8 +64,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, plan.getRamInMB());
 
-        plan = result.get(2);
-        assertEquals("46", plan.getKey());
+        plan = result.get("46");
         assertEquals(4, plan.getCpus());
         assertEquals(307200, plan.getDiskSizeInMB());
         assertEquals(46, plan.getId());
@@ -75,8 +74,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(8192, plan.getRamInMB());
 
-        plan = result.get(3);
-        assertEquals("47", plan.getKey());
+        plan = result.get("47");
         assertEquals(6, plan.getCpus());
         assertEquals(512000, plan.getDiskSizeInMB());
         assertEquals(47, plan.getId());
@@ -86,8 +84,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(12288, plan.getRamInMB());
 
-        plan = result.get(4);
-        assertEquals("48", plan.getKey());
+        plan = result.get("48");
         assertEquals(8, plan.getCpus());
         assertEquals(768000, plan.getDiskSizeInMB());
         assertEquals(48, plan.getId());
@@ -97,8 +94,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(16384, plan.getRamInMB());
 
-        plan = result.get(5);
-        assertEquals("49", plan.getKey());
+        plan = result.get("49");
         assertEquals(12, plan.getCpus());
         assertEquals(1024000, plan.getDiskSizeInMB());
         assertEquals(49, plan.getId());
@@ -108,8 +104,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(32768, plan.getRamInMB());
 
-        plan = result.get(6);
-        assertEquals("50", plan.getKey());
+        plan = result.get("50");
         assertEquals(1, plan.getCpus());
         assertEquals(51200, plan.getDiskSizeInMB());
         assertEquals(50, plan.getId());
@@ -119,8 +114,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.01, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(2048, plan.getRamInMB());
 
-        plan = result.get(7);
-        assertEquals("51", plan.getKey());
+        plan = result.get("51");
         assertEquals(2, plan.getCpus());
         assertEquals(102400, plan.getDiskSizeInMB());
         assertEquals(51, plan.getId());
@@ -130,8 +124,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.015, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(4096, plan.getRamInMB());
 
-        plan = result.get(8);
-        assertEquals("52", plan.getKey());
+        plan = result.get("52");
         assertEquals(4, plan.getCpus());
         assertEquals(153600, plan.getDiskSizeInMB());
         assertEquals(52, plan.getId());
@@ -141,8 +134,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.02, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(8192, plan.getRamInMB());
 
-        plan = result.get(9);
-        assertEquals("53", plan.getKey());
+        plan = result.get("53");
         assertEquals(6, plan.getCpus());
         assertEquals(256000, plan.getDiskSizeInMB());
         assertEquals(53, plan.getId());
@@ -152,8 +144,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.03, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(12288, plan.getRamInMB());
 
-        plan = result.get(10);
-        assertEquals("54", plan.getKey());
+        plan = result.get("54");
         assertEquals(8, plan.getCpus());
         assertEquals(358400, plan.getDiskSizeInMB());
         assertEquals(54, plan.getId());
@@ -163,8 +154,7 @@ public class ModulePlansTest extends ModuleTest {
         assertEquals(0.04, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(16384, plan.getRamInMB());
 
-        plan = result.get(11);
-        assertEquals("55", plan.getKey());
+        plan = result.get("55");
         assertEquals(12, plan.getCpus());
         assertEquals(512000, plan.getDiskSizeInMB());
         assertEquals(55, plan.getId());
@@ -179,8 +169,12 @@ public class ModulePlansTest extends ModuleTest {
      * Test for {@link ModulePlans#getPlan(int)}.
      */
     @Test
-    public void testGetPlan() throws IOException {
-        Response<Plan> response = jiffyBoxApi.plans().getPlan(45);
+    public void testGetPlan() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans/45")).willReturn(aResponse
+                ().withHeaders(WireMockHelper
+                .headers()).withStatus(200).withBodyFile("modules/plans/testGetPlan.json")));
+
+        Response<Plan> response = module.get().plans().getPlan(45);
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 
@@ -200,8 +194,14 @@ public class ModulePlansTest extends ModuleTest {
      * Test for {@link ModulePlans#getPlan(String)}.
      */
     @Test
-    public void testGetPlan1() throws IOException {
-        Response<Plan> response = jiffyBoxApi.plans().getPlan("CloudLevel 2");
+    public void testGetPlan1() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans/CloudLevel%202"))
+                .willReturn(aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/plans/testGetPlan1.json")));
+
+        Response<Plan> response = module.get().plans().getPlan("CloudLevel 2");
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 

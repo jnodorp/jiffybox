@@ -2,9 +2,10 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.models.Plan;
 import eu.df.jiffybox.models.Response;
+import feign.Param;
+import feign.RequestLine;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the plans module.
@@ -17,10 +18,9 @@ public interface ModulePlans {
      * the id.
      *
      * @return The retrieved plans.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<Plan>> getPlans() throws IOException;
+    @RequestLine("GET /plans")
+    Response<Map<String, Plan>> getPlans();
 
     /**
      * Provides detail of a specified plan. The plan may be obtained using its
@@ -28,10 +28,9 @@ public interface ModulePlans {
      *
      * @param id id
      * @return The retrieved Plan.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Plan> getPlan(final int id) throws IOException;
+    @RequestLine("GET /plans/{id}")
+    Response<Plan> getPlan(@Param("id") int id);
 
     /**
      * Provides detail of a specified plan. The plan may be obtained using its
@@ -39,8 +38,7 @@ public interface ModulePlans {
      *
      * @param name name
      * @return The retrieved Plan.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Plan> getPlan(final String name) throws IOException;
+    @RequestLine("GET /plans/{name}")
+    Response<Plan> getPlan(@Param("name") String name);
 }

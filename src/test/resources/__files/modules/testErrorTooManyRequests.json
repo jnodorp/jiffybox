@@ -1,9 +1,0 @@
-{
-  "messages": [
-    {
-      "type": "error",
-      "message": "Zu viele Aufrufe. Bitte warten Sie einen moment und versuchen Sie es dann wieder."
-    }
-  ],
-  "result": false
-}

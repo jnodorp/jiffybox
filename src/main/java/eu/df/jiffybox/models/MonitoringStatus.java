@@ -1,18 +1,15 @@
 package eu.df.jiffybox.models;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
  * A monitoring status consists of a code and a response.
  */
 @JsonAutoDetect
-public class MonitoringStatus extends MappableModel {
-
-    /**
-     * The id.
-     */
-    @JsonIgnore
-    private Integer id;
+public class MonitoringStatus {
 
     /**
      * The code.
@@ -25,19 +22,6 @@ public class MonitoringStatus extends MappableModel {
      */
     @JsonProperty("response")
     private String response;
-
-    /**
-     * Set the id.
-     *
-     * @param id     The id.
-     * @param status Required by JSON for flattening.
-     */
-    @JsonAnySetter
-    public void setId(String id, MonitoringStatus status) {
-        this.id = Integer.parseInt(id);
-        this.code = status.getCode();
-        this.response = status.getResponse();
-    }
 
     /**
      * Get the code.
@@ -77,15 +61,5 @@ public class MonitoringStatus extends MappableModel {
     @JsonSetter("response")
     public void setResponse(String response) {
         this.response = response;
-    }
-
-    /**
-     * Get the id.
-     *
-     * @return The id.
-     */
-    @JsonAnyGetter
-    public Integer getId() {
-        return id;
     }
 }
