@@ -1,51 +1,47 @@
 package eu.df.jiffybox.modules;
 
-import eu.df.jiffybox.JiffyBoxApi;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.IP;
 import eu.df.jiffybox.models.IPSet;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'ips' module.
  */
-public class ModuleIpsTest extends ModuleTest {
+public class ModuleIpsTest {
 
-    /**
-     * The {@link JiffyBoxApi}.
-     */
-    private final JiffyBoxApi jiffyBoxApi;
+    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
 
-    /**
-     * Create a new instance using the given {@link JiffyBoxApi}.
-     *
-     * @param jiffyBoxApi The {@link JiffyBoxApi}.
-     */
-    public ModuleIpsTest(final JiffyBoxApi jiffyBoxApi) {
-        this.jiffyBoxApi = jiffyBoxApi;
+    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
 
-        // Only run in development.
-        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
-    }
+    @Rule
+    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
 
     /**
      * Test for {@link ModuleIps#getIPSets()}.
      */
     @Test
-    public void testGetIPSets() throws IOException {
-        Response<List<IPSet>> response = jiffyBoxApi.ips().getIPSets();
+    public void testGetIPSets() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips")).willReturn(aResponse()
+                .withHeaders(WireMockHelper
+                .headers()).withStatus(200).withBodyFile("modules/ips/testGetIPSets.json")));
+
+        Response<Map<String, IPSet>> response = module.get().ips().getIPSets();
         List<Message> messages = response.getMessages();
-        List<IPSet> result = response.getResult();
-        IPSet ipSet = result.get(0);
-        assertEquals("12345", ipSet.getKey());
+        Map<String, IPSet> result = response.getResult();
+        IPSet ipSet = result.get("12345");
         Map<String, IP> ips = ipSet.getIps();
         IP ip1 = ips.get("8376");
         IP ip2 = ips.get("8377");
@@ -102,8 +98,12 @@ public class ModuleIpsTest extends ModuleTest {
      * Test for {@link ModuleIps#getIPSet(int)}.
      */
     @Test
-    public void testGetIPSet() throws IOException {
-        Response<IPSet> response = jiffyBoxApi.ips().getIPSet(12345);
+    public void testGetIPSet() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips/12345")).willReturn(aResponse
+                ().withHeaders(WireMockHelper
+                .headers()).withStatus(200).withBodyFile("modules/ips/testGetIPSet.json")));
+
+        Response<IPSet> response = module.get().ips().getIPSet(12345);
         List<Message> messages = response.getMessages();
         IPSet result = response.getResult();
 
@@ -163,8 +163,14 @@ public class ModuleIpsTest extends ModuleTest {
      * Test for {@link ModuleIps#moveIPAddress(int, int, int)}.
      */
     @Test
-    public void testMoveIPAddress() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.ips().moveIPAddress(12345, 8465, 4321);
+    public void testMoveIPAddress() {
+        wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips/12345/8465/move"))
+                .withRequestBody(equalToJson("{\"targetid\": 4321}", false, false))
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/ips/testMoveIPAddress.json")));
+
+        Response<Boolean> response = module.get().ips().moveIPAddress(12345, 8465, 4321);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());

@@ -1,12 +1,18 @@
 package eu.df.jiffybox.modules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.JiffyBox;
 import eu.df.jiffybox.models.Response;
+import feign.Feign;
+import feign.Headers;
+import feign.Param;
+import feign.RequestLine;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the jiffyBoxes module.
@@ -14,15 +20,30 @@ import java.util.List;
 public interface ModuleJiffyBoxes {
 
     /**
+     * Build the module.
+     *
+     * @param baseUrl the base URL
+     * @return the module
+     */
+    static ModuleJiffyBoxes build(String baseUrl) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JiffyBoxBuilderSerializerModule());
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder(objectMapper))
+                .requestInterceptor(new HeaderToBodyRequestInterceptor("X-STATUS", "status"))
+                .target(ModuleJiffyBoxes.class, baseUrl);
+    }
+
+    /**
      * This method provides an overview of all set up JiffyBoxes. Since this
      * method is rather time consuming continuous usage is deprecated. Use the
      * more specific call for a single JiffyBox instead.
      *
      * @return The retrieved JiffyBoxes.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<JiffyBox>> getJiffyBoxes() throws IOException;
+    @RequestLine("GET /jiffyBoxes")
+    Response<Map<String, JiffyBox>> getJiffyBoxes();
 
     /**
      * This method provides details of a single JiffyBox. The result is
@@ -31,10 +52,9 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return The retrieved JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> getJiffyBox(final int id) throws IOException;
+    @RequestLine("GET /jiffyBoxes/{id}")
+    Response<JiffyBox> getJiffyBox(@Param("id") int id);
 
     /**
      * This method deletes a specified JiffyBox. This command is asynchronous .
@@ -48,10 +68,9 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return If the deletion was successfully initiated.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> deleteJiffyBox(final int id) throws IOException;
+    @RequestLine("DELETE /jiffyBoxes/{id}")
+    Response<Boolean> deleteJiffyBox(@Param("id") int id);
 
     /**
      * This method creates a JiffyBox. The JiffyBox is created in an
@@ -61,13 +80,11 @@ public interface ModuleJiffyBoxes {
      * status is set to CREATING. As soon as the JiffyBox is set up the state
      * changes to READY. On failure the JiffyBox is removed automatically.
      *
-     * @param data The JSON data from the builder.
-     * @return The created JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
+     * @param data the {@link JiffyBoxBuilder}
+     * @return the created {@link JiffyBox}
      */
-    Response<JiffyBox> createJiffyBox(final JiffyBoxBuilder data)
-            throws IOException;
+    @RequestLine("POST /jiffyBoxes")
+    Response<JiffyBox> createJiffyBox(JiffyBoxBuilder data); // FIXME
 
     /**
      * This method duplicates an existing JiffyBox. The JiffyBox is created in
@@ -87,11 +104,9 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The duplicated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
-                                         final int planId) throws IOException;
+    @RequestLine("POST /jiffyBoxes/{id}")
+    Response<JiffyBox> duplicateJiffyBox(@Param("id") int id, @Param("name") String name, @Param("planid") int planId);
 
     /**
      * This method duplicates an existing JiffyBox. The JiffyBox is created in
@@ -111,12 +126,9 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The duplicated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
-                                         final String planId) throws
-            IOException;
+    @RequestLine("POST /jiffyBoxes/{id}")
+    Response<JiffyBox> duplicateJiffyBox(@Param("id") int id, @Param("name") String name, @Param("planid") String planId);
 
     /**
      * This method duplicates an existing JiffyBox. The JiffyBox is created in
@@ -142,12 +154,10 @@ public interface ModuleJiffyBoxes {
      *                 data may not exceed 4kb in size. Please notice, that this
      *                 size refers to the generated JsonObject.
      * @return The duplicated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
-                                         final int planId, final ObjectNode
-                                                 metadata) throws IOException;
+    @RequestLine("POST /jiffyBoxes/{id}")
+    Response<JiffyBox> duplicateJiffyBox(@Param("id") int id, @Param("name") String name,
+                                         @Param("planid") int planId, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method duplicates an existing JiffyBox. The JiffyBox is created in
@@ -173,12 +183,10 @@ public interface ModuleJiffyBoxes {
      *                 data may not exceed 4kb in size. Please notice, that this
      *                 size refers to the generated JsonObject.
      * @return The duplicated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> duplicateJiffyBox(final int id, final String name,
-                                         final String planId, final
-                                         ObjectNode metadata) throws IOException;
+    @RequestLine("POST /jiffyBoxes/{id}")
+    Response<JiffyBox> duplicateJiffyBox(@Param("id") int id, @Param("name") String name,
+                                         @Param("planid") String planId, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method starts a JiffyBox. This command acts in an entirely
@@ -188,10 +196,10 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> startJiffyBox(final int id) throws IOException;
+    @Headers("X-STATUS: START")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> startJiffyBox(@Param("id") int id);
 
     /**
      * This method starts a JiffyBox. This command acts in an entirely
@@ -208,11 +216,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> startJiffyBox(final int id, final ObjectNode metadata)
-            throws IOException;
+    @Headers("X-STATUS: START")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> startJiffyBox(@Param("id") int id, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method invokes a shutdown on a JiffyBox. This command acts in an
@@ -222,10 +229,10 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> shutdownJiffyBox(final int id) throws IOException;
+    @Headers("X-STATUS: SHUTDOWN")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> shutdownJiffyBox(@Param("id") int id);
 
     /**
      * This method invokes a shutdown on a JiffyBox. This command acts in an
@@ -242,11 +249,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> shutdownJiffyBox(final int id, final ObjectNode
-            metadata) throws IOException;
+    @Headers("X-STATUS: SHUTDOWN")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> shutdownJiffyBox(@Param("id") int id, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method invokes a 'pull plug' on a JiffyBox. This command acts in an
@@ -256,10 +262,10 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> pullplugJiffyBox(final int id) throws IOException;
+    @Headers("X-STATUS: PULLPLUG")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> pullplugJiffyBox(@Param("id") int id);
 
     /**
      * This method invokes a 'pull plug' on a JiffyBox. This command acts in an
@@ -276,11 +282,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> pullplugJiffyBox(final int id, final ObjectNode
-            metadata) throws IOException;
+    @Headers("X-STATUS: PULLPLUG")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> pullplugJiffyBox(@Param("id") int id, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method freezes a JiffyBox. This command acts in an entirely
@@ -290,10 +295,10 @@ public interface ModuleJiffyBoxes {
      *
      * @param id Box-ID
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> freezeJiffyBox(final int id) throws IOException;
+    @Headers("X-STATUS: FREEZE")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> freezeJiffyBox(@Param("id") int id);
 
     /**
      * This method freezes a JiffyBox. This command acts in an entirely
@@ -310,11 +315,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> freezeJiffyBox(final int id, final ObjectNode
-            metadata) throws IOException;
+    @Headers("X-STATUS: FREEZE")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> freezeJiffyBox(@Param("id") int id, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method thaws a JiffyBox. This command acts in an entirely
@@ -328,11 +332,10 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> thawJiffyBox(final int id, final int planId) throws
-            IOException;
+    @Headers("X-STATUS: THAW")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> thawJiffyBox(@Param("id") int id, @Param("planid") int planId);
 
     /**
      * This method thaws a JiffyBox. This command acts in an entirely
@@ -346,11 +349,10 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> thawJiffyBox(final int id, final String planId) throws
-            IOException;
+    @Headers("X-STATUS: THAW")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> thawJiffyBox(@Param("id") int id, @Param("planid") String planId);
 
     /**
      * This method thaws a JiffyBox. This command acts in an entirely
@@ -371,11 +373,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> thawJiffyBox(final int id, final int planId, final
-    ObjectNode metadata) throws IOException;
+    @Headers("X-STATUS: THAW")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> thawJiffyBox(@Param("id") int id, @Param("planid") int planId, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method thaws a JiffyBox. This command acts in an entirely
@@ -396,11 +397,10 @@ public interface ModuleJiffyBoxes {
      *                 entire meta data may not exceed 4 kB. Please notice, that
      *                 the space is referring to the generated JSON string.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> thawJiffyBox(final int id, final String planId, final
-    ObjectNode metadata) throws IOException;
+    @Headers("X-STATUS: THAW")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> thawJiffyBox(@Param("id") int id, @Param("planid") String planId, @Param("metadata") ObjectNode metadata);
 
     /**
      * This method changes the plan of a JiffyBox. This command acts in an
@@ -414,11 +414,10 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> changePlanJiffyBox(final int id, final int planId)
-            throws IOException;
+    @Headers("X-STATUS: PLAN")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> changePlanJiffyBox(@Param("id") int id, @Param("planid") int planId);
 
     /**
      * This method changes the plan of a JiffyBox. This command acts in an
@@ -432,9 +431,8 @@ public interface ModuleJiffyBoxes {
      *               other details of the plan can be obtained via the plans
      *               module.
      * @return The updated JiffyBox.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<JiffyBox> changePlanJiffyBox(final int id, final String planId)
-            throws IOException;
+    @Headers("X-STATUS: PLAN")
+    @RequestLine("PUT /jiffyBoxes/{id}")
+    Response<JiffyBox> changePlanJiffyBox(@Param("id") int id, @Param("planid") String planId);
 }

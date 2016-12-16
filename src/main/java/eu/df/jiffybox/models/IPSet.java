@@ -11,7 +11,7 @@ import java.util.Map;
  * An ip set consists of ips.
  */
 @JsonAutoDetect
-public class IPSet extends MappableModel {
+public class IPSet {
 
     /**
      * The ips.

@@ -2,9 +2,14 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.models.ContactGroup;
 import eu.df.jiffybox.models.Response;
+import feign.Feign;
+import feign.Param;
+import feign.RequestLine;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the contactGroups module.
@@ -12,13 +17,25 @@ import java.util.List;
 public interface ModuleContactGroups {
 
     /**
+     * Build the module.
+     *
+     * @param baseUrl the base URL
+     * @return the module
+     */
+    static ModuleContactGroups build(String baseUrl) {
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder())
+                .target(ModuleContactGroups.class, baseUrl);
+    }
+
+    /**
      * With this call you get an overview of all contact groups.
      *
      * @return The retrieved contact groups.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<ContactGroup>> getContactGroups() throws IOException;
+    @RequestLine("GET /contactGroups")
+    Response<Map<String, ContactGroup>> getContactGroups();
 
     /**
      * Provides details regarding a specific contact group. The result is
@@ -26,10 +43,9 @@ public interface ModuleContactGroups {
      *
      * @param id Group-ID
      * @return The retrieved contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> getContactGroup(final int id) throws IOException;
+    @RequestLine("GET /contactGroups/{id}")
+    Response<ContactGroup> getContactGroup(@Param("id") int id);
 
     /**
      * Using this command you are able to delete contact groups. This command is
@@ -43,10 +59,9 @@ public interface ModuleContactGroups {
      *
      * @param id Group-ID
      * @return If the contact group has been deleted successfully.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> deleteContactGroup(final int id) throws IOException;
+    @RequestLine("DELETE /contactGroups/{id}")
+    Response<Boolean> deleteContactGroup(@Param("id") int id);
 
     /**
      * There are two possibilities to create contact groups: 1. Create a new
@@ -64,11 +79,9 @@ public interface ModuleContactGroups {
      *                 spaces.
      * @param contacts An array of up to ten e-mail addresses.
      * @return The created contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> createContactGroup(final String name, final
-    List<String> contacts) throws IOException;
+    @RequestLine("POST /contactGroups")
+    Response<ContactGroup> createContactGroup(@Param("name") String name, @Param("contacts") List<String> contacts);
 
     /**
      * With this command contact groups (except "Stammdaten-E-Mail-Addresse")
@@ -81,11 +94,10 @@ public interface ModuleContactGroups {
      *                 spaces.
      * @param contacts An array of up to ten e-mail addresses.
      * @return The updated contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> updateContactGroup(final int id, final String
-            name, final List<String> contacts) throws IOException;
+    @RequestLine("PUT /contactGroups/{id}")
+    Response<ContactGroup> updateContactGroup(@Param("id") int id, @Param("name") String name, @Param("contacts")
+            List<String> contacts);
 
     /**
      * With this command contact groups (except "Stammdaten-E-Mail-Addresse")
@@ -96,11 +108,9 @@ public interface ModuleContactGroups {
      * @param name The contact groups name. Up to 30 characters are allowed.
      *             Valid characters are: a-zA-Z0-9üöäÜÖÄß_()=!\*@.- and spaces.
      * @return The updated contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> updateContactGroup(final int id, final String
-            name) throws IOException;
+    @RequestLine("PUT /contactGroups/{id}")
+    Response<ContactGroup> updateContactGroup(@Param("id") int id, @Param("name") String name);
 
     /**
      * With this command contact groups (except "Stammdaten-E-Mail-Addresse")
@@ -110,11 +120,9 @@ public interface ModuleContactGroups {
      * @param id       ContactGroup-ID
      * @param contacts An array of up to ten e-mail addresses.
      * @return The updated contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> updateContactGroup(final int id, final
-    List<String> contacts) throws IOException;
+    @RequestLine("PUT /contactGroups/{id}")
+    Response<ContactGroup> updateContactGroup(@Param("id") int id, @Param("contacts") List<String> contacts);
 
     /**
      * The duplication of contact groups needs the id of the contact group to
@@ -127,11 +135,10 @@ public interface ModuleContactGroups {
      *                 spaces.
      * @param contacts An array of up to ten e-mail addresses.
      * @return The duplicated contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> duplicateContactGroup(final int id, final String
-            name, final List<String> contacts) throws IOException;
+    @RequestLine("POST /contactGroups/{id}")
+    Response<ContactGroup> duplicateContactGroup(@Param("id") int id, @Param("name") String name, @Param("contacts")
+            List<String> contacts);
 
     /**
      * The duplication of contact groups needs the id of the contact group to
@@ -142,9 +149,7 @@ public interface ModuleContactGroups {
      * @param name The contact groups name. Up to 30 characters are allowed.
      *             Valid characters are: a-zA-Z0-9üöäÜÖÄß_()=!\*@.- and spaces.
      * @return The duplicated contact group.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<ContactGroup> duplicateContactGroup(final int id, final String
-            name) throws IOException;
+    @RequestLine("POST /contactGroups/{id}")
+    Response<ContactGroup> duplicateContactGroup(@Param("id") int id, @Param("name") String name);
 }

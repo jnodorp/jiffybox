@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * @see eu.df.jiffybox.models.JiffyBox
  */
 @JsonAutoDetect
-public class Backup extends MappableModel {
+public class Backup {
 
     /**
      * The manual backup entry.

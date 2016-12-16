@@ -15,7 +15,7 @@ import java.util.List;
  * call the needed setter methods on a new monitoring check instance and use the
  * readily set up instance as the argument for the final API call.
  */
-class DefaultMonitoringCheckBuilder extends DefaultBuilder implements
+public class DefaultMonitoringCheckBuilder extends DefaultBuilder implements
         MonitoringCheckBuilder {
 
     /**

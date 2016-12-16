@@ -1,7 +1,9 @@
 package eu.df.jiffybox;
 
-import eu.df.jiffybox.internal.*;
 import eu.df.jiffybox.modules.*;
+import feign.Feign;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
 import java.net.URI;
 
@@ -101,17 +103,17 @@ public class JiffyBoxApi {
      * @param host    The host.
      * @param version The version.
      */
-    protected JiffyBoxApi(final String token, final String host, final String version) {
+    JiffyBoxApi(final String token, final String host, final String version) {
         this.uri = URI.create(host + "/" + token + "/" + version);
 
-        this.moduleBackups = new ModuleBackupsImpl(uri);
-        this.moduleContactGroups = new ModuleContactGroupsImpl(uri);
-        this.moduleDistributions = new ModuleDistributionsImpl(uri);
-        this.moduleDoc = new ModuleDocImpl(uri);
-        this.moduleIps = new ModuleIpsImpl(uri);
-        this.moduleJiffyBoxes = new ModuleJiffyBoxesImpl(uri);
-        this.moduleMonitoring = new ModuleMonitoringImpl(uri);
-        this.modulePlans = new ModulePlansImpl(uri);
+        this.moduleBackups = ModuleBackups.build(uri.toString());
+        this.moduleContactGroups = ModuleContactGroups.build(uri.toString());
+        this.moduleDistributions = ModuleDistributions.build(uri.toString());
+        this.moduleDoc = build(ModuleDoc.class);
+        this.moduleIps = build(ModuleIps.class);
+        this.moduleJiffyBoxes = ModuleJiffyBoxes.build(uri.toString());
+        this.moduleMonitoring = ModuleMonitoring.build(uri.toString());
+        this.modulePlans = build(ModulePlans.class);
     }
 
     /**
@@ -187,11 +189,16 @@ public class JiffyBoxApi {
     }
 
     /**
-     * Get the {@link URI}.
+     * Helper to build API implementations with {@link Feign}.
      *
-     * @return The {@link URI}.
+     * @param tClass the API interface
+     * @param <T>    the API type
+     * @return the API implementation
      */
-    public URI getUri() {
-        return uri;
+    private <T> T build(Class<T> tClass) {
+        return Feign.builder()
+                .encoder(new JacksonEncoder())
+                .decoder(new JacksonDecoder())
+                .target(tClass, uri.toString());
     }
 }

@@ -1,49 +1,47 @@
 package eu.df.jiffybox.modules;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import eu.df.jiffybox.Build;
-import eu.df.jiffybox.JiffyBoxApi;
+import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.*;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * This class tests the 'monitoring' module.
  */
-public class ModuleMonitoringTest extends ModuleTest {
+public class ModuleMonitoringTest {
 
-    /**
-     * The {@link JiffyBoxApi}.
-     */
-    private final JiffyBoxApi jiffyBoxApi;
+    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
 
-    /**
-     * Create a new instance using the given {@link JiffyBoxApi}.
-     *
-     * @param jiffyBoxApi The {@link JiffyBoxApi}.
-     */
-    public ModuleMonitoringTest(final JiffyBoxApi jiffyBoxApi) {
-        this.jiffyBoxApi = jiffyBoxApi;
+    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
 
-        // Only run in development.
-        assumeTrue(jiffyBoxApi.getUri().toString().contains("localhost"));
-    }
+    @Rule
+    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
 
     /**
      * Test for {@link ModuleMonitoring#getMonitoringChecks()}.
      */
     @Test
-    public void testGetMonitoringChecks() throws IOException {
-        Response<List<MonitoringCheck>> response = jiffyBoxApi.monitoring().getMonitoringChecks();
+    public void testGetMonitoringChecks() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring")).willReturn(aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/monitoring/testGetMonitoringChecks.json")));
+
+        Response<Map<String, MonitoringCheck>> response = module.get().monitoring().getMonitoringChecks();
         List<Message> messages = response.getMessages();
-        List<MonitoringCheck> result = response.getResult();
-        MonitoringCheck monitoringCheck = result.get(0);
-        assertEquals("911", monitoringCheck.getKey());
+        Map<String, MonitoringCheck> result = response.getResult();
+        MonitoringCheck monitoringCheck = result.get("911");
 
         List<ContactGroup> contactGroups = monitoringCheck.getContactgroups();
         ContactGroup contactGroup = contactGroups.get(0);
@@ -75,8 +73,14 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#getMonitoringCheck(int)}.
      */
     @Test
-    public void testGetMonitoringCheck() throws IOException {
-        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().getMonitoringCheck(1234);
+    public void testGetMonitoringCheck() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234")).willReturn
+                (aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/monitoring/testGetMonitoringCheck.json")));
+
+        Response<MonitoringCheck> response = module.get().monitoring().getMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -110,8 +114,14 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#deleteMonitoringCheck(int)}.
      */
     @Test
-    public void testDeleteMonitoringCheck() throws IOException {
-        Response<Boolean> response = jiffyBoxApi.monitoring().deleteMonitoringCheck(1234);
+    public void testDeleteMonitoringCheck() {
+        wireMock.stubFor(delete(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234")).willReturn
+                (aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/monitoring/testDeleteMonitoringCheck.json")));
+
+        Response<Boolean> response = module.get().monitoring().deleteMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         Message message = messages.get(0);
 
@@ -127,11 +137,19 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#createMonitoringCheck(MonitoringCheckBuilder)}.
      */
     @Test
-    public void testCreateMonitoringCheck() throws IOException {
-        MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93" + ".14.211", 80).http("example.com",
-                "/index.php");
+    public void testCreateMonitoringCheck() {
+        String body = "{\"name\": \"Test\", \"ip\": \"188.93.14.211\", \"checkType\":\"http\", \"port\": 80, " +
+                "\"path\": \"/index.php\", \"domainname\": \"example.com\"}";
+        wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring")).withRequestBody
+                (equalToJson(body, false, false))
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/monitoring/testCreateMonitoringCheck.json")));
 
-        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().createMonitoringCheck(data);
+        MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93.14.211", 80)
+                .http("example.com", "/index.php");
+
+        Response<MonitoringCheck> response = module.get().monitoring().createMonitoringCheck(data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -158,10 +176,16 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#duplicateMonitoringCheck(int, MonitoringCheckBuilder)}.
      */
     @Test
-    public void testDuplicateMonitoringCheck() throws IOException {
+    public void testDuplicateMonitoringCheck() {
+        wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234"))
+                .withRequestBody(equalToJson("{\"name\": \"Kopie von Test\", \"ip\": \"188.93.14.212\"}", false, false))
+                .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                        .withStatus(200)
+                        .withBodyFile("modules/monitoring/testDuplicateMonitoringCheck.json")));
+
         MonitoringCheckBuilder data = Build.monitoringCheck("Kopie von Test", "188.93.14.212", null).preserveType();
 
-        Response<MonitoringCheck> response = jiffyBoxApi.monitoring().duplicateMonitoringCheck(1234, data);
+        Response<MonitoringCheck> response = module.get().monitoring().duplicateMonitoringCheck(1234, data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -188,14 +212,19 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#getStatus(int)}.
      */
     @Test
-    public void testGetStatus() throws IOException {
-        Response<MonitoringStatus> response = jiffyBoxApi.monitoring().getStatus(1234);
+    public void testGetStatus() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234/status"))
+                .willReturn(aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/monitoring/testGetStatus.json")));
+
+        Response<Map<String, MonitoringStatus>> response = module.get().monitoring().getStatus(1234);
         List<Message> messages = response.getMessages();
-        MonitoringStatus result = response.getResult();
+        MonitoringStatus result = response.getResult().get("1234");
 
         assertTrue(messages.isEmpty());
 
-        assertEquals(1234, result.getId().intValue());
         assertEquals(0, result.getCode());
         assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", result.getResponse());
     }
@@ -204,26 +233,28 @@ public class ModuleMonitoringTest extends ModuleTest {
      * Test for {@link ModuleMonitoring#getStatuses(String)}.
      */
     @Test
-    public void testGetStatuses() throws IOException {
-        Response<List<MonitoringStatus>> response = jiffyBoxApi.monitoring().getStatuses("123.45.67"
-                + ".89");
-        List<Message> messages = response.getMessages();
-        List<MonitoringStatus> result = response.getResult();
+    public void testGetStatuses() {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/123.45.67.89/status"))
+                .willReturn(aResponse()
+                .withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/monitoring/testGetStatuses.json")));
 
-        MonitoringStatus monitoringStatus1 = result.get(0);
-        MonitoringStatus monitoringStatus2 = result.get(1);
+        Response<Map<String, MonitoringStatus>> response = module.get().monitoring().getStatuses("123.45.67.89");
+        List<Message> messages = response.getMessages();
+        Map<String, MonitoringStatus> result = response.getResult();
+
+        MonitoringStatus monitoringStatus1 = result.get("1234");
+        MonitoringStatus monitoringStatus2 = result.get("5678");
 
         assertTrue(messages.isEmpty());
 
-        assertEquals("1234", monitoringStatus1.getKey());
-        assertNull(monitoringStatus1.getId());
         assertEquals(0, monitoringStatus1.getCode());
         assertEquals("OK - 123.45.67.89: rta 0.313ms, lost 0%", monitoringStatus1.getResponse());
 
-        assertEquals("5678", monitoringStatus2.getKey());
-        assertNull(monitoringStatus2.getId());
         assertEquals(0, monitoringStatus2.getCode());
-        assertEquals("HTTP OK: Status line output matched &quot;200&quot; " + "-3827 bytes in 0.003 second response " +
-                "time", monitoringStatus2.getResponse());
+        assertEquals("HTTP OK: Status line output matched &quot;200&quot; " + "-3827 bytes in 0.003 second response "
+                + "time", monitoringStatus2
+                .getResponse());
     }
 }

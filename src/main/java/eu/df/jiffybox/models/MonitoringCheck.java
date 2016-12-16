@@ -14,7 +14,19 @@ import java.util.List;
  * port, a path, a username, a password and a list of contact groups.
  */
 @JsonAutoDetect
-public class MonitoringCheck extends Model {
+public class MonitoringCheck {
+
+    /**
+     * The id.
+     */
+    @JsonProperty("id")
+    private int id;
+
+    /**
+     * The name.
+     */
+    @JsonProperty("name")
+    private String name;
 
     /**
      * The contact groups.
@@ -93,6 +105,46 @@ public class MonitoringCheck extends Model {
      */
     @JsonProperty("password")
     private String password;
+
+    /**
+     * Get the id.
+     *
+     * @return The id.
+     */
+    @JsonGetter("id")
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @param id The id.
+     */
+    @JsonSetter("id")
+    public void setId(final int id) {
+        this.id = id;
+    }
+
+    /**
+     * Get the name.
+     *
+     * @return The name.
+     */
+    @JsonGetter("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name.
+     */
+    @JsonSetter("name")
+    public void setName(final String name) {
+        this.name = name;
+    }
 
     /**
      * Get the jiffy box.

@@ -3,14 +3,32 @@ package eu.df.jiffybox.modules;
 import eu.df.jiffybox.models.Backup;
 import eu.df.jiffybox.models.BackupConfig;
 import eu.df.jiffybox.models.Response;
+import feign.Body;
+import feign.Feign;
+import feign.Param;
+import feign.RequestLine;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the backups module.
  */
 public interface ModuleBackups {
+
+    /**
+     * Build the module.
+     *
+     * @param baseUrl the base URL
+     * @return the module
+     */
+    static ModuleBackups build(String baseUrl) {
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder())
+                .target(ModuleBackups.class, baseUrl);
+    }
 
     /**
      * You may use this command to display the backups of each JiffyBox but it
@@ -20,10 +38,9 @@ public interface ModuleBackups {
      * query.
      *
      * @return The retrieved Backups.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<Backup>> getBackups() throws IOException;
+    @RequestLine("GET /backups")
+    Response<Map<String, Backup>> getBackups();
 
     /**
      * This method provides details about every backup of a given JiffyBox.
@@ -38,10 +55,9 @@ public interface ModuleBackups {
      *
      * @param id Box-ID
      * @return The retrieved Backup.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Backup> getBackup(final int id) throws IOException;
+    @RequestLine("GET /backups/{id}")
+    Response<Backup> getBackup(@Param("id") int id);
 
     /**
      * Using this command you are able to set if periodical backups shall be
@@ -55,11 +71,9 @@ public interface ModuleBackups {
      *               4:00 a.m and 6:00 a.m) and 6 (between 10:00 p.m and 12:00
      *               a.m)
      * @return The created BackupConfig.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<BackupConfig> createPeriodicalBackups(int id, int dayid, int
-            timeid) throws IOException;
+    @RequestLine("POST /backups/{id}")
+    Response<BackupConfig> createPeriodicalBackups(@Param("id") int id, @Param("dayid") int dayid, @Param("timeid") int timeid);
 
     /**
      * Using this command you are able to change an existing backup
@@ -76,12 +90,9 @@ public interface ModuleBackups {
      *               4:00 a.m and 6:00 a.m) and 6 (between 10:00 p.m and 12:00
      *               a.m)
      * @return The updated BackupConfig.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<BackupConfig> updatePeriodicalBackups(int id, Integer dayid,
-                                                   Integer timeid) throws
-            IOException;
+    @RequestLine("PUT /backups/{id}")
+    Response<BackupConfig> updatePeriodicalBackups(@Param("id") int id, @Param("dayid") int dayid, @Param("timeid") int timeid);
 
     /**
      * By default automated backups of every JiffyBox are created on a daily
@@ -93,10 +104,9 @@ public interface ModuleBackups {
      * @param id Box-ID
      * @return If the deletion of the BackupConfig has successfully been
      * initiated.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> deletePeriodicalBackups(int id) throws IOException;
+    @RequestLine("DELETE /backups/{id}")
+    Response<Boolean> deletePeriodicalBackups(@Param("id") int id);
 
     /**
      * Each JiffyBox is able to hold exactly one manual backup. This method may
@@ -110,10 +120,10 @@ public interface ModuleBackups {
      *
      * @param id Box-ID
      * @return If the manual backup has been successfully initiated.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> createManualBackup(int id) throws IOException;
+    @RequestLine("POST /backups/{id}/manual")
+    @Body("{}")
+    Response<Boolean> createManualBackup(@Param("id") int id);
 
     /**
      * With this command it is possible to delete a backup using its type
@@ -124,11 +134,9 @@ public interface ModuleBackups {
      * @param type     Type
      * @param backupid Backup-ID
      * @return If the deletion of the backup has been successfully initiated.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> deleteBackup(final int id, final String type, final
-    String backupid) throws IOException;
+    @RequestLine("DELETE /backups/{id}/{type}/{backupid}")
+    Response<Boolean> deleteBackup(@Param("id") int id, @Param("type") String type, @Param("backupid") String backupid);
 
     /**
      * With this command it is possible to replace the content of a given
@@ -142,9 +150,8 @@ public interface ModuleBackups {
      * @param backupid Backup-ID
      * @return If the process of restoring the backup has been successfully
      * initiated.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Boolean> restoreBackup(final int id, final String type, final
-    String backupid) throws IOException;
+    @RequestLine("POST /backups/{id}/{type}/{backupid}")
+    @Body("{}")
+    Response<Boolean> restoreBackup(@Param("id") int id, @Param("type") String type, @Param("backupid") String backupid);
 }

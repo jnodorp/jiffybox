@@ -2,14 +2,31 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.models.Distribution;
 import eu.df.jiffybox.models.Response;
+import feign.Feign;
+import feign.Param;
+import feign.RequestLine;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This interface describes the distributions module.
  */
 public interface ModuleDistributions {
+
+    /**
+     * Build the module.
+     *
+     * @param baseUrl the base URL
+     * @return the module
+     */
+    static ModuleDistributions build(String baseUrl) {
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder())
+                .target(ModuleDistributions.class, baseUrl);
+    }
 
     /**
      * Lists all Linux distributions available for initializing hard drives
@@ -18,10 +35,9 @@ public interface ModuleDistributions {
      * used.
      *
      * @return The retrieved distributions.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<List<Distribution>> getDistributions() throws IOException;
+    @RequestLine("GET /distributions")
+    Response<Map<String, Distribution>> getDistributions();
 
     /**
      * With this call you get details to a specified Linux distribution. id
@@ -29,8 +45,7 @@ public interface ModuleDistributions {
      *
      * @param id The id.
      * @return The retrieved Distribution
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Distribution> getDistribution(final String id) throws IOException;
+    @RequestLine("GET /distributions/{id}")
+    Response<Distribution> getDistribution(@Param("id") String id);
 }

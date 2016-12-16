@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * hour, a price per hour frozen and the number of CPUs.
  */
 @JsonAutoDetect
-public class Plan extends MappableModel implements Comparable<Plan> {
+public class Plan implements Comparable<Plan> {
 
     /**
      * The id.

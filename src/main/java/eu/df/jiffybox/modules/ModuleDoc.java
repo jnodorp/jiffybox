@@ -2,8 +2,9 @@ package eu.df.jiffybox.modules;
 
 import eu.df.jiffybox.models.Doc;
 import eu.df.jiffybox.models.Response;
+import feign.Param;
+import feign.RequestLine;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,10 +17,9 @@ public interface ModuleDoc {
      * name you are able to request further details.
      *
      * @return All available docs.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Map<String, String>> getDocs() throws IOException;
+    @RequestLine("GET /doc")
+    Response<Map<String, String>> getDocs();
 
     /**
      * Provides a brief documentation of the module. A list of modules may be
@@ -27,8 +27,7 @@ public interface ModuleDoc {
      *
      * @param module The module.
      * @return The requested doc.
-     * @throws java.io.IOException When either the API limits are exceeded or
-     *                             the server is unreachable.
      */
-    Response<Doc> getDoc(final String module) throws IOException;
+    @RequestLine("GET /doc/{module}")
+    Response<Doc> getDoc(@Param("module") String module);
 }

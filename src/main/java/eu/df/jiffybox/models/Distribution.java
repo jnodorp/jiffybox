@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * and a default kernel.
  */
 @JsonAutoDetect
-public class Distribution extends MappableModel implements Comparable<Distribution> {
+public class Distribution implements Comparable<Distribution> {
 
     /**
      * The minimal disk size in MB.
