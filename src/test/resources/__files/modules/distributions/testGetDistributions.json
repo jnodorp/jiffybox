@@ -7,7 +7,7 @@
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
-    "centos_7_1_64bit": {
+    "centos_7_64bit": {
       "minDiskSizeMB": 2560,
       "name": "CentOS 7 64-Bit",
       "rootdiskMode": "ro",
@@ -19,21 +19,21 @@
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
+    "debian_stretch_64bit": {
+      "minDiskSizeMB": 2048,
+      "name": "Debian Stretch (9) 64-Bit",
+      "rootdiskMode": "ro",
+      "defaultKernel": "xen-pvops-x86_64"
+    },
     "fedora_24_64bit": {
       "minDiskSizeMB": 2048,
       "name": "Fedora 24 64-Bit",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
-    "opensuse_13_64bit": {
-      "minDiskSizeMB": 2048,
-      "name": "openSUSE 13.2 64-bit",
-      "rootdiskMode": "ro",
-      "defaultKernel": "xen-pvops-x86_64"
-    },
     "opensuse_42_64bit": {
       "minDiskSizeMB": 2048,
-      "name": "openSUSE 42.1 64-Bit",
+      "name": "openSUSE 42.2 64-Bit",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },
