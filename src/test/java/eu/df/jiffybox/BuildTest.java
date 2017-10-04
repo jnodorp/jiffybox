@@ -1,10 +1,11 @@
 package eu.df.jiffybox;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test for {@link Build}.
@@ -17,11 +18,13 @@ public class BuildTest {
      *
      * @throws Exception Expect an exception.
      */
-    @Test(expected = Exception.class)
+    @Test
     public void testPrivateConstructor_AssertionError() throws Exception {
-        Constructor<Build> constructor = Build.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        constructor.newInstance();
+        assertThrows(Exception.class, () -> {
+            Constructor<Build> constructor = Build.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            constructor.newInstance();
+        });
     }
 
     /**

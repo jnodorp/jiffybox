@@ -1,7 +1,9 @@
 package eu.df.jiffybox.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test for {@link eu.df.jiffybox.models.PrintableModel}.
@@ -24,9 +26,11 @@ public class PrintableModelTest {
      * Check if the toString method throws an exception if it cannot create a
      * valid JSON string.
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testToStringInvalidObject() {
-        ModelTestHelper.validateJson(new PrintableModel() {
-        }.toString());
+        assertThrows(UnsupportedOperationException.class, () -> {
+            ModelTestHelper.validateJson(new PrintableModel() {
+            }.toString());
+        });
     }
 }

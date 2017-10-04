@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This utility can be used in tests to validate results.
@@ -18,9 +18,9 @@ class ModelTestHelper {
 
     /**
      * Validate a JSON string.
-	 *
-	 * @param json the JSON string
-	 * @throws AssertionError if JSON is invalid
+     *
+     * @param json the JSON string
+     * @throws AssertionError if JSON is invalid
      */
     public static void validateJson(String json) throws AssertionError {
         try {
