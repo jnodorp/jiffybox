@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test for {@link eu.df.jiffybox.models.Status}.
  */
-public class StatusTest {
+class StatusTest {
 
     /**
      * Check if the status of each JSON representation is correct.
      */
     @Test
-    public void testFromJson() {
+    void testFromJson() {
         assertEquals(Status.DELETING, Status.fromJson("DELETING"));
         assertEquals(Status.RUNNING, Status.fromJson("RUNNING"));
         assertEquals(Status.READY, Status.fromJson("READY"));
@@ -28,7 +28,7 @@ public class StatusTest {
      * Check if the JSON representation of each status is correct.
      */
     @Test
-    public void testToJson() {
+    void testToJson() {
         assertEquals("DELETING", Status.DELETING.toJson());
         assertEquals("RUNNING", Status.RUNNING.toJson());
         assertEquals("READY", Status.READY.toJson());

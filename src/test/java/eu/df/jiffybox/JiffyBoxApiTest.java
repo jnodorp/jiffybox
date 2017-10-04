@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test class for {@link JiffyBoxApi}.
  */
-public class JiffyBoxApiTest {
+class JiffyBoxApiTest {
 
     /**
      * The first {@link JiffyBoxApi} under test.
@@ -29,7 +29,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#backups()}.
      */
     @Test
-    public void testGetModuleBackups() {
+    void testGetModuleBackups() {
         assertNotNull(API1.backups());
         assertNotNull(API2.backups());
         assertNotNull(API3.backups());
@@ -39,7 +39,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#contactGroups()}.
      */
     @Test
-    public void testGetModuleContactGroups() {
+    void testGetModuleContactGroups() {
         assertNotNull(API1.contactGroups());
         assertNotNull(API2.contactGroups());
         assertNotNull(API3.contactGroups());
@@ -49,7 +49,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#distributions()}.
      */
     @Test
-    public void testGetModuleDistributions() {
+    void testGetModuleDistributions() {
         assertNotNull(API1.distributions());
         assertNotNull(API2.distributions());
         assertNotNull(API3.distributions());
@@ -59,7 +59,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#doc()}.
      */
     @Test
-    public void testGetModuleDoc() {
+    void testGetModuleDoc() {
         assertNotNull(API1.doc());
         assertNotNull(API2.doc());
         assertNotNull(API3.doc());
@@ -69,7 +69,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#ips()}.
      */
     @Test
-    public void testGetModuleIps() {
+    void testGetModuleIps() {
         assertNotNull(API1.ips());
         assertNotNull(API2.ips());
         assertNotNull(API3.ips());
@@ -79,7 +79,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#jiffyBoxes()}.
      */
     @Test
-    public void testGetModuleJiffyBoxes() {
+    void testGetModuleJiffyBoxes() {
         assertNotNull(API1.jiffyBoxes());
         assertNotNull(API2.jiffyBoxes());
         assertNotNull(API3.jiffyBoxes());
@@ -89,7 +89,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#monitoring()};
      */
     @Test
-    public void testGetModuleMonitoring() {
+    void testGetModuleMonitoring() {
         assertNotNull(API1.monitoring());
         assertNotNull(API2.monitoring());
         assertNotNull(API3.monitoring());
@@ -99,7 +99,7 @@ public class JiffyBoxApiTest {
      * Test for {@link JiffyBoxApi#plans()}.
      */
     @Test
-    public void testGetModulePlans() {
+    void testGetModulePlans() {
         assertNotNull(API1.plans());
         assertNotNull(API2.plans());
         assertNotNull(API3.plans());

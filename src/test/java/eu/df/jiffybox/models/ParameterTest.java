@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test class for {@link ParameterTest}.
  */
-public class ParameterTest {
+class ParameterTest {
 
     /**
      * Parameter description.
@@ -23,7 +23,7 @@ public class ParameterTest {
      * Test method for {@link Parameter#toString()}.
      */
     @Test
-    public void testToString() {
+    void testToString() {
         Parameter parameter = new Parameter();
         parameter.setDescription(TEST_DESCRIPTION);
         parameter.setType(TEST_TYPE);

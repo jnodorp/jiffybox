@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test for {@link eu.df.jiffybox.internal.DefaultBuilder}.
  */
-public class DefaultBuilderTest {
+class DefaultBuilderTest {
 
     /**
      * Test for {@link eu.df.jiffybox.internal.DefaultBuilder#put(String, String)}}.
      */
     @Test
-    public void testPutContactGroups() throws Exception {
+    void testPutContactGroups() throws Exception {
         final DefaultBuilder defaultBuilder = new DefaultBuilder() {
         };
 

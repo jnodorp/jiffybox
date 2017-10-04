@@ -8,16 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Test for {@link eu.df.jiffybox.models.PrintableModel}.
  */
-public class PrintableModelTest {
+class PrintableModelTest {
 
     /**
      * Check if the toString method returns a valid JSON string if there are
      * properties present.
      */
     @Test
-    public void testToStringValidObject() {
+    void testToStringValidObject() {
         ModelTestHelper.validateJson(new PrintableModel() {
             @JsonProperty("property")
+            @SuppressWarnings("unused")
             private String property = "value";
         }.toString());
     }
@@ -27,10 +28,8 @@ public class PrintableModelTest {
      * valid JSON string.
      */
     @Test
-    public void testToStringInvalidObject() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            ModelTestHelper.validateJson(new PrintableModel() {
-            }.toString());
-        });
+    void testToStringInvalidObject() {
+        assertThrows(UnsupportedOperationException.class, () -> ModelTestHelper.validateJson(new PrintableModel() {
+        }.toString()));
     }
 }

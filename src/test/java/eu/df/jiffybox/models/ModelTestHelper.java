@@ -22,7 +22,7 @@ class ModelTestHelper {
      * @param json the JSON string
      * @throws AssertionError if JSON is invalid
      */
-    public static void validateJson(String json) throws AssertionError {
+    static void validateJson(String json) throws AssertionError {
         try {
             OBJECT_MAPPER.readTree(json);
         } catch (IOException e) {
@@ -38,7 +38,7 @@ class ModelTestHelper {
      * @param <T>  The object to return.
      * @return The object constructed from the JSON string.
      */
-    public static <T> T jsonTo(Class<T> type, String json) {
+    static <T> T jsonTo(Class<T> type, String json) {
         try {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {

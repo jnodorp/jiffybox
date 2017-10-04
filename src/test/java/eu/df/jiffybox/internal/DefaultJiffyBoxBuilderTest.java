@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test class for {@link DefaultJiffyBoxBuilder}.
  */
-public class DefaultJiffyBoxBuilderTest {
+class DefaultJiffyBoxBuilderTest {
 
     /**
      * Test for {@link DefaultJiffyBoxBuilder#fromDistribution(String, int, String)}.
      */
     @Test
-    public void testFromDistribution() {
+    void testFromDistribution() {
         JiffyBoxBuilder builder = DefaultJiffyBoxBuilder.fromDistribution("test", 20, "ubuntu");
         assertEquals("{\"name\":\"test\",\"planid\":20,\"distribution\":\"ubuntu\"}", builder.toString());
     }
@@ -25,7 +25,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#fromDistribution(String, String, String)}.
      */
     @Test
-    public void testFromDistribution1() {
+    void testFromDistribution1() {
         JiffyBoxBuilder builder = DefaultJiffyBoxBuilder.fromDistribution("test", "plan", "ubuntu");
         assertEquals("{\"name\":\"test\",\"planid\":\"plan\",\"distribution\":\"ubuntu\"}", builder.toString());
     }
@@ -34,7 +34,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#fromBackup(String, int, String)}.
      */
     @Test
-    public void testFromBackup() {
+    void testFromBackup() {
         JiffyBoxBuilder builder = DefaultJiffyBoxBuilder.fromBackup("test", 20, "abc");
         assertEquals("{\"name\":\"test\",\"planid\":20,\"backupid\":\"abc\"}", builder.toString());
     }
@@ -43,7 +43,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#fromBackup(String, String, String)}.
      */
     @Test
-    public void testFromBackup1() {
+    void testFromBackup1() {
         JiffyBoxBuilder builder = DefaultJiffyBoxBuilder.fromBackup("test", "plan", "abc");
         assertEquals("{\"name\":\"test\",\"planid\":\"plan\",\"backupid\":\"abc\"}", builder.toString());
     }
@@ -52,7 +52,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#withPassword(String)}.
      */
     @Test
-    public void testWithPassword() {
+    void testWithPassword() {
         JiffyBoxBuilder builder = new DefaultJiffyBoxBuilder();
         builder.withPassword("password");
         assertEquals("{\"password\":\"password\"}", builder.toString());
@@ -62,7 +62,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#useSshKey(boolean)}.
      */
     @Test
-    public void testUseSshKey() {
+    void testUseSshKey() {
         JiffyBoxBuilder builder = new DefaultJiffyBoxBuilder();
         builder.useSshKey(true);
         assertEquals("{\"use_sshkey\":true}", builder.toString());
@@ -72,7 +72,7 @@ public class DefaultJiffyBoxBuilderTest {
      * Test for {@link DefaultJiffyBoxBuilder#withMetadata(ObjectNode)}.
      */
     @Test
-    public void testWithMetadata() {
+    void testWithMetadata() {
         ObjectNode metadata = new ObjectNode(JsonNodeFactory.instance);
         metadata.put("key1", "value");
         metadata.put("key2", true);
