@@ -1,44 +1,38 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Plan;
 import eu.df.jiffybox.models.Response;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the 'plans' module.
  */
-public class ModulePlansTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, true);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = true)
+class ModulePlansTest {
 
     /**
      * Test for {@link ModulePlans#getPlans()}.
      */
-    @Test
-    public void testGetPlans() {
+    @TestTemplate
+    void testGetPlans(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans")).willReturn(aResponse()
                 .withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/plans/testGetPlans.json")));
 
-        Response<Map<String, Plan>> response = module.get().plans().getPlans();
+        Response<Map<String, Plan>> response = api.plans().getPlans();
         List<Message> messages = response.getMessages();
         Map<String, Plan> result = response.getResult();
         assertEquals(12, result.size());
@@ -168,13 +162,13 @@ public class ModulePlansTest {
     /**
      * Test for {@link ModulePlans#getPlan(int)}.
      */
-    @Test
-    public void testGetPlan() {
+    @TestTemplate
+    void testGetPlan(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans/45")).willReturn(aResponse
                 ().withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/plans/testGetPlan.json")));
 
-        Response<Plan> response = module.get().plans().getPlan(45);
+        Response<Plan> response = api.plans().getPlan(45);
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 
@@ -193,15 +187,15 @@ public class ModulePlansTest {
     /**
      * Test for {@link ModulePlans#getPlan(String)}.
      */
-    @Test
-    public void testGetPlan1() {
+    @TestTemplate
+    void testGetPlan1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/plans/CloudLevel%202"))
                 .willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/plans/testGetPlan1.json")));
 
-        Response<Plan> response = module.get().plans().getPlan("CloudLevel 2");
+        Response<Plan> response = api.plans().getPlan("CloudLevel 2");
         List<Message> messages = response.getMessages();
         Plan result = response.getResult();
 

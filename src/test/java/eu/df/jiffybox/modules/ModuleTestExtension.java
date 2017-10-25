@@ -1,19 +1,39 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.client.MappingBuilder;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import eu.df.jiffybox.JiffyBoxApi;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.*;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
+import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 
 /**
  * Rule to allow local (WireMock) and remote (JiffyBox API) test execution.
  */
-class ModuleTestRule implements TestRule {
+class ModuleTestExtension implements TestTemplateInvocationContextProvider {
+
+    /**
+     * The namespace used when storing the WireMock port in the context.
+     */
+    private static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(ModuleTestExtension
+            .class);
+
+    /**
+     * The key used when storing the WireMock port in the context.
+     */
+    private static final String STORE_WIREMOCK_PORT = "wiremock.port";
 
     /**
      * The test host.
@@ -30,43 +50,137 @@ class ModuleTestRule implements TestRule {
      */
     private static final String REAL_TOKEN = System.getenv("JIFFYBOX_API_TOKEN");
 
-    private final WireMockRule wireMockRule;
-
-    private final boolean runAgainstServer;
-
-    private JiffyBoxApi jiffyBoxApi;
-
-    ModuleTestRule(boolean runAgainstServer) {
-        this.wireMockRule = new WireMockRule(wireMockConfig().dynamicPort());
-        this.runAgainstServer = runAgainstServer;
-    }
-
-    ModuleTestRule(WireMockRule wireMockRule, boolean runAgainstServer) {
-        this.wireMockRule = wireMockRule;
-        this.runAgainstServer = runAgainstServer;
+    @Override
+    public boolean supportsTestTemplate(ExtensionContext context) {
+        return isAnnotated(context.getTestClass(), ModuleTest.class);
     }
 
     @Override
-    public Statement apply(Statement base, Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                jiffyBoxApi = new JiffyBoxApi(TEST_TOKEN, TEST_HOST + ":" + wireMockRule.port());
-                base.evaluate();
+    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
+        List<TestTemplateInvocationContext> contexts = new ArrayList<>();
 
-                if (REAL_TOKEN != null && runAgainstServer) {
-                    jiffyBoxApi = new JiffyBoxApi(REAL_TOKEN);
-                    base.evaluate();
-                }
+        Optional<ModuleTest> moduleTest = findAnnotation(context.getTestClass(), ModuleTest.class);
+        if (REAL_TOKEN != null && moduleTest.isPresent() && moduleTest.get().runAgainstServer()) {
+            contexts.add(new ModuleTestContext(REAL_TOKEN));
+        }
+
+        contexts.add(new ModuleTestContext(TEST_TOKEN));
+        return contexts.stream();
+    }
+
+    /**
+     * Marker interface for test classes using the {@link ModuleTestExtension}.
+     */
+    @TestTemplate
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
+    @interface ModuleTest {
+        boolean runAgainstServer();
+    }
+
+    /**
+     * {@link TestTemplateInvocationContext} used to invoke tests wit different API tokens.
+     */
+    private static class ModuleTestContext implements TestTemplateInvocationContext {
+
+        /**
+         * The token.
+         */
+        private final String token;
+
+        /**
+         * Create a new instance.
+         *
+         * @param token the token
+         */
+        ModuleTestContext(String token) {
+            this.token = token;
+        }
+
+        @Override
+        public String getDisplayName(int invocationIndex) {
+            return "[" + (token.equals(TEST_TOKEN) ? "test" : "real") + "]";
+        }
+
+        @Override
+        public List<Extension> getAdditionalExtensions() {
+            return Arrays.asList(new WireMockInjector(), new JiffyBoxApiInjector(token));
+        }
+    }
+
+    /**
+     * Extension to inject {@link JiffyBoxApi} instances into tests.
+     */
+    private static class JiffyBoxApiInjector implements ParameterResolver {
+
+        /**
+         * The token.
+         */
+        private final String token;
+
+        /**
+         * Create a new instance.
+         *
+         * @param token the token
+         */
+        JiffyBoxApiInjector(String token) {
+            this.token = token;
+        }
+
+        @Override
+        public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext context) {
+            return parameterContext.getParameter().getType().isAssignableFrom(JiffyBoxApi.class);
+        }
+
+        @Override
+        public Object resolveParameter(ParameterContext parameterContext, ExtensionContext context) {
+            if (token.equals(TEST_TOKEN)) {
+                String port = context.getStore(NAMESPACE).get(STORE_WIREMOCK_PORT).toString();
+
+                return new JiffyBoxApi(token, TEST_HOST + ":" + port);
+            } else {
+                return new JiffyBoxApi(token);
             }
-        };
+        }
     }
 
-    JiffyBoxApi get() {
-        return jiffyBoxApi;
-    }
+    /**
+     * Extension to inject {@link WireMockServer} instances into tests.
+     */
+    private static class WireMockInjector implements AfterEachCallback, ParameterResolver {
 
-    StubMapping stubFor(MappingBuilder mappingBuilder) {
-        return wireMockRule.stubFor(mappingBuilder);
+        /**
+         * The {@link WireMockServer}.
+         */
+        private WireMockServer server;
+
+        @Override
+        public void afterEach(ExtensionContext context) {
+            if (server == null || !server.isRunning()) {
+                return;
+            }
+
+            server.resetRequests();
+            server.resetToDefaultMappings();
+            server.stop();
+        }
+
+        @Override
+        public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext context) {
+            return parameterContext.getParameter().getType().isAssignableFrom(WireMockServer.class);
+        }
+
+        @Override
+        public Object resolveParameter(ParameterContext parameterContext, ExtensionContext context) {
+            if (server != null && server.isRunning()) {
+                throw new IllegalStateException();
+            }
+
+            server = new WireMockServer(wireMockConfig().dynamicPort());
+            server.start();
+
+            context.getStore(NAMESPACE).put(STORE_WIREMOCK_PORT, server.port());
+            return server;
+        }
     }
 }

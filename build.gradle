@@ -23,7 +23,6 @@ dependencies {
     testCompile 'org.slf4j:slf4j-log4j12:1.8.0-alpha2'
 
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
-    testRuntime 'org.junit.vintage:junit-vintage-engine:4.12.0'
 }
 
 compileTestJava {

@@ -1,48 +1,42 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.ContactGroup;
 import eu.df.jiffybox.models.ContactGroupStatus;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the 'contactGroups' module.
  */
-public class ModuleContactGroupsTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = false)
+class ModuleContactGroupsTest {
 
     /**
      * Test for {@link ModuleContactGroups#getContactGroups()}.
      */
-    @Test
-    public void testGetContactGroups() {
+    @TestTemplate
+    void testGetContactGroups(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/contactGroups/testGetContactGroups.json")));
 
-        Response<Map<String, ContactGroup>> response = module.get().contactGroups().getContactGroups();
+        Response<Map<String, ContactGroup>> response = api.contactGroups().getContactGroups();
         List<Message> messages = response.getMessages();
         Map<String, ContactGroup> contactGroups = response.getResult();
         ContactGroup contactGroup1 = contactGroups.get("122");
@@ -68,15 +62,15 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#getContactGroup(int)}.
      */
-    @Test
-    public void testGetContactGroup() {
+    @TestTemplate
+    void testGetContactGroup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/123")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/contactGroups/testGetContactGroup.json")));
 
-        Response<ContactGroup> response = module.get().contactGroups().getContactGroup(123);
+        Response<ContactGroup> response = api.contactGroups().getContactGroup(123);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts = contactGroup.getContacts();
@@ -93,15 +87,15 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#deleteContactGroup(int)}.
      */
-    @Test
-    public void testDeleteContactGroup() {
+    @TestTemplate
+    void testDeleteContactGroup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(delete(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/123"))
                 .willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/contactGroups/testDeleteContactGroup.json")));
 
-        Response<Boolean> response = module.get().contactGroups().deleteContactGroup(123);
+        Response<Boolean> response = api.contactGroups().deleteContactGroup(123);
         List<Message> messages = response.getMessages();
         Boolean result = response.getResult();
 
@@ -113,8 +107,8 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#createContactGroup(String, List)}.
      */
-    @Test
-    public void testCreateContactGroup() {
+    @TestTemplate
+    void testCreateContactGroup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups")).withRequestBody
                 (equalToJson("{\"name\": \"TestGruppe\", \"contacts\": [\"m.mustermann@df.eu\", \"f" + "" + "" + "" +
                         ".musterfrau@df.eu\"] }", false, false))
@@ -126,7 +120,7 @@ public class ModuleContactGroupsTest {
         contacts1.add("m.mustermann@df.eu");
         contacts1.add("f.musterfrau@df.eu");
 
-        Response<ContactGroup> response = module.get().contactGroups().createContactGroup("TestGruppe", contacts1);
+        Response<ContactGroup> response = api.contactGroups().createContactGroup("TestGruppe", contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts2 = contactGroup.getContacts();
@@ -144,17 +138,15 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#updateContactGroup(int, String)}.
      */
-    @Test
-    public void testUpdateContactGroup() {
+    @TestTemplate
+    void testUpdateContactGroup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/1234"))
                 .withRequestBody(equalToJson("{\"name\" : \"Neuer Name der TestGruppe\"}", false, false))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/contactGroups/testUpdateContactGroup.json")));
 
-        Response<ContactGroup> response = module.get()
-                .contactGroups()
-                .updateContactGroup(1234, "Neuer Name der TestGruppe");
+        Response<ContactGroup> response = api.contactGroups().updateContactGroup(1234, "Neuer Name der TestGruppe");
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts = contactGroup.getContacts();
@@ -172,8 +164,8 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#updateContactGroup(int, List)}
      */
-    @Test
-    public void testUpdateContactGroup1() {
+    @TestTemplate
+    void testUpdateContactGroup1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/1234"))
                 .withRequestBody(equalToJson("{\"contacts\": [\"f.musterfrau@example.com\"]}", false, false))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
@@ -183,7 +175,7 @@ public class ModuleContactGroupsTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = module.get().contactGroups().updateContactGroup(1234, contacts1);
+        Response<ContactGroup> response = api.contactGroups().updateContactGroup(1234, contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts2 = contactGroup.getContacts();
@@ -200,8 +192,8 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#updateContactGroup(int, String, java.util.List)}.
      */
-    @Test
-    public void testUpdateContactGroup2() {
+    @TestTemplate
+    void testUpdateContactGroup2(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/1234"))
                 .withRequestBody(equalToJson("{\"name\": \"Neuer Name der TestGruppe\", \"contacts\": [\"f" + "" + ""
                         + "" + "" + "" + ".musterfrau@example.com\"]}", false, false))
@@ -212,8 +204,7 @@ public class ModuleContactGroupsTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = module.get()
-                .contactGroups()
+        Response<ContactGroup> response = api.contactGroups()
                 .updateContactGroup(1234, "Neuer Name der TestGruppe", contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
@@ -231,17 +222,15 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#duplicateContactGroup(int, String)}.
      */
-    @Test
-    public void testDuplicateContactGroup() {
+    @TestTemplate
+    void testDuplicateContactGroup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/1234"))
                 .withRequestBody(equalToJson("{\"name\": \"Kopie von TestGruppe\"}", false, false))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/contactGroups/testDuplicateContactGroup.json")));
 
-        Response<ContactGroup> response = module.get()
-                .contactGroups()
-                .duplicateContactGroup(1234, "Kopie von TestGruppe");
+        Response<ContactGroup> response = api.contactGroups().duplicateContactGroup(1234, "Kopie von TestGruppe");
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();
         List<String> contacts2 = contactGroup.getContacts();
@@ -259,8 +248,8 @@ public class ModuleContactGroupsTest {
     /**
      * Test for {@link ModuleContactGroups#duplicateContactGroup(int, String, java.util.List)}.
      */
-    @Test
-    public void testDuplicateContactGroup1() {
+    @TestTemplate
+    void testDuplicateContactGroup1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/contactGroups/1234"))
                 .withRequestBody(equalToJson("{\"name\": \"Kopie von TestGruppe\", \"contacts\": [\"f" + "" + "" + ""
                         + ".musterfrau@example.com\"]}", false, false))
@@ -271,8 +260,7 @@ public class ModuleContactGroupsTest {
         List<String> contacts1 = new ArrayList<>();
         contacts1.add("f.musterfrau@example.com");
 
-        Response<ContactGroup> response = module.get()
-                .contactGroups()
+        Response<ContactGroup> response = api.contactGroups()
                 .duplicateContactGroup(1234, "Kopie von TestGruppe", contacts1);
         List<Message> messages = response.getMessages();
         ContactGroup contactGroup = response.getResult();

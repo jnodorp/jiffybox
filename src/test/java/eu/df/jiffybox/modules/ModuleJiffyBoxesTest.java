@@ -1,46 +1,40 @@
 package eu.df.jiffybox.modules;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import eu.df.jiffybox.Build;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.*;
 import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
 
 /**
  * This class tests the 'jiffyBoxes' module.
  */
-public class ModuleJiffyBoxesTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = false)
+class ModuleJiffyBoxesTest {
 
     /**
      * Test for {@link ModuleJiffyBoxes#getJiffyBoxes()}.
      */
-    @Test
-    public void testGetJiffyBoxes() {
+    @TestTemplate
+    void testGetJiffyBoxes(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes")).willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/jiffyBoxes/testGetJiffyBoxes.json")));
 
-        Response<Map<String, JiffyBox>> response = module.get().jiffyBoxes().getJiffyBoxes();
+        Response<Map<String, JiffyBox>> response = api.jiffyBoxes().getJiffyBoxes();
         List<Message> messages = response.getMessages();
         Map<String, JiffyBox> result = response.getResult();
 
@@ -111,15 +105,15 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#getJiffyBox(int)}.
      */
-    @Test
-    public void testGetJiffyBox() {
+    @TestTemplate
+    void testGetJiffyBox(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/jiffyBoxes/testGetJiffyBox.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().getJiffyBox(12345);
+        Response<JiffyBox> response = api.jiffyBoxes().getJiffyBox(12345);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
         Profile profile = result.getActiveProfile();
@@ -188,15 +182,15 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#deleteJiffyBox(int)}.
      */
-    @Test
-    public void testDeleteJiffyBox() {
+    @TestTemplate
+    void testDeleteJiffyBox(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(delete(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/jiffyBoxes/testDeleteJiffyBox.json")));
 
-        Response<Boolean> response = module.get().jiffyBoxes().deleteJiffyBox(12345);
+        Response<Boolean> response = api.jiffyBoxes().deleteJiffyBox(12345);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());
@@ -207,8 +201,8 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
-    @Test
-    public void testCreateJiffyBoxFromDistribution() {
+    @TestTemplate
+    void testCreateJiffyBoxFromDistribution(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes")).withRequestBody
                 (equalToJson("{\"name\": \"Test\", \"planid\": 10, " + "\"distribution\":\"centos_5_4_64bit\" }"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
@@ -217,7 +211,7 @@ public class ModuleJiffyBoxesTest {
 
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit");
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().createJiffyBox(data);
+        Response<JiffyBox> response = api.jiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -256,8 +250,8 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
-    @Test
-    public void testCreateJiffyBoxFromBackup() {
+    @TestTemplate
+    void testCreateJiffyBoxFromBackup(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes")).withRequestBody
                 (equalToJson("{\"name\": \"Test\", \"planid\": 10, " +
                         "\"backupid\":\"1234567890abcdef1234567890abcdef\" }"))
@@ -267,7 +261,7 @@ public class ModuleJiffyBoxesTest {
 
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromBackup("1234567890abcdef1234567890abcdef");
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().createJiffyBox(data);
+        Response<JiffyBox> response = api.jiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -306,8 +300,8 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
-    @Test
-    public void testCreateJiffyBoxFromDistributionWithMetadata() {
+    @TestTemplate
+    void testCreateJiffyBoxFromDistributionWithMetadata(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes")).withRequestBody
                 (equalToJson("{\"name\": \"Test\", \"planid\": 10, " + "\"distribution\":\"centos_5_4_64bit\", " +
                         "\"metadata\":{\"createdBy\": \"The JiffyBoxTeam\", " + "\"usedBy\": [\"Me\", \"You\", " +
@@ -323,7 +317,7 @@ public class ModuleJiffyBoxesTest {
 
         JiffyBoxBuilder data = Build.jiffyBox("Test", 10).fromDistribution("centos_5_4_64bit").withMetadata(metadata);
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().createJiffyBox(data);
+        Response<JiffyBox> response = api.jiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -362,8 +356,8 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#createJiffyBox(JiffyBoxBuilder)}.
      */
-    @Test
-    public void testCreateJiffyBoxFromDistributionWithPasswordUseSshKey() {
+    @TestTemplate
+    void testCreateJiffyBoxFromDistributionWithPasswordUseSshKey(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes")).withRequestBody
                 (equalToJson("{\"name\": \"Test\", \"planid\": 10, " + "\"distribution\":\"centos_5_4_64bit\", " +
                         "\"password\":\"Passwort123!\", \"use_sshkey\": true}"))
@@ -377,7 +371,7 @@ public class ModuleJiffyBoxesTest {
                 .withPassword("Passwort123!")
                 .useSshKey(true);
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().createJiffyBox(data);
+        Response<JiffyBox> response = api.jiffyBoxes().createJiffyBox(data);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -416,38 +410,38 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int)}.
      */
-    @Test
-    public void testDuplicateJiffyBox1() {
+    @TestTemplate
+    void testDuplicateJiffyBox1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"name\": \"Test\", \"planid\": 10}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/jiffyBoxes/testDuplicateJiffyBox1.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().duplicateJiffyBox(12345, "Test", 10);
+        Response<JiffyBox> response = api.jiffyBoxes().duplicateJiffyBox(12345, "Test", 10);
         testDuplicateJiffyBoxResponse(response);
     }
 
     /**
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, String)}.
      */
-    @Test
-    public void testDuplicateJiffyBox2() {
+    @TestTemplate
+    void testDuplicateJiffyBox2(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"name\": \"Test\", \"planid\": \"CloudLevel 1\"}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/jiffyBoxes/testDuplicateJiffyBox2.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().duplicateJiffyBox(12345, "Test", "CloudLevel 1");
+        Response<JiffyBox> response = api.jiffyBoxes().duplicateJiffyBox(12345, "Test", "CloudLevel 1");
         testDuplicateJiffyBoxResponse(response);
     }
 
     /**
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, int, ObjectNode)}.
      */
-    @Test
-    public void testDuplicateJiffyBoxWithMetadata1() {
+    @TestTemplate
+    void testDuplicateJiffyBoxWithMetadata1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"name\": \"Test\", \"planid\": 10, \"metadata\":{\"createdBy\": " +
                         "\"The" + " " + "JiffyBoxTeam\", \"usedBy\": [\"Me\", \"You\", \"Everyone\"], " +
@@ -460,15 +454,15 @@ public class ModuleJiffyBoxesTest {
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().duplicateJiffyBox(12345, "Test", 10, metadata);
+        Response<JiffyBox> response = api.jiffyBoxes().duplicateJiffyBox(12345, "Test", 10, metadata);
         testDuplicateJiffyBoxResponse(response);
     }
 
     /**
      * Test for {@link ModuleJiffyBoxes#duplicateJiffyBox(int, String, String, ObjectNode)}.
      */
-    @Test
-    public void testDuplicateJiffyBoxWithMetadata2() {
+    @TestTemplate
+    void testDuplicateJiffyBoxWithMetadata2(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"name\": \"Test\", \"planid\": \"CloudLevel 1\", " +
                         "\"metadata\":{\"createdBy\": " + "\"The JiffyBoxTeam\", \"usedBy\": [\"Me\", \"You\", " +
@@ -481,24 +475,22 @@ public class ModuleJiffyBoxesTest {
         metadata.putArray("usedBy").add("Me").add("You").add("Everyone");
         metadata.put("freeForAll", false);
 
-        Response<JiffyBox> response = module.get()
-                .jiffyBoxes()
-                .duplicateJiffyBox(12345, "Test", "CloudLevel 1", metadata);
+        Response<JiffyBox> response = api.jiffyBoxes().duplicateJiffyBox(12345, "Test", "CloudLevel 1", metadata);
         testDuplicateJiffyBoxResponse(response);
     }
 
     /**
      * Test for {@link ModuleJiffyBoxes#startJiffyBox(int)}.
      */
-    @Test
-    public void testStartJiffyBox() {
+    @TestTemplate
+    void testStartJiffyBox(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"status\": \"START\"}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/jiffyBoxes/testStartJiffyBox.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().startJiffyBox(12345);
+        Response<JiffyBox> response = api.jiffyBoxes().startJiffyBox(12345);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -537,8 +529,8 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#startJiffyBox(int, ObjectNode)}.
      */
-    @Test
-    public void testStartJiffyBoxWithMetadata() {
+    @TestTemplate
+    void testStartJiffyBoxWithMetadata(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"status\": \"START\", \"metadata\":{\"createdBy\": \"Tester\"}}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
@@ -547,7 +539,7 @@ public class ModuleJiffyBoxesTest {
 
         ObjectNode metadata = Build.metadata().put("createdBy", "Tester");
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().startJiffyBox(12345, metadata);
+        Response<JiffyBox> response = api.jiffyBoxes().startJiffyBox(12345, metadata);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -586,15 +578,15 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#changePlanJiffyBox(int, int)}.
      */
-    @Test
-    public void testChangePlanJiffyBox() {
+    @TestTemplate
+    void testChangePlanJiffyBox(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"status\": \"PLAN\", \"planid\":20}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/jiffyBoxes/testChangePlanJiffyBox.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().changePlanJiffyBox(12345, 20);
+        Response<JiffyBox> response = api.jiffyBoxes().changePlanJiffyBox(12345, 20);
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -633,15 +625,15 @@ public class ModuleJiffyBoxesTest {
     /**
      * Test for {@link ModuleJiffyBoxes#changePlanJiffyBox(int, String)}.
      */
-    @Test
-    public void testChangePlanJiffyBox1() {
+    @TestTemplate
+    void testChangePlanJiffyBox1(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
                 .withRequestBody(equalToJson("{\"status\": \"PLAN\", \"planid\": \"CloudLevel 1 SSD\"}"))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/jiffyBoxes/testChangePlanJiffyBox1.json")));
 
-        Response<JiffyBox> response = module.get().jiffyBoxes().changePlanJiffyBox(12345, "CloudLevel 1 SSD");
+        Response<JiffyBox> response = api.jiffyBoxes().changePlanJiffyBox(12345, "CloudLevel 1 SSD");
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();
 
@@ -678,7 +670,8 @@ public class ModuleJiffyBoxesTest {
     }
 
     /**
-     * Check the response for {@link #testDuplicateJiffyBox1()}, {@link #testDuplicateJiffyBox2()},
+     * Check the response for {@link #testDuplicateJiffyBox1(WireMockServer, JiffyBoxApi)},
+     * {@link #testDuplicateJiffyBox2(WireMockServer, JiffyBoxApi)},
      * {@link #testDuplicateJiffyBoxWithMetadata1()} and {@link #testDuplicateJiffyBoxWithMetadata2()}.
      *
      * @param response The response.

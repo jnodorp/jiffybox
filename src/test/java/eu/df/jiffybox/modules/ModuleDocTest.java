@@ -1,66 +1,63 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.Doc;
 import eu.df.jiffybox.models.DocEntry;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the 'doc' module.
  */
-public class ModuleDocTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, true);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = true)
+class ModuleDocTest {
 
     /**
      * Test for {@link ModuleDoc#getDocs()}.
      */
-    @Test
-    public void testGetDocs() {
+    @TestTemplate
+    void testGetDocs(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/doc")).willReturn(aResponse()
                 .withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/doc/testGetDocs.json")));
 
-        Response<Map<String, String>> response = module.get().doc().getDocs();
+        Response<Map<String, String>> response = api.doc().getDocs();
         List<Message> messages = response.getMessages();
         assertTrue(messages.isEmpty());
 
         Map<String, String> docs = response.getResult();
-        assertEquals("Dokumentationsmodul", docs.get("doc"));
-        assertEquals("Modul zum Auflisten von installierbaren " + "Linux-Distributionen", docs.get("distributions"));
-        assertEquals("Modul zum Auflisten und Manipulieren von JiffyBoxen", docs.get("jiffyBoxes"));
-        assertEquals("Modul zum Auflisten und Beantragen von Backups", docs.get("backups"));
-        assertEquals("Modul zum Auflisten von JiffyBox-Tarifen", docs.get("plans"));
+        assertEquals("Modul zur Monitoring-Verwaltung", docs.get("Monitoring"));
+        assertEquals("Modul zum Auflisten und Manipulieren von JiffyBoxen", docs.get("JiffyBoxes"));
+        assertEquals("Dokumentationsmodul", docs.get("Doc"));
+        assertEquals("Modul zum Auflisten von installierbaren Linux-Distributionen", docs.get("Distributions"));
+        assertEquals("Modul zum Auflisten und ändern von IP-Adressen", docs.get("Ips"));
+        assertEquals("Modul zum Auflisten von JiffyBox-Tarifen", docs.get("Plans"));
+        assertEquals("Modul zum Auflisten und Beantragen von Backups", docs.get("Backups"));
+        assertEquals("Modul zur Verwaltung von Kontaktgruppen", docs.get("ContactGroups"));
     }
 
     /**
      * Test for {@link ModuleDoc#getDoc(String)}.
      */
-    @Test
-    public void testGetDoc() {
+    @TestTemplate
+    void testGetDoc(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/doc/doc")).willReturn(aResponse()
                 .withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/doc/testGetDoc.json")));
 
-        Response<Doc> response = module.get().doc().getDoc("doc");
+        Response<Doc> response = api.doc().getDoc("doc");
         List<Message> messages = response.getMessages();
         Doc doc = response.getResult();
         List<DocEntry> docEntries = doc.getDocEntries();

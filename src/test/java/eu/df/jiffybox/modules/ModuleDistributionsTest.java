@@ -1,48 +1,40 @@
 package eu.df.jiffybox.modules;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.github.tomakehurst.wiremock.common.Json;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.Distribution;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the 'distributions' module.
  */
-public class ModuleDistributionsTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, true);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = true)
+class ModuleDistributionsTest {
 
     /**
      * Test for {@link ModuleDistributions#getDistributions()}.
      */
-    @Test
-    public void testGetDistributions() {
+    @TestTemplate
+    void testGetDistributions(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/distributions")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/distributions/testGetDistributions.json")));
 
-        Response<Map<String, Distribution>> response = module.get().distributions().getDistributions();
+        Response<Map<String, Distribution>> response = api.distributions().getDistributions();
         List<Message> messages = response.getMessages();
         Map<String, Distribution> distributions = response.getResult();
         assertEquals(8, distributions.size());
@@ -102,15 +94,15 @@ public class ModuleDistributionsTest {
     /**
      * Test for {@link ModuleDistributions#getDistribution(String)}.
      */
-    @Test
-    public void testGetDistribution() {
+    @TestTemplate
+    void testGetDistribution(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/distributions/centos_5_4_64bit"))
                 .willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/distributions/testGetDistribution.json")));
 
-        Response<Distribution> response = module.get().distributions().getDistribution("centos_5_4_64bit");
+        Response<Distribution> response = api.distributions().getDistribution("centos_5_4_64bit");
         List<Message> messages = response.getMessages();
         Distribution distribution = response.getResult();
 

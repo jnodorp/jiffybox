@@ -1,10 +1,13 @@
 {
   "messages": [],
   "result": {
-    "doc": "Dokumentationsmodul",
-    "distributions": "Modul zum Auflisten von installierbaren Linux-Distributionen",
-    "jiffyBoxes": "Modul zum Auflisten und Manipulieren von JiffyBoxen",
-    "backups": "Modul zum Auflisten und Beantragen von Backups",
-    "plans": "Modul zum Auflisten von JiffyBox-Tarifen"
+    "Monitoring": "Modul zur Monitoring-Verwaltung",
+    "JiffyBoxes": "Modul zum Auflisten und Manipulieren von JiffyBoxen",
+    "Doc": "Dokumentationsmodul",
+    "Distributions": "Modul zum Auflisten von installierbaren Linux-Distributionen",
+    "Ips": "Modul zum Auflisten und \u00e4ndern von IP-Adressen",
+    "Plans": "Modul zum Auflisten von JiffyBox-Tarifen",
+    "Backups": "Modul zum Auflisten und Beantragen von Backups",
+    "ContactGroups": "Modul zur Verwaltung von Kontaktgruppen"
   }
 }

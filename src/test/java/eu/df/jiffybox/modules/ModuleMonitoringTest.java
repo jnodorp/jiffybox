@@ -1,44 +1,38 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import eu.df.jiffybox.Build;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.builders.MonitoringCheckBuilder;
 import eu.df.jiffybox.models.*;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
 
 /**
  * This class tests the 'monitoring' module.
  */
-public class ModuleMonitoringTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = false)
+class ModuleMonitoringTest {
 
     /**
      * Test for {@link ModuleMonitoring#getMonitoringChecks()}.
      */
-    @Test
-    public void testGetMonitoringChecks() {
+    @TestTemplate
+    void testGetMonitoringChecks(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring")).willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/monitoring/testGetMonitoringChecks.json")));
 
-        Response<Map<String, MonitoringCheck>> response = module.get().monitoring().getMonitoringChecks();
+        Response<Map<String, MonitoringCheck>> response = api.monitoring().getMonitoringChecks();
         List<Message> messages = response.getMessages();
         Map<String, MonitoringCheck> result = response.getResult();
         MonitoringCheck monitoringCheck = result.get("911");
@@ -72,15 +66,15 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#getMonitoringCheck(int)}.
      */
-    @Test
-    public void testGetMonitoringCheck() {
+    @TestTemplate
+    void testGetMonitoringCheck(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/monitoring/testGetMonitoringCheck.json")));
 
-        Response<MonitoringCheck> response = module.get().monitoring().getMonitoringCheck(1234);
+        Response<MonitoringCheck> response = api.monitoring().getMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -113,15 +107,15 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#deleteMonitoringCheck(int)}.
      */
-    @Test
-    public void testDeleteMonitoringCheck() {
+    @TestTemplate
+    void testDeleteMonitoringCheck(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(delete(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234")).willReturn
                 (aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/monitoring/testDeleteMonitoringCheck.json")));
 
-        Response<Boolean> response = module.get().monitoring().deleteMonitoringCheck(1234);
+        Response<Boolean> response = api.monitoring().deleteMonitoringCheck(1234);
         List<Message> messages = response.getMessages();
         Message message = messages.get(0);
 
@@ -136,8 +130,8 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#createMonitoringCheck(MonitoringCheckBuilder)}.
      */
-    @Test
-    public void testCreateMonitoringCheck() {
+    @TestTemplate
+    void testCreateMonitoringCheck(WireMockServer wireMock, JiffyBoxApi api) {
         String body = "{\"name\": \"Test\", \"ip\": \"188.93.14.211\", \"checkType\":\"http\", \"port\": 80, " +
                 "\"path\": \"/index.php\", \"domainname\": \"example.com\"}";
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring")).withRequestBody
@@ -149,7 +143,7 @@ public class ModuleMonitoringTest {
         MonitoringCheckBuilder data = Build.monitoringCheck("Test", "188.93.14.211", 80)
                 .http("example.com", "/index.php");
 
-        Response<MonitoringCheck> response = module.get().monitoring().createMonitoringCheck(data);
+        Response<MonitoringCheck> response = api.monitoring().createMonitoringCheck(data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -175,8 +169,8 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#duplicateMonitoringCheck(int, MonitoringCheckBuilder)}.
      */
-    @Test
-    public void testDuplicateMonitoringCheck() {
+    @TestTemplate
+    void testDuplicateMonitoringCheck(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234"))
                 .withRequestBody(equalToJson("{\"name\": \"Kopie von Test\", \"ip\": \"188.93.14.212\"}", false, false))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
@@ -185,7 +179,7 @@ public class ModuleMonitoringTest {
 
         MonitoringCheckBuilder data = Build.monitoringCheck("Kopie von Test", "188.93.14.212", null).preserveType();
 
-        Response<MonitoringCheck> response = module.get().monitoring().duplicateMonitoringCheck(1234, data);
+        Response<MonitoringCheck> response = api.monitoring().duplicateMonitoringCheck(1234, data);
         List<Message> messages = response.getMessages();
         MonitoringCheck result = response.getResult();
 
@@ -211,15 +205,15 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#getStatus(int)}.
      */
-    @Test
-    public void testGetStatus() {
+    @TestTemplate
+    void testGetStatus(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/1234/status"))
                 .willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/monitoring/testGetStatus.json")));
 
-        Response<Map<String, MonitoringStatus>> response = module.get().monitoring().getStatus(1234);
+        Response<Map<String, MonitoringStatus>> response = api.monitoring().getStatus(1234);
         List<Message> messages = response.getMessages();
         MonitoringStatus result = response.getResult().get("1234");
 
@@ -232,15 +226,15 @@ public class ModuleMonitoringTest {
     /**
      * Test for {@link ModuleMonitoring#getStatuses(String)}.
      */
-    @Test
-    public void testGetStatuses() {
+    @TestTemplate
+    void testGetStatuses(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/monitoring/123.45.67.89/status"))
                 .willReturn(aResponse()
                 .withHeaders(WireMockHelper.headers())
                 .withStatus(200)
                 .withBodyFile("modules/monitoring/testGetStatuses.json")));
 
-        Response<Map<String, MonitoringStatus>> response = module.get().monitoring().getStatuses("123.45.67.89");
+        Response<Map<String, MonitoringStatus>> response = api.monitoring().getStatuses("123.45.67.89");
         List<Message> messages = response.getMessages();
         Map<String, MonitoringStatus> result = response.getResult();
 

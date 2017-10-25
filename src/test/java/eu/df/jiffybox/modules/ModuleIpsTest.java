@@ -1,44 +1,38 @@
 package eu.df.jiffybox.modules;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.models.IP;
 import eu.df.jiffybox.models.IPSet;
 import eu.df.jiffybox.models.Message;
 import eu.df.jiffybox.models.Response;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.RuleChain;
+import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.*;
 
 /**
  * This class tests the 'ips' module.
  */
-public class ModuleIpsTest {
-
-    private final WireMockRule wireMock = new WireMockRule(wireMockConfig().dynamicPort());
-
-    private final ModuleTestRule module = new ModuleTestRule(wireMock, false);
-
-    @Rule
-    public final RuleChain ruleChain = RuleChain.outerRule(wireMock).around(module);
+@ExtendWith(ModuleTestExtension.class)
+@ModuleTestExtension.ModuleTest(runAgainstServer = false)
+class ModuleIpsTest {
 
     /**
      * Test for {@link ModuleIps#getIPSets()}.
      */
-    @Test
-    public void testGetIPSets() {
+    @TestTemplate
+    void testGetIPSets(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips")).willReturn(aResponse()
                 .withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/ips/testGetIPSets.json")));
 
-        Response<Map<String, IPSet>> response = module.get().ips().getIPSets();
+        Response<Map<String, IPSet>> response = api.ips().getIPSets();
         List<Message> messages = response.getMessages();
         Map<String, IPSet> result = response.getResult();
         IPSet ipSet = result.get("12345");
@@ -97,13 +91,13 @@ public class ModuleIpsTest {
     /**
      * Test for {@link ModuleIps#getIPSet(int)}.
      */
-    @Test
-    public void testGetIPSet() {
+    @TestTemplate
+    void testGetIPSet(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips/12345")).willReturn(aResponse
                 ().withHeaders(WireMockHelper
                 .headers()).withStatus(200).withBodyFile("modules/ips/testGetIPSet.json")));
 
-        Response<IPSet> response = module.get().ips().getIPSet(12345);
+        Response<IPSet> response = api.ips().getIPSet(12345);
         List<Message> messages = response.getMessages();
         IPSet result = response.getResult();
 
@@ -162,15 +156,15 @@ public class ModuleIpsTest {
     /**
      * Test for {@link ModuleIps#moveIPAddress(int, int, int)}.
      */
-    @Test
-    public void testMoveIPAddress() {
+    @TestTemplate
+    void testMoveIPAddress(WireMockServer wireMock, JiffyBoxApi api) {
         wireMock.stubFor(put(urlPathEqualTo("/00000000000000000000000000000000/v1.0/ips/12345/8465/move"))
                 .withRequestBody(equalToJson("{\"targetid\": 4321}", false, false))
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
                         .withBodyFile("modules/ips/testMoveIPAddress.json")));
 
-        Response<Boolean> response = module.get().ips().moveIPAddress(12345, 8465, 4321);
+        Response<Boolean> response = api.ips().moveIPAddress(12345, 8465, 4321);
         List<Message> messages = response.getMessages();
 
         assertTrue(messages.isEmpty());
