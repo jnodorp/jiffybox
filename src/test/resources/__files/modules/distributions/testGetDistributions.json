@@ -33,7 +33,7 @@
     },
     "opensuse_42_64bit": {
       "minDiskSizeMB": 2048,
-      "name": "openSUSE 42.2 64-Bit",
+      "name": "openSUSE 42.3 64-Bit",
       "rootdiskMode": "ro",
       "defaultKernel": "xen-pvops-x86_64"
     },

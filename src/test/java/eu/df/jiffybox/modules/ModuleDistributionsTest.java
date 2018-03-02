@@ -77,7 +77,7 @@ class ModuleDistributionsTest {
 
         assertEquals(2048, distribution6.getMinDiskSizeMB());
         assertEquals("xen-pvops-x86_64", distribution6.getDefaultKernel());
-        assertEquals("openSUSE 42.2 64-Bit", distribution6.getName());
+        assertEquals("openSUSE 42.3 64-Bit", distribution6.getName());
         assertEquals("ro", distribution6.getRootdiskMode());
 
         assertEquals(2048, distribution7.getMinDiskSizeMB());
