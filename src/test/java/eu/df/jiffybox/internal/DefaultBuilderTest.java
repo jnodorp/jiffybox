@@ -13,7 +13,7 @@ class DefaultBuilderTest {
      * Test for {@link eu.df.jiffybox.internal.DefaultBuilder#put(String, String)}}.
      */
     @Test
-    void testPutContactGroups() throws Exception {
+    void testPutContactGroups() {
         final DefaultBuilder defaultBuilder = new DefaultBuilder() {
         };
 

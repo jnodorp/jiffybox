@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/jschlichtholz/jiffybox/badge.svg?branch=master&service=github)](https://coveralls.io/github/jschlichtholz/jiffybox?branch=master)
 
 # JiffyBox API
-Beware! Until the release of version 1.0.0 this API is under development and it is likely, that there will be changes even to public methods.
+Java implementation of the JiffyBox API.
 
 ## Introduction
 Cloud servers on demand by JiffyBox are virtual servers which's resources are not fixed but coming from a large pool, the "cloud". Without an inflexible price corset and without a minimal runtime the billing is calculated by actual usage only. Further information on features and pricing of JiffyBoxes can be found at the JiffyBox website:
