@@ -46,3 +46,8 @@ jacocoTestReport {
         html.enabled = true
     }
 }
+
+javadoc {
+    destinationDir = new File("docs")
+    options.addBooleanOption('html5', true)
+}
