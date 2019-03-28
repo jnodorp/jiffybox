@@ -2,10 +2,14 @@ package eu.df.jiffybox.modules;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.Request;
+import feign.Request.Body;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,14 +60,14 @@ final class HeaderToBodyRequestInterceptor implements RequestInterceptor {
 
             try {
                 Map<String, Object> json;
-                if (template.body() != null) {
-                    json = objectMapper.readValue(template.body(), javaType);
+                if (template.requestBody().asBytes() != null) {
+                    json = objectMapper.readValue(template.requestBody().asBytes(), javaType);
                 } else {
                     json = new HashMap<>();
                 }
 
                 json.put(bodyKey, value);
-                template.body(objectMapper.writeValueAsString(json));
+                template.body(Body.encoded(objectMapper.writeValueAsBytes(json), StandardCharsets.UTF_8));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {

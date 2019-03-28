@@ -156,7 +156,7 @@ class ModuleBackupsTest {
     @TestTemplate
     void testCreateManualBackup(WireMockServer wireMock, JiffyBoxApi api) {
         MappingBuilder builder = post(urlPathEqualTo("/00000000000000000000000000000000/v1.0/backups/12345/manual"));
-        StringValuePattern body = equalToJson("{}", false, false);
+        StringValuePattern body = equalTo("%7B%7D");
         wireMock.stubFor(builder.withRequestBody(body)
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)
@@ -198,7 +198,7 @@ class ModuleBackupsTest {
     void testRestoreBackup(WireMockServer wireMock, JiffyBoxApi api) {
         MappingBuilder builder = post(urlPathEqualTo
                 ("/00000000000000000000000000000000/v1.0/backups/12345/daily/12345ACDEF"));
-        StringValuePattern body = equalToJson("{}", false, false);
+        StringValuePattern body = equalTo("%7B%7D");
         wireMock.stubFor(builder.withRequestBody(body)
                 .willReturn(aResponse().withHeaders(WireMockHelper.headers())
                         .withStatus(200)

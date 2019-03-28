@@ -5,6 +5,7 @@ import eu.df.jiffybox.models.BackupConfig;
 import eu.df.jiffybox.models.Response;
 import feign.Body;
 import feign.Feign;
+import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.jackson.JacksonDecoder;
@@ -122,7 +123,7 @@ public interface ModuleBackups {
      * @return If the manual backup has been successfully initiated.
      */
     @RequestLine("POST /backups/{id}/manual")
-    @Body("{}")
+    @Body("%7B%7D")
     Response<Boolean> createManualBackup(@Param("id") int id);
 
     /**
@@ -152,6 +153,6 @@ public interface ModuleBackups {
      * initiated.
      */
     @RequestLine("POST /backups/{id}/{type}/{backupid}")
-    @Body("{}")
+    @Body("%7B%7D")
     Response<Boolean> restoreBackup(@Param("id") int id, @Param("type") String type, @Param("backupid") String backupid);
 }
