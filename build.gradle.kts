@@ -19,7 +19,7 @@ repositories {
 dependencies {
     compile("io.github.openfeign:feign-jackson:10.2.0")
 
-    testCompile("com.github.tomakehurst:wiremock:2.22.0")
+    testCompile("com.github.tomakehurst:wiremock:2.23.2")
     testCompile("org.junit.jupiter:junit-jupiter-api:5.5.0-M1")
     testCompile("org.slf4j:slf4j-log4j12:1.8.0-beta4")
 
