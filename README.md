@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/jschlichtholz/jiffybox.svg?branch=master)](https://travis-ci.org/jschlichtholz/jiffybox)
-[![Coverage Status](https://coveralls.io/repos/jschlichtholz/jiffybox/badge.svg?branch=master&service=github)](https://coveralls.io/github/jschlichtholz/jiffybox?branch=master)
+[![Build Status](https://travis-ci.org/jnodorp/jiffybox.svg?branch=master)](https://travis-ci.org/jnodorp/jiffybox)
+[![Coverage Status](https://coveralls.io/repos/jnodorp/jiffybox/badge.svg?branch=master&service=github)](https://coveralls.io/github/jnodorp/jiffybox?branch=master)
 
 # JiffyBox API
 Java implementation of the JiffyBox API.
@@ -12,7 +12,7 @@ Cloud servers on demand by JiffyBox are virtual servers which's resources are no
 
 A complete documentation on the API's features can be found at http://www.df.eu/fileadmin/media/doc/jiffybox-api-dokumentation.pdf
 
-For the javadoc look at http://jschlichtholz.github.io/jiffybox/
+For the javadoc look at http://jnodorp.github.io/jiffybox/
 
 This project is a Java implementation of the JiffyBox API. It is licensed under the MIT License.
 

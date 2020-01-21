@@ -21,7 +21,7 @@ import static com.google.common.net.HttpHeaders.TRANSFER_ENCODING;
  * A helper class for {@link com.github.tomakehurst.wiremock.client.WireMock}
  * tests.
  *
- * @author Julian Schlichtholz
+ * @author Julian Nodorp
  */
 public class WireMockHelper {
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * A custom {@link SimpleModule} providing a {@link JsonSerializer} for {@link MonitoringCheckBuilder}s.
  *
- * @author Julian Schlichtholz
+ * @author Julian Nodorp
  */
 final class MonitoringCheckBuilderSerializerModule extends SimpleModule {
 

@@ -7,7 +7,7 @@ import eu.df.jiffybox.JiffyBoxApi;
 import eu.df.jiffybox.WireMockHelper;
 import eu.df.jiffybox.builders.JiffyBoxBuilder;
 import eu.df.jiffybox.models.*;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class tests the 'jiffyBoxes' module.
@@ -672,11 +672,12 @@ class ModuleJiffyBoxesTest {
     /**
      * Check the response for {@link #testDuplicateJiffyBox1(WireMockServer, JiffyBoxApi)},
      * {@link #testDuplicateJiffyBox2(WireMockServer, JiffyBoxApi)},
-     * {@link #testDuplicateJiffyBoxWithMetadata1()} and {@link #testDuplicateJiffyBoxWithMetadata2()}.
+     * {@link #testDuplicateJiffyBoxWithMetadata1(WireMockServer, JiffyBoxApi)} ()} and
+     * {@link #testDuplicateJiffyBoxWithMetadata2(WireMockServer, JiffyBoxApi)}.
      *
      * @param response The response.
      */
-    @Ignore
+    @Disabled
     private void testDuplicateJiffyBoxResponse(Response<JiffyBox> response) {
         List<Message> messages = response.getMessages();
         JiffyBox result = response.getResult();

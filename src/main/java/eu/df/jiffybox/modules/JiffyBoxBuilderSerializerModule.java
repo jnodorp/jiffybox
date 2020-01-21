@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * A custom {@link SimpleModule} providing a {@link JsonSerializer} for {@link JiffyBoxBuilder}s.
  *
- * @author Julian Schlichtholz
+ * @author Julian Nodorp
  */
 final class JiffyBoxBuilderSerializerModule extends SimpleModule {
 
