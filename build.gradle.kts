@@ -17,13 +17,13 @@ repositories {
 }
 
 dependencies {
-    compile("io.github.openfeign:feign-jackson:10.7.3")
+    implementation("io.github.openfeign:feign-jackson:10.7.4")
 
-    testCompile("com.github.tomakehurst:wiremock:2.25.1")
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0-RC1")
-    testCompile("org.slf4j:slf4j-log4j12:2.0.0-alpha1")
+    testImplementation("com.github.tomakehurst:wiremock:2.26.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testImplementation("org.slf4j:slf4j-log4j12:2.0.0-alpha1")
 
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0-RC1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 }
 
 tasks.withType<Jar> {
