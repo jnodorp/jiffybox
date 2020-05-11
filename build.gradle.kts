@@ -2,9 +2,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("java")
-    id("maven")
+    id("maven-publish")
     id("jacoco")
-    id("com.github.kt3k.coveralls") version "2.9.0"
+    id("com.github.kt3k.coveralls") version "2.10.1"
+    id("com.github.ben-manes.versions") version "0.28.0"
 }
 
 group = "eu.df"
@@ -17,13 +18,13 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.openfeign:feign-jackson:10.7.4")
+    implementation("io.github.openfeign:feign-jackson:11.0")
 
-    testImplementation("com.github.tomakehurst:wiremock:2.26.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testImplementation("com.github.tomakehurst:wiremock:2.26.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0-M1")
     testImplementation("org.slf4j:slf4j-log4j12:2.0.0-alpha1")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0-M1")
 }
 
 tasks.withType<Jar> {
