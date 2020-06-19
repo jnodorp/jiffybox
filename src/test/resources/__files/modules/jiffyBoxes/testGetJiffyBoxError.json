@@ -1,0 +1,9 @@
+{
+  "messages": [
+    {
+      "type": "error",
+      "message": "Der Kunde Nr. 42 hat keine JiffyBox Nr. 12345."
+    }
+  ],
+  "result": false
+}

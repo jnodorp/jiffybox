@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @param <T> The responses result type.
  */
 @JsonAutoDetect
+@JsonDeserialize(using = ResponseDeserializer.class)
 public class Response<T> extends PrintableModel {
 
     /**

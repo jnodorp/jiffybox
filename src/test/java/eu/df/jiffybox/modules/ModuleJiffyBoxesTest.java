@@ -713,4 +713,23 @@ class ModuleJiffyBoxesTest {
         assertEquals(0.005, plan.getPricePerHourFrozen(), 0.001);
         assertEquals(2048, plan.getRamInMB());
     }
+
+    /**
+     * Test for {@link ModuleJiffyBoxes#changePlanJiffyBox(int, String)}.
+     */
+    @TestTemplate
+    void testGetJiffyBoxError(WireMockServer wireMock, JiffyBoxApi api) {
+        wireMock.stubFor(get(urlPathEqualTo("/00000000000000000000000000000000/v1.0/jiffyBoxes/12345"))
+            .willReturn(aResponse().withHeaders(WireMockHelper.headers())
+                .withStatus(200)
+                .withBodyFile("modules/jiffyBoxes/testGetJiffyBoxError.json")));
+
+        Response<JiffyBox> response = api.jiffyBoxes().getJiffyBox(12345);
+        List<Message> messages = response.getMessages();
+        assertEquals(1, messages.size());
+        assertEquals(MessageType.ERROR, messages.get(0).getType());
+        assertEquals("Der Kunde Nr. 42 hat keine JiffyBox Nr. 12345.", messages.get(0).getMessageText());
+
+        assertNull(response.getResult());
+    }
 }
