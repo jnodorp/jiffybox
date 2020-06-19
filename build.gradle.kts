@@ -9,9 +9,49 @@ plugins {
 }
 
 group = "eu.df"
-version = "1.0.0"
+version = "1.0.1"
 
 description = """Java implementation of the JiffyBox API"""
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/jnodorp/jiffybox")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+
+            pom {
+                licenses {
+                    license {
+                        name.set("The MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("jnodorp")
+                        name.set("Julian Nodorp")
+                        email.set("julian.nodorp@mailbox.org")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/jnodorp/jiffybox.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:jnodorp/jiffybox.git")
+                    url.set("https://github.com/jnodorp/jiffybox")
+                }
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()

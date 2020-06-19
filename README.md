@@ -17,6 +17,10 @@ For the javadoc look at http://jnodorp.github.io/jiffybox/
 This project is a Java implementation of the JiffyBox API. It is licensed under the MIT License.
 
 ## Usage
+
+For details on how to import this package into your project see the published package versions here:
+https://github.com/jnodorp/jiffybox/packages
+
 Basic usage is
 ```java
 import eu.df.jiffybox.JiffyBoxApi;
