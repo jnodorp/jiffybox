@@ -4,8 +4,8 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("com.github.kt3k.coveralls") version "2.10.1"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("com.github.kt3k.coveralls") version "2.10.2"
+    id("com.github.ben-manes.versions") version "0.33.0"
 }
 
 group = "eu.df"
@@ -60,11 +60,11 @@ repositories {
 dependencies {
     implementation("io.github.openfeign:feign-jackson:11.0")
 
-    testImplementation("com.github.tomakehurst:wiremock:2.26.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0-M1")
+    testImplementation("com.github.tomakehurst:wiremock:2.27.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testImplementation("org.slf4j:slf4j-log4j12:2.0.0-alpha1")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0-M1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 
 tasks.withType<Jar> {
