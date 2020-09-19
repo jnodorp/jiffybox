@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"eu.df.jiffybox"},{"l":"eu.df.jiffybox.builders"},{"l":"eu.df.jiffybox.internal"},{"l":"eu.df.jiffybox.models"},{"l":"eu.df.jiffybox.modules"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"eu.df.jiffybox"},{"l":"eu.df.jiffybox.builders"},{"l":"eu.df.jiffybox.internal"},{"l":"eu.df.jiffybox.models"},{"l":"eu.df.jiffybox.modules"}]
