@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/jnodorp/jiffybox.svg?branch=master)](https://travis-ci.org/jnodorp/jiffybox)
-[![Coverage Status](https://coveralls.io/repos/jnodorp/jiffybox/badge.svg?branch=master&service=github)](https://coveralls.io/github/jnodorp/jiffybox?branch=master)
+[![Build Status](https://travis-ci.org/jnodorp/jiffybox.svg?branch=main)](https://travis-ci.org/jnodorp/jiffybox)
+[![Coverage Status](https://coveralls.io/repos/jnodorp/jiffybox/badge.svg?branch=main&service=github)](https://coveralls.io/github/jnodorp/jiffybox?branch=main)
 
 # JiffyBox API
 Java implementation of the JiffyBox API.
