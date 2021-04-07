@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("com.github.kt3k.coveralls") version "2.11.0"
+    id("com.github.kt3k.coveralls") version "2.12.0"
     id("com.github.ben-manes.versions") version "0.38.0"
 }
 
