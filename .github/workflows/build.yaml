@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk:
+          - "8"
+          - "11"
+          # jacoco is not yet compatible with Java 15!
+          # - "15"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.jdk }}
+          distribution: 'adopt'
+      - name: Build
+        run: ./gradlew build
+      - name: Coverage
+        run: ./gradlew jacocoTestReport coveralls
