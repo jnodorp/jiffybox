@@ -4,8 +4,8 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("com.github.kt3k.coveralls") version "2.12.0"
     id("com.github.ben-manes.versions") version "0.41.0"
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.14"
 }
 
 group = "eu.df"
@@ -83,10 +83,6 @@ tasks.withType<Test> {
 tasks.withType<JacocoReport> {
     reports {
         xml.apply {
-            required.set(true)
-        }
-
-        html.apply {
             required.set(true)
         }
     }
