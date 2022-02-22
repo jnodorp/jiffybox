@@ -83,11 +83,11 @@ tasks.withType<Test> {
 tasks.withType<JacocoReport> {
     reports {
         xml.apply {
-            isEnabled = true
+            required.set(true)
         }
 
         html.apply {
-            isEnabled = true
+            required.set(true)
         }
     }
 }
