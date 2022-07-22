@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.openfeign:feign-jackson:11.9")
+    implementation("io.github.openfeign:feign-jackson:11.9.1")
 
     testImplementation("com.github.tomakehurst:wiremock:2.27.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
