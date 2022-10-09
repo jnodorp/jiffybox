@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("jacoco")
     id("com.github.ben-manes.versions") version "0.42.0"
-    id("com.github.nbaztec.coveralls-jacoco") version "1.2.14"
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
 }
 
 group = "eu.df"
