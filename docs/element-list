@@ -1,5 +1,5 @@
-eu.df.jiffybox
-eu.df.jiffybox.builders
-eu.df.jiffybox.internal
-eu.df.jiffybox.models
-eu.df.jiffybox.modules
+io.github.jnodorp.jiffybox
+io.github.jnodorp.jiffybox.builders
+io.github.jnodorp.jiffybox.internal
+io.github.jnodorp.jiffybox.models
+io.github.jnodorp.jiffybox.modules
