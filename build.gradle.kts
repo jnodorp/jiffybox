@@ -8,7 +8,7 @@ plugins {
     id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
 }
 
-group = "eu.df"
+group = "io.github.jnodorp"
 version = "1.0.1"
 
 description = """Java implementation of the JiffyBox API"""

@@ -23,11 +23,11 @@ https://github.com/jnodorp/jiffybox/packages
 
 Basic usage is
 ```java
-import eu.df.jiffybox.JiffyBoxApi;
-import eu.df.jiffybox.models.Backup;
-import eu.df.jiffybox.models.Message;
-import eu.df.jiffybox.models.Response;
-import eu.df.jiffybox.modules.ModuleBackups;
+import io.github.jnodorp.jiffybox.JiffyBoxApi;
+import io.github.jnodorp.jiffybox.models.Backup;
+import io.github.jnodorp.jiffybox.models.Message;
+import io.github.jnodorp.jiffybox.models.Response;
+import io.github.jnodorp.jiffybox.modules.ModuleBackups;
 
 import java.io.IOException;
 import java.util.List;

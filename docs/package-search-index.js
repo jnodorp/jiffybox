@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"eu.df.jiffybox"},{"l":"eu.df.jiffybox.builders"},{"l":"eu.df.jiffybox.internal"},{"l":"eu.df.jiffybox.models"},{"l":"eu.df.jiffybox.modules"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.github.jnodorp.jiffybox"},{"l":"io.github.jnodorp.jiffybox.builders"},{"l":"io.github.jnodorp.jiffybox.internal"},{"l":"io.github.jnodorp.jiffybox.models"},{"l":"io.github.jnodorp.jiffybox.modules"}];updateSearchResults();
