@@ -77,7 +77,7 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 	testImplementation("org.slf4j:slf4j-log4j12:2.0.6")
 
-	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 signing {
