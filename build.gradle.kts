@@ -74,7 +74,7 @@ dependencies {
 	implementation("io.github.openfeign:feign-jackson:12.1")
 
 	testImplementation("com.github.tomakehurst:wiremock:2.27.2")
-	testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 	testImplementation("org.slf4j:slf4j-log4j12:2.0.6")
 
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
