@@ -5,7 +5,7 @@ plugins {
 	id("maven-publish")
 	id("jacoco")
 	signing
-	id("com.github.ben-manes.versions") version "0.44.0"
+	id("com.github.ben-manes.versions") version "0.46.0"
 	id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
 }
 
