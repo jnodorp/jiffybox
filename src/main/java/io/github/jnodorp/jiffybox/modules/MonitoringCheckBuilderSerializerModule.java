@@ -21,7 +21,7 @@ final class MonitoringCheckBuilderSerializerModule extends SimpleModule {
         super(MonitoringCheckBuilderSerializerModule.class.getSimpleName(),
                 new Version(1, 0, 0, "SNAPSHOT", "io.github.jnodorp", "jiffybox"));
 
-        addSerializer(MonitoringCheckBuilder.class, new JsonSerializer<MonitoringCheckBuilder>() {
+        addSerializer(MonitoringCheckBuilder.class, new JsonSerializer<>() {
             @Override
             public void serialize(MonitoringCheckBuilder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
                 ((DefaultMonitoringCheckBuilder) value).serialize(gen, serializers);
