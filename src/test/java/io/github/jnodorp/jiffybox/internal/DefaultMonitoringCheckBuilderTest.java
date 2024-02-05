@@ -21,7 +21,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withContactgroups(List)}.
      */
     @Test
-    void testWithContactgroups() throws Exception {
+    void testWithContactgroups() {
         final List<Integer> contactGroupIds = new ArrayList<>();
         contactGroupIds.add(1);
         contactGroupIds.add(2);
@@ -34,7 +34,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withCheckInterval(int)}.
      */
     @Test
-    void testWithCheckInterval() throws Exception {
+    void testWithCheckInterval() {
         assertTrue(BUILDER.withCheckInterval(1).toString().contains("\"checkInterval\":1"));
     }
 
@@ -42,7 +42,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withReminderInterval(int)}.
      */
     @Test
-    void testWithReminderInterval() throws Exception {
+    void testWithReminderInterval() {
         assertTrue(BUILDER.withReminderInterval(1).toString().contains("\"reminderInterval\":1"));
     }
 
@@ -50,7 +50,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withRetryTolerance(int)}.
      */
     @Test
-    void testWithRetryTolerance() throws Exception {
+    void testWithRetryTolerance() {
         assertTrue(BUILDER.withRetryTolerance(1).toString().contains("\"retryTolerance\":1"));
     }
 
@@ -58,7 +58,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withTimeout(int)}.
      */
     @Test
-    void testWithTimeout() throws Exception {
+    void testWithTimeout() {
         assertTrue(BUILDER.withTimeout(1).toString().contains("\"timeout\":1"));
     }
 
@@ -66,7 +66,7 @@ class DefaultMonitoringCheckBuilderTest {
      * Test method for {@link DefaultMonitoringCheckBuilder#withActive(boolean)}.
      */
     @Test
-    void testWithActive() throws Exception {
+    void testWithActive() {
         assertTrue(BUILDER.withActive(true).toString().contains("\"checkInterval\":1"));
     }
 }

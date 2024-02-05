@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * @see DocEntry
  */
 @JsonAutoDetect
-class Parameter extends PrintableModel {
+public class Parameter extends PrintableModel {
 
     /**
      * The description.

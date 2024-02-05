@@ -81,21 +81,7 @@ class ModuleTestExtension implements TestTemplateInvocationContextProvider {
     /**
      * {@link TestTemplateInvocationContext} used to invoke tests wit different API tokens.
      */
-    private static class ModuleTestContext implements TestTemplateInvocationContext {
-
-        /**
-         * The token.
-         */
-        private final String token;
-
-        /**
-         * Create a new instance.
-         *
-         * @param token the token
-         */
-        ModuleTestContext(String token) {
-            this.token = token;
-        }
+    private record ModuleTestContext(String token) implements TestTemplateInvocationContext {
 
         @Override
         public String getDisplayName(int invocationIndex) {
@@ -111,21 +97,7 @@ class ModuleTestExtension implements TestTemplateInvocationContextProvider {
     /**
      * Extension to inject {@link JiffyBoxApi} instances into tests.
      */
-    private static class JiffyBoxApiInjector implements ParameterResolver {
-
-        /**
-         * The token.
-         */
-        private final String token;
-
-        /**
-         * Create a new instance.
-         *
-         * @param token the token
-         */
-        JiffyBoxApiInjector(String token) {
-            this.token = token;
-        }
+    private record JiffyBoxApiInjector(String token) implements ParameterResolver {
 
         @Override
         public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext context) {

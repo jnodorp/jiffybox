@@ -15,11 +15,9 @@ class BuildTest {
     /**
      * Make sure an exception is thrown when trying to create an instance of the
      * {@link Build} class.
-     *
-     * @throws Exception Expect an exception.
      */
     @Test
-    void testPrivateConstructor_AssertionError() throws Exception {
+    void testPrivateConstructor_AssertionError() {
         assertThrows(Exception.class, () -> {
             Constructor<Build> constructor = Build.class.getDeclaredConstructor();
             constructor.setAccessible(true);

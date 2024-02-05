@@ -19,7 +19,7 @@ class PrintableModelTest {
         ModelTestHelper.validateJson(new PrintableModel() {
             @JsonProperty("property")
             @SuppressWarnings("unused")
-            private String property = "value";
+            private final String property = "value";
         }.toString());
     }
 

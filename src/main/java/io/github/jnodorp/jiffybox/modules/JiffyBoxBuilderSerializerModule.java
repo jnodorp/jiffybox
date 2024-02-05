@@ -21,7 +21,7 @@ final class JiffyBoxBuilderSerializerModule extends SimpleModule {
         super(JiffyBoxBuilderSerializerModule.class.getSimpleName(),
                 new Version(1, 0, 0, "SNAPSHOT", "io.github.jnodorp", "jiffybox"));
 
-        addSerializer(JiffyBoxBuilder.class, new JsonSerializer<JiffyBoxBuilder>() {
+        addSerializer(JiffyBoxBuilder.class, new JsonSerializer<>() {
             @Override
             public void serialize(JiffyBoxBuilder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
                 ((DefaultJiffyBoxBuilder) value).serialize(gen, serializers);
