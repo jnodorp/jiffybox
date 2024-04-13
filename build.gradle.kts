@@ -75,7 +75,7 @@ dependencies {
 
 	testImplementation("com.github.tomakehurst:wiremock:3.0.1")
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
-	testImplementation("org.slf4j:slf4j-log4j12:2.0.12")
+	testImplementation("org.slf4j:slf4j-log4j12:2.0.13")
 
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
 }
