@@ -6,7 +6,7 @@ plugins {
 	id("jacoco")
 	signing
 	id("com.github.ben-manes.versions") version "0.51.0"
-	id("com.github.nbaztec.coveralls-jacoco") version "1.2.18"
+	id("com.github.nbaztec.coveralls-jacoco") version "1.2.20"
 }
 
 group = "io.github.jnodorp"
