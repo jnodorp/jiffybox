@@ -1,3 +1,6 @@
+**This project will be archived on May 30th 2024, alongside the JiffyBox product. See the
+[official statement by DomainFactory](https://www.df.eu/de/support/df-faq/cloudserver/jiffybox-abschaltung/) (German).**
+
 [![Build Status](https://travis-ci.org/jnodorp/jiffybox.svg?branch=main)](https://travis-ci.org/jnodorp/jiffybox)
 [![Coverage Status](https://coveralls.io/repos/jnodorp/jiffybox/badge.svg?branch=main&service=github)](https://coveralls.io/github/jnodorp/jiffybox?branch=main)
 
