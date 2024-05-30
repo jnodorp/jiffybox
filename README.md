@@ -1,4 +1,4 @@
-**This project will be archived on May 30th 2024, alongside the JiffyBox product. See the
+**This project has been archived on May 30th 2024, alongside the JiffyBox product. See the
 [official statement by DomainFactory](https://www.df.eu/de/support/df-faq/cloudserver/jiffybox-abschaltung/) (German).**
 
 [![Build Status](https://github.com/jnodorp/jiffybox/actions/workflows/ci.yaml/badge.svg)](https://github.com/jnodorp/jiffybox/actions/workflows/ci.yaml)
